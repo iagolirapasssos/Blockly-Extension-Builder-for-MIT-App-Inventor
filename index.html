@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>MIT App Inventor Extension Builder</title>
+	
+	<!-- Favicon -->
+	<link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA/4QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAERERERERERERAAAAAAAAERAQAAAAAAEBEAEAAAAAEAEQABAAAAEAARAAAQAAAQABEAAAEAAAEAEQAAAQAAEAARAAABAAEAABAAAAEAAAAAAQAAAQAAAAAAEAAAEAAAAAAAQAAAQAAAAAAEAAAAAAAAAAAAAARERERERERERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" />
+	
+	<!-- Blockly -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/blockly/9.3.1/blockly.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/blockly/9.3.1/msg/pt-br.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/blockly/9.3.1/msg/en.js"></script>
+	
+	<!-- Prism.js para syntax highlighting -->
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-clike.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+	
+	<!-- CSS próprio -->
+	<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+	<div class="header">
+		<h2 id="title">MIT App Inventor Extension Builder</h2>
+			<div class="header-controls">
+				<select id="themeSelect" class="theme-select">
+					<option value="light">Light Theme</option>
+					<option value="dark">Dark Theme</option>
+					<option value="github">GitHub</option>
+					<option value="monokai">Monokai</option>
+				</select>
+				<select id="languageSelect" class="language-select">
+					<option value="en">English</option>
+					<option value="pt-br">Português</option>
+				</select>
+				<button class="button" onclick="saveBlocks()" title="Salvar Blocos">
+					<span class="text-save">💾</span>
+				</button>
+				<button class="button" onclick="loadBlocks()" title="Carregar Blocos">
+					<span class="text-load">📂</span>
+				</button>
+				<button class="button" onclick="generateJavaCode()">
+					<span class="text-generate">Gerar Código Java</span>
+				</button>
+				<button class="button" onclick="downloadCode()">
+					<span class="text-download">Download .java</span>
+				</button>
+			</div>
+	</div>
+	<div class="main-content">
+		<div id="blocklyDiv"></div>
+	</div>
+	<div class="output-panel">
+		<div class="resize-handle"></div>
+		<pre><code id="outputCode" class="language-java"></code></pre>
+	</div>
+
+	<xml id="toolbox" style="display: none">
+	    <category id="cat_config" name="Configuration" colour="#5C6BC0">
+	        <block type="extension_class"></block>
+	        <block type="constructor_declaration"></block>
+	        <block type="constructor_parameter"></block>
+	        <block type="constructor_super_call"></block>
+	        <block type="package_declaration"></block>
+	    </category>
+
+	    <category id="cat_imports" name="Imports" colour="#00897B">
+	        <block type="import_basic"></block>
+	        <block type="import_manual"></block>
+	        <block type="import_package"></block>
+	        <block type="import_class"></block>
+	        <block type="import_static"></block>
+	        <block type="import_manual">
+	            <field name="IMPORT_PATH">java.util.HashMap</field>
+	        </block>		    
+	    </category>
+	    
+	    <category id="cat_props" name="Properties" colour="#FB8C00">
+	        <block type="property_declaration"></block>
+	        <block type="designer_property"></block>
+	    </category>
+	    
+	    <category id="cat_methods" name="Methods" colour="#7CB342">
+	        <block type="method_declaration"></block>
+	        <block type="method_return"></block>
+	        <block type="event_declaration"></block>
+	    </category>
+
+	    <sep></sep>
+
+	    <category id="cat_control" name="Control" colour="#E53935">
+	        <block type="controls_if_java"></block>
+	        <block type="controls_for_java"></block>
+	        <block type="controls_while_java"></block>
+	        <block type="controls_try_catch"></block>
+	        <block type="controls_return"></block>
+	    </category>
+
+	    <category id="cat_math" name="Math" colour="#8E24AA">
+	        <block type="math_operation"></block>
+	        <block type="math_function"></block>
+	        <block type="math_random"></block>
+	        <block type="math_number"></block>
+	        <block type="math_constant"></block>
+	    </category>
+
+	    <category id="cat_text" name="Text" colour="#3949AB">
+	        <block type="text_string"></block>
+	        <block type="text_join"></block>
+	        <block type="text_operation"></block>
+	        <block type="text_charAt"></block>
+	        <block type="text_indexOf"></block>
+	        <block type="log_message"></block>
+        	<block type="log_message_tagged"></block>
+	    </category>
+
+	    <category id="cat_lists" name="Lists" colour="#00ACC1">
+	        <block type="lists_create"></block>
+	        <block type="lists_operation"></block>
+	        <block type="lists_get_index"></block>
+	        <block type="lists_set_index"></block>
+	        <block type="lists_forEach"></block>
+	    </category>
+
+	    <category id="cat_logic" name="Logic" colour="#FDD835">
+	        <block type="logic_compare"></block>
+	        <block type="logic_operation"></block>
+	        <block type="logic_negate"></block>
+	        <block type="logic_boolean"></block>
+	        <block type="logic_null"></block>
+	    </category>
+
+	    <category id="cat_dictionaries" name="Dictionaries" colour="#43A047">
+	        <block type="dict_create"></block>
+	        <block type="dict_get"></block>
+	        <block type="dict_set"></block>
+	        <block type="dict_remove"></block>
+	        <block type="dict_containsKey"></block>
+	    </category>
+
+	    <category id="cat_imported" name="Imported Classes" colour="#6D4C41">
+	        <block type="imported_static_method"></block>
+	        <block type="imported_static_field"></block>
+	        <block type="imported_type_declaration"></block>
+	        <block type="imported_interface"></block>
+	    </category>
+
+	    <category id="cat_object" name="Objects" colour="#F4511E">
+	        <block type="object_create"></block>
+	        <block type="object_get_field"></block>
+	        <block type="object_set_field"></block>
+	        <block type="object_call_method"></block>
+	        <block type="object_instance_of"></block>
+	        <block type="object_cast"></block>
+	        <sep gap="8"></sep>
+	        <block type="constructor_arg"></block>
+	        <block type="method_arg"></block>
+	    </category>
+
+	    <category id="cat_colors" name="Colors" colour="#D81B60">
+	        <block type="color_picker"></block>
+	        <block type="color_rgb"></block>
+	        <block type="color_blend"></block>
+	        <block type="color_random"></block>
+	    </category>
+
+	    <category id="cat_variables" name="Variables" colour="#546E7A" custom="VARIABLE"></category>
+
+	    <category id="cat_functions" name="Functions" colour="#827717">
+	        <block type="procedures_defnoreturn"></block>
+	        <block type="procedures_defreturn"></block>
+	        <block type="procedures_ifreturn"></block>
+	        <block type="procedures_callnoreturn"></block>
+	        <block type="procedures_callreturn"></block>
+	        <block type="function_return"></block>
+	    </category>
+	</xml>
+
+
+	<!-- Scripts próprios -->
+	<script src="js/translations.js"></script>
+	<script src="js/blocks/functions.js"></script>
+	<script src="js/blocks/constructor_blocks.js"></script>
+	<script src="js/blocks/control_blocks.js"></script>
+	<script src="js/blocks/math_blocks.js"></script>
+	<script src="js/blocks/text_blocks.js"></script>
+	<script src="js/blocks/list_blocks.js"></script>
+	<script src="js/blocks/logic_blocks.js"></script>
+	<script src="js/blocks/dictionary_blocks.js"></script>
+	<script src="js/blocks/color_blocks.js"></script>
+	<script src="js/blocks/import_blocks.js"></script>
+	<script src="js/blocks/imported_class_blocks.js"></script>
+	<script src="js/blocks/object_blocks.js"></script>
+	<script src="js/blocks/imported_class_blocks.js"></script>
+	<script src="js/blocks/blocks.js"></script>
+	<script src="js/main.js"></script>
+</body>
+</html>
