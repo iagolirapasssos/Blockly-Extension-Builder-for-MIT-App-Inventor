@@ -61,28 +61,28 @@ Blockly.Blocks['imported_interface'] = {
 
 // Geradores de código
 Blockly.JavaScript['imported_static_method'] = function(block) {
-    var className = block.getFieldValue('CLASS_NAME');
-    var methodName = block.getFieldValue('METHOD_NAME');
-    var args = Blockly.JavaScript.statementToCode(block, 'ARGS');
+    let className = block.getFieldValue('CLASS_NAME');
+    let methodName = block.getFieldValue('METHOD_NAME');
+    let args = Blockly.JavaScript.statementToCode(block, 'ARGS');
     args = args.trim().replace(/,\s*$/, '');
     return [`${className}.${methodName}(${args})`, Blockly.JavaScript.ORDER_ATOMIC];
 };
 
 Blockly.JavaScript['imported_static_field'] = function(block) {
-    var className = block.getFieldValue('CLASS_NAME');
-    var fieldName = block.getFieldValue('FIELD_NAME');
+    let className = block.getFieldValue('CLASS_NAME');
+    let fieldName = block.getFieldValue('FIELD_NAME');
     return [`${className}.${fieldName}`, Blockly.JavaScript.ORDER_ATOMIC];
 };
 
 Blockly.JavaScript['imported_type_declaration'] = function(block) {
-    var typeName = block.getFieldValue('TYPE_NAME');
-    var varName = block.getFieldValue('VAR_NAME');
-    var value = Blockly.JavaScript.valueToCode(block, 'VALUE', Blockly.JavaScript.ORDER_ATOMIC) || 'null';
+    let typeName = block.getFieldValue('TYPE_NAME');
+    let varName = block.getFieldValue('VAR_NAME');
+    let value = Blockly.JavaScript.valueToCode(block, 'VALUE', Blockly.JavaScript.ORDER_ATOMIC) || 'null';
     return `${typeName} ${varName} = ${value};\n`;
 };
 
 Blockly.JavaScript['imported_interface'] = function(block) {
-    var interfaceName = block.getFieldValue('INTERFACE_NAME');
-    var methods = Blockly.JavaScript.statementToCode(block, 'METHODS');
+    let interfaceName = block.getFieldValue('INTERFACE_NAME');
+    let methods = Blockly.JavaScript.statementToCode(block, 'METHODS');
     return `implements ${interfaceName} {\n${methods}}\n`;
 };

@@ -53,9 +53,9 @@ Blockly.Blocks['controls_while_java'] = {
 
 // Geradores de código para os blocos de controle
 Blockly.JavaScript['controls_if_java'] = function(block) {
-    var condition = Blockly.JavaScript.valueToCode(block, 'IF0', Blockly.JavaScript.ORDER_NONE) || 'false';
-    var thenBranch = Blockly.JavaScript.statementToCode(block, 'DO0');
-    var elseBranch = Blockly.JavaScript.statementToCode(block, 'ELSE');
+    let condition = Blockly.JavaScript.valueToCode(block, 'IF0', Blockly.JavaScript.ORDER_NONE) || 'false';
+    let thenBranch = Blockly.JavaScript.statementToCode(block, 'DO0');
+    let elseBranch = Blockly.JavaScript.statementToCode(block, 'ELSE');
     
     return `if (${condition}) {
         ${thenBranch}
@@ -65,11 +65,11 @@ Blockly.JavaScript['controls_if_java'] = function(block) {
 };
 
 Blockly.JavaScript['controls_for_java'] = function(block) {
-    var variable = block.getFieldValue('VAR');
-    var from = block.getFieldValue('FROM');
-    var to = block.getFieldValue('TO');
-    var step = block.getFieldValue('STEP');
-    var branch = Blockly.JavaScript.statementToCode(block, 'DO');
+    let variable = block.getFieldValue('VAR');
+    let from = block.getFieldValue('FROM');
+    let to = block.getFieldValue('TO');
+    let step = block.getFieldValue('STEP');
+    let branch = Blockly.JavaScript.statementToCode(block, 'DO');
     
     return `for (int ${variable} = ${from}; ${variable} <= ${to}; ${variable} += ${step}) {
         ${branch}
@@ -77,8 +77,8 @@ Blockly.JavaScript['controls_for_java'] = function(block) {
 };
 
 Blockly.JavaScript['controls_while_java'] = function(block) {
-    var condition = Blockly.JavaScript.valueToCode(block, 'CONDITION', Blockly.JavaScript.ORDER_NONE) || 'false';
-    var branch = Blockly.JavaScript.statementToCode(block, 'DO');
+    let condition = Blockly.JavaScript.valueToCode(block, 'CONDITION', Blockly.JavaScript.ORDER_NONE) || 'false';
+    let branch = Blockly.JavaScript.statementToCode(block, 'DO');
     
     return `while (${condition}) {
         ${branch}
@@ -174,9 +174,9 @@ Blockly.Blocks['controls_return'] = {
 
 // Geradores de código para os blocos de controle
 Blockly.JavaScript['controls_if_java'] = function(block) {
-    var condition = Blockly.JavaScript.valueToCode(block, 'IF0', Blockly.JavaScript.ORDER_NONE) || 'false';
-    var thenBranch = Blockly.JavaScript.statementToCode(block, 'DO0');
-    var elseBranch = Blockly.JavaScript.statementToCode(block, 'ELSE');
+    let condition = Blockly.JavaScript.valueToCode(block, 'IF0', Blockly.JavaScript.ORDER_NONE) || 'false';
+    let thenBranch = Blockly.JavaScript.statementToCode(block, 'DO0');
+    let elseBranch = Blockly.JavaScript.statementToCode(block, 'ELSE');
     
     return `if (${condition}) {
         ${thenBranch}
@@ -186,11 +186,11 @@ Blockly.JavaScript['controls_if_java'] = function(block) {
 };
 
 Blockly.JavaScript['controls_for_java'] = function(block) {
-    var variable = block.getFieldValue('VAR');
-    var from = block.getFieldValue('FROM');
-    var to = block.getFieldValue('TO');
-    var step = block.getFieldValue('STEP');
-    var branch = Blockly.JavaScript.statementToCode(block, 'DO');
+    let variable = block.getFieldValue('VAR');
+    let from = block.getFieldValue('FROM');
+    let to = block.getFieldValue('TO');
+    let step = block.getFieldValue('STEP');
+    let branch = Blockly.JavaScript.statementToCode(block, 'DO');
     
     return `for (int ${variable} = ${from}; ${variable} <= ${to}; ${variable} += ${step}) {
         ${branch}
@@ -198,8 +198,8 @@ Blockly.JavaScript['controls_for_java'] = function(block) {
 };
 
 Blockly.JavaScript['controls_while_java'] = function(block) {
-    var condition = Blockly.JavaScript.valueToCode(block, 'CONDITION', Blockly.JavaScript.ORDER_NONE) || 'false';
-    var branch = Blockly.JavaScript.statementToCode(block, 'DO');
+    let condition = Blockly.JavaScript.valueToCode(block, 'CONDITION', Blockly.JavaScript.ORDER_NONE) || 'false';
+    let branch = Blockly.JavaScript.statementToCode(block, 'DO');
     
     return `while (${condition}) {
         ${branch}
@@ -207,15 +207,15 @@ Blockly.JavaScript['controls_while_java'] = function(block) {
 };
 
 Blockly.JavaScript['controls_try_catch'] = function(block) {
-    var tryCode = Blockly.JavaScript.statementToCode(block, 'TRY') || '';
-    var catchCode = Blockly.JavaScript.statementToCode(block, 'CATCH') || '';
-    var finallyCode = Blockly.JavaScript.statementToCode(block, 'FINALLY') || '';
-    var exceptionType = block.getFieldValue('EXCEPTION_TYPE');
-    var exceptionVar = block.getFieldValue('EXCEPTION_VAR');
+    let tryCode = Blockly.JavaScript.statementToCode(block, 'TRY') || '';
+    let catchCode = Blockly.JavaScript.statementToCode(block, 'CATCH') || '';
+    let finallyCode = Blockly.JavaScript.statementToCode(block, 'FINALLY') || '';
+    let exceptionType = block.getFieldValue('EXCEPTION_TYPE');
+    let exceptionlet = block.getFieldValue('EXCEPTION_VAR');
     
-    var code = 'try {\n' + 
+    let code = 'try {\n' + 
         tryCode + 
-        '} catch (' + exceptionType + ' ' + exceptionVar + ') {\n' +
+        '} catch (' + exceptionType + ' ' + exceptionlet + ') {\n' +
         catchCode;
 
     if (finallyCode) {
@@ -226,6 +226,6 @@ Blockly.JavaScript['controls_try_catch'] = function(block) {
 };
 
 Blockly.JavaScript['controls_return'] = function(block) {
-    var value = Blockly.JavaScript.valueToCode(block, 'VALUE', Blockly.JavaScript.ORDER_ATOMIC) || '';
+    let value = Blockly.JavaScript.valueToCode(block, 'VALUE', Blockly.JavaScript.ORDER_ATOMIC) || '';
     return 'return ' + value + ';\n';
 };

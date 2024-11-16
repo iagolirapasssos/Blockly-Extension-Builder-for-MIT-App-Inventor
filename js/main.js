@@ -10,12 +10,12 @@ let currentLanguage = 'pt-br';
 
 // Sistema de notificações
 function showNotification(message, type) {
-    var oldNotification = document.querySelector('.notification');
+    let oldNotification = document.querySelector('.notification');
     if (oldNotification) {
         oldNotification.remove();
     }
     
-    var notification = document.createElement('div');
+    let notification = document.createElement('div');
     notification.className = `notification ${type}`;
     notification.textContent = message;
     
@@ -26,50 +26,50 @@ function showNotification(message, type) {
     }, 3000);
 }
 
-// Funções para salvar e carregar blocos
+// Funções para sallet e carregar blocos
 window.saveBlocks = function() {
     try {
-        var xmlDom = Blockly.Xml.workspaceToDom(workspace);
-        var xmlText = Blockly.Xml.domToPrettyText(xmlDom);
+        let xmlDom = Blockly.Xml.workspaceToDom(workspace);
+        let xmlText = Blockly.Xml.domToPrettyText(xmlDom);
         
-        var saveData = {
+        let saveData = {
             version: "1.0",
             timestamp: new Date().toISOString(),
             blocks: xmlText
         };
         
-        var saveString = JSON.stringify(saveData, null, 2);
-        var blob = new Blob([saveString], {type: 'application/json'});
-        var a = document.createElement('a');
+        let saveString = JSON.stringify(saveData, null, 2);
+        let blob = new Blob([saveString], {type: 'application/json'});
+        let a = document.createElement('a');
         a.download = 'extension_blocks.json';
         a.href = URL.createObjectURL(blob);
         a.click();
         
         showNotification(TRANSLATIONS[currentLanguage]['file_success'], 'success');
     } catch (e) {
-        console.error('Erro ao salvar blocos:', e);
+        console.error('Erro ao sallet blocos:', e);
         showNotification(TRANSLATIONS[currentLanguage]['file_error'], 'error');
     }
 };
 
 window.loadBlocks = function() {
-    var input = document.createElement('input');
+    let input = document.createElement('input');
     input.type = 'file';
     input.accept = '.json';
     
     input.onchange = function(e) {
-        var file = e.target.files[0];
-        var reader = new FileReader();
+        let file = e.target.files[0];
+        let reader = new FileReader();
         
         reader.onload = function(e) {
             try {
-                var saveData = JSON.parse(e.target.result);
+                let saveData = JSON.parse(e.target.result);
                 
                 if (!saveData.version) {
                     throw new Error('Formato de arquivo inválido');
                 }
                 
-                var xmlDom = Blockly.utils.xml.textToDom(saveData.blocks);
+                let xmlDom = Blockly.utils.xml.textToDom(saveData.blocks);
                 workspace.clear();
                 Blockly.Xml.domToWorkspace(xmlDom, workspace);
                 
@@ -195,7 +195,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Funções de geração e download de código
     window.generateJavaCode = function() {
 		try {
-		    var code = Blockly.JavaScript.workspaceToCode(workspace);
+		    let code = Blockly.JavaScript.workspaceToCode(workspace);
 		    const outputElement = document.getElementById('outputCode');
 		    
 		    // Primeiro, define o texto bruto
@@ -246,12 +246,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function handleFileDrop(e) {
       e.preventDefault();
-      var file = e.dataTransfer.files[0];
-      var reader = new FileReader();
+      let file = e.dataTransfer.files[0];
+      let reader = new FileReader();
 
       reader.onload = function(event) {
-        var saveData = JSON.parse(event.target.result);
-        var xmlDom = Blockly.utils.xml.textToDom(saveData.blocks);
+        let saveData = JSON.parse(event.target.result);
+        let xmlDom = Blockly.utils.xml.textToDom(saveData.blocks);
         workspace.clear();
         Blockly.Xml.domToWorkspace(xmlDom, workspace);
       };

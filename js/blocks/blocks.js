@@ -114,23 +114,23 @@ Blockly.Blocks['get_property'] = {
 //Generators
 // Java code generator
 Blockly.JavaScript['set_property'] = function(block) {
-  var property = block.getFieldValue('PROPERTY');
-  var value = Blockly.JavaScript.valueToCode(block, 'VALUE', Blockly.JavaScript.ORDER_ATOMIC);
-  var code = `set${property.charAt(0).toUpperCase() + property.slice(1)}(${value});\n`;
+  let property = block.getFieldValue('PROPERTY');
+  let value = Blockly.JavaScript.valueToCode(block, 'VALUE', Blockly.JavaScript.ORDER_ATOMIC);
+  let code = `set${property.charAt(0).toUpperCase() + property.slice(1)}(${value});\n`;
   return code;
 };
 
 Blockly.JavaScript['get_property'] = function(block) {
-  var property = block.getFieldValue('PROPERTY');
-  var code = `get${property.charAt(0).toUpperCase() + property.slice(1)}()`;
+  let property = block.getFieldValue('PROPERTY');
+  let code = `get${property.charAt(0).toUpperCase() + property.slice(1)}()`;
   return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
 };
 
 Blockly.JavaScript['property_declaration'] = function(block) {
-    var propertyName = block.getFieldValue('PROPERTY_NAME');
-    var type = block.getFieldValue('TYPE');
-    var setterContent = Blockly.JavaScript.statementToCode(block, 'PROPERTY_SETTER');
-    var getterContent = Blockly.JavaScript.statementToCode(block, 'PROPERTY_GETTER');
+    let propertyName = block.getFieldValue('PROPERTY_NAME');
+    let type = block.getFieldValue('TYPE');
+    let setterContent = Blockly.JavaScript.statementToCode(block, 'PROPERTY_SETTER');
+    let getterContent = Blockly.JavaScript.statementToCode(block, 'PROPERTY_GETTER');
     
     return `    private ${type} ${propertyName};
     
@@ -144,12 +144,12 @@ Blockly.JavaScript['property_declaration'] = function(block) {
 };
 
 Blockly.JavaScript['designer_property'] = function(block) {
-    var propertyName = block.getFieldValue('PROPERTY_NAME');
-    var type = block.getFieldValue('TYPE');
-    var description = block.getFieldValue('DESCRIPTION');
-    var category = block.getFieldValue('CATEGORY');
-    var setterContent = Blockly.JavaScript.statementToCode(block, 'DESIGNER_PROPERTY_SETTER');
-    var getterContent = Blockly.JavaScript.statementToCode(block, 'DESIGNER_PROPERTY_GETTER');
+    let propertyName = block.getFieldValue('PROPERTY_NAME');
+    let type = block.getFieldValue('TYPE');
+    let description = block.getFieldValue('DESCRIPTION');
+    let category = block.getFieldValue('CATEGORY');
+    let setterContent = Blockly.JavaScript.statementToCode(block, 'DESIGNER_PROPERTY_SETTER');
+    let getterContent = Blockly.JavaScript.statementToCode(block, 'DESIGNER_PROPERTY_GETTER');
     
     return `    @DesignerProperty(editorType = ${type}, defaultValue = "")
     @SimpleProperty(description = "${description}")
@@ -164,8 +164,8 @@ Blockly.JavaScript['designer_property'] = function(block) {
 };
 
 Blockly.JavaScript['import_basic'] = function(block) {
-    var importType = block.getFieldValue('IMPORT');
-    var imports = {
+    let importType = block.getFieldValue('IMPORT');
+    let imports = {
         'ANNOTATIONS': 'com.google.appinventor.components.annotations.*',
         'COMMON': 'com.google.appinventor.components.common.*',
         'RUNTIME': 'com.google.appinventor.components.runtime.*',

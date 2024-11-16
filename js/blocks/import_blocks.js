@@ -66,11 +66,11 @@ Blockly.Blocks['import_static'] = {
 
 // Geradores de código
 Blockly.JavaScript['import_manual'] = function(block) {
-    var path = block.getFieldValue('IMPORT_PATH');
-    var isStatic = block.getFieldValue('IS_STATIC') === 'TRUE';
-    var isWildcard = block.getFieldValue('IS_WILDCARD') === 'TRUE';
+    let path = block.getFieldValue('IMPORT_PATH');
+    let isStatic = block.getFieldValue('IS_STATIC') === 'TRUE';
+    let isWildcard = block.getFieldValue('IS_WILDCARD') === 'TRUE';
     
-    var code = 'import ';
+    let code = 'import ';
     if (isStatic) code += 'static ';
     code += path;
     if (isWildcard) code += '.*';
@@ -78,15 +78,15 @@ Blockly.JavaScript['import_manual'] = function(block) {
 };
 
 Blockly.JavaScript['import_package'] = function(block) {
-    var pkg = block.getFieldValue('PACKAGE');
-    var subPkg = block.getFieldValue('SUB_PACKAGE');
+    let pkg = block.getFieldValue('PACKAGE');
+    let subPkg = block.getFieldValue('SUB_PACKAGE');
     return `import ${pkg}.${subPkg}.*;\n`;
 };
 
 Blockly.JavaScript['import_class'] = function(block) {
-    var classPath = block.getFieldValue('CLASS_PATH');
-    var alias = block.getFieldValue('ALIAS');
-    var code = `import ${classPath}`;
+    let classPath = block.getFieldValue('CLASS_PATH');
+    let alias = block.getFieldValue('ALIAS');
+    let code = `import ${classPath}`;
     if (alias) {
         code += ` as ${alias}`;
     }
@@ -94,7 +94,7 @@ Blockly.JavaScript['import_class'] = function(block) {
 };
 
 Blockly.JavaScript['import_static'] = function(block) {
-    var className = block.getFieldValue('CLASS');
-    var method = block.getFieldValue('METHOD');
+    let className = block.getFieldValue('CLASS');
+    let method = block.getFieldValue('METHOD');
     return `import static ${className}.${method};\n`;
 };

@@ -75,20 +75,20 @@ Blockly.Blocks['constructor_declaration'] = {
     },
     
     mutationToDom: function() {
-        var container = document.createElement('mutation');
-        var isDefault = (this.getFieldValue('IS_DEFAULT') == 'TRUE');
+        let container = document.createElement('mutation');
+        let isDefault = (this.getFieldValue('IS_DEFAULT') == 'TRUE');
         container.setAttribute('is_default', isDefault);
         return container;
     },
     
     domToMutation: function(xmlElement) {
-        var isDefault = (xmlElement.getAttribute('is_default') == 'true');
+        let isDefault = (xmlElement.getAttribute('is_default') == 'true');
         this.getField('IS_DEFAULT').setValue(isDefault ? 'TRUE' : 'FALSE');
         this.updateShape_();
     },
     
     updateShape_: function() {
-        var isDefault = (this.getFieldValue('IS_DEFAULT') == 'TRUE');
+        let isDefault = (this.getFieldValue('IS_DEFAULT') == 'TRUE');
         if (isDefault) {
             if (this.getInput('PARAMETERS')) this.removeInput('PARAMETERS');
             if (this.getInput('SUPER_CALL')) this.removeInput('SUPER_CALL');
@@ -157,16 +157,16 @@ Blockly.Blocks['package_declaration'] = {
 
 //Generators
 Blockly.JavaScript['extension_class'] = function(block) {
-  var interfaces = block.getFieldValue('interfaces');
-  var className = block.getFieldValue('classNameEdit');
-  var description = block.getFieldValue('descriptionNameEdit');
-  var category = block.getFieldValue('extensionNameEdit');
-  var nonVisible = block.getFieldValue('checkBoxNonVisible') === 'TRUE';
-  var iconName = block.getFieldValue('imageURL');
-  var annotations = Blockly.JavaScript.statementToCode(block, 'annotationBlocks');
-  var members = Blockly.JavaScript.statementToCode(block, 'statementBlocks');
+  let interfaces = block.getFieldValue('interfaces');
+  let className = block.getFieldValue('classNameEdit');
+  let description = block.getFieldValue('descriptionNameEdit');
+  let category = block.getFieldValue('extensionNameEdit');
+  let nonVisible = block.getFieldValue('checkBoxNonVisible') === 'TRUE';
+  let iconName = block.getFieldValue('imageURL');
+  let annotations = Blockly.JavaScript.statementToCode(block, 'annotationBlocks');
+  let members = Blockly.JavaScript.statementToCode(block, 'statementBlocks');
 
-  var code = `@DesignerComponent(version = 1,
+  let code = `@DesignerComponent(version = 1,
     description = "${description}",
     category = ComponentCategory.${category},
     nonVisible = ${nonVisible},
@@ -179,21 +179,21 @@ ${members}}`;
 };
 
 Blockly.JavaScript['custom_annotation'] = function(block) {
-    var annotation = block.getFieldValue('ANNOTATION');
+    let annotation = block.getFieldValue('ANNOTATION');
     return `${annotation}\n`;
 };
 
 Blockly.JavaScript['constructor_declaration'] = function(block) {
-    var isDefault = block.getFieldValue('IS_DEFAULT') == 'TRUE';
-    var content = Blockly.JavaScript.statementToCode(block, 'CONSTRUCTOR_CONTENT') || '';
+    let isDefault = block.getFieldValue('IS_DEFAULT') == 'TRUE';
+    let content = Blockly.JavaScript.statementToCode(block, 'CONSTRUCTOR_CONTENT') || '';
     
     if (isDefault) {
         return `    public Constructor(ComponentContainer container) {
         
 ${content}    }\n`;
     } else {
-        var parameters = Blockly.JavaScript.statementToCode(block, 'PARAMETERS') || '';
-        var superCall = Blockly.JavaScript.statementToCode(block, 'SUPER_CALL') || '';
+        let parameters = Blockly.JavaScript.statementToCode(block, 'PARAMETERS') || '';
+        let superCall = Blockly.JavaScript.statementToCode(block, 'SUPER_CALL') || '';
         
         parameters = parameters.trim().replace(/,\s*$/, '');
         
@@ -203,21 +203,21 @@ ${superCall}${content}    }\n`;
 };
 
 Blockly.JavaScript['constructor_parameter'] = function(block) {
-    var paramName = block.getFieldValue('PARAM_NAME');
-    var paramType = block.getFieldValue('PARAM_TYPE');
+    let paramName = block.getFieldValue('PARAM_NAME');
+    let paramType = block.getFieldValue('PARAM_TYPE');
     
     return paramType + ' ' + paramName + ', ';
 };
 
 Blockly.JavaScript['constructor_super_call'] = function(block) {
-    var params = block.getFieldValue('SUPER_PARAMS');
-    var afterSuper = Blockly.JavaScript.statementToCode(block, 'AFTER_SUPER') || '';
+    let params = block.getFieldValue('SUPER_PARAMS');
+    let afterSuper = Blockly.JavaScript.statementToCode(block, 'AFTER_SUPER') || '';
     
     return `        super(${params});
 ${afterSuper}`;
 };
 
 Blockly.JavaScript['package_declaration'] = function(block) {
-    var package = block.getFieldValue('PACKAGE');
+    let package = block.getFieldValue('PACKAGE');
     return `package ${package};\n\n`;
 };

@@ -149,6 +149,11 @@
 		    <block type="text_split"></block>
 		</category>
 
+		<category id="cat_comments" name="Comments" colour="#757575">
+	        <block type="comment_single"></block>
+	        <block type="comment_multi"></block>
+	        <block type="comment_multi_text"></block>
+	    </category>
 
 	    <category id="cat_lists" name="Lists" colour="#00ACC1">
 	        <block type="lists_create"></block>
@@ -182,11 +187,18 @@
 	    </category>
 
 	    <category id="cat_colors" name="Colors" colour="#D81B60">
-	        <block type="color_picker"></block>
-	        <block type="color_rgb"></block>
-	        <block type="color_blend"></block>
-	        <block type="color_random"></block>
-	    </category>
+		    <!-- Existing Blocks -->
+		    <block type="color_picker"></block>
+		    <block type="color_rgb"></block>
+		    <block type="color_blend"></block>
+		    <block type="color_random"></block>
+		    
+		    <!-- Newly Added Blocks -->
+		    <block type="color_brightness"></block>
+		    <block type="color_hex_to_rgb"></block>
+		    <block type="color_rgb_to_hex"></block>
+		</category>
+
 
 	    <category id="cat_variables_custom" name="Variables" colour="#546E7A">
 		    <block type="create_variable"></block>
@@ -226,6 +238,7 @@
 	<script src="js/blocks/configurations.js"></script>
 	<script src="js/blocks/method_inserts.js"></script>
 	<script src="js/blocks/variables.js"></script>
+	<script src="js/blocks/comments_blocks.js"></script>
 	<script src="js/main.js"></script>
 </body>
 </html>

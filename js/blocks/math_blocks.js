@@ -1,3 +1,7 @@
+//blocks/math_blocks.js
+'use strict';
+
+
 // Number block
 Blockly.Blocks['math_number'] = {
     init: function() {
@@ -22,7 +26,7 @@ Blockly.Blocks['math_operation'] = {
     },
 
     mutationToDom: function() {
-        var container = document.createElement('mutation');
+        let container = document.createElement('mutation');
         container.setAttribute('items', this.itemCount_);
         return container;
     },
@@ -33,12 +37,12 @@ Blockly.Blocks['math_operation'] = {
     },
 
     decompose: function(workspace) {
-        var containerBlock = workspace.newBlock('math_operation_container');
+        let containerBlock = workspace.newBlock('math_operation_container');
         containerBlock.initSvg();
         
-        var connection = containerBlock.getInput('STACK').connection;
-        for (var i = 0; i < this.itemCount_ - 1; i++) {
-            var itemBlock = workspace.newBlock('math_operation_item');
+        let connection = containerBlock.getInput('STACK').connection;
+        for (let i = 0; i < this.itemCount_ - 1; i++) {
+            let itemBlock = workspace.newBlock('math_operation_item');
             itemBlock.initSvg();
             connection.connect(itemBlock.previousConnection);
             connection = itemBlock.nextConnection;
@@ -48,9 +52,9 @@ Blockly.Blocks['math_operation'] = {
     },
 
     compose: function(containerBlock) {
-        var itemBlock = containerBlock.getInputTargetBlock('STACK');
-        var connections = [];
-        var operators = [];
+        let itemBlock = containerBlock.getInputTargetBlock('STACK');
+        let connections = [];
+        let operators = [];
         while (itemBlock) {
             connections.push(itemBlock.valueConnection_);
             operators.push(itemBlock.getFieldValue('OP'));
@@ -61,7 +65,7 @@ Blockly.Blocks['math_operation'] = {
         this.itemCount_ = connections.length + 1;
         this.updateShape_();
         
-        for (var i = 1; i < this.itemCount_; i++) {
+        for (let i = 1; i < this.itemCount_; i++) {
             if (operators[i-1]) {
                 this.getField('OP' + i).setValue(operators[i-1]);
             }
@@ -77,13 +81,13 @@ Blockly.Blocks['math_operation'] = {
                 .setCheck('Number');
         }
 
-        var i = 1;
+        let i = 1;
         while (this.getInput('NUM' + i)) {
             this.removeInput('NUM' + i);
             i++;
         }
 
-        for (var i = 1; i < this.itemCount_; i++) {
+        for (let i = 1; i < this.itemCount_; i++) {
             this.appendValueInput('NUM' + i)
                 .setCheck('Number')
                 .appendField(new Blockly.FieldDropdown([
@@ -179,7 +183,7 @@ Blockly.Blocks['math_random'] = {
     },
 
     updateShape_: function() {
-        var type = this.getFieldValue('TYPE');
+        let type = this.getFieldValue('TYPE');
         if (type === 'RANDOM' || type === 'BOOL') {
             if (this.getInput('MIN')) this.removeInput('MIN');
             if (this.getInput('MAX')) this.removeInput('MAX');
@@ -222,18 +226,18 @@ Blockly.Blocks['math_constant'] = {
 
 // Code Generators
 Blockly.JavaScript['math_number'] = function(block) {
-    var number = block.getFieldValue('NUM');
+    let number = block.getFieldValue('NUM');
     return [number, Blockly.JavaScript.ORDER_ATOMIC];
 };
 
 Blockly.JavaScript['math_operation'] = function(block) {
-    var code = [];
+    let code = [];
     
     code.push(Blockly.JavaScript.valueToCode(block, 'NUM0', Blockly.JavaScript.ORDER_ATOMIC) || '0');
     
-    for (var i = 1; i < block.itemCount_; i++) {
-        var operator = block.getFieldValue('OP' + i);
-        var value = Blockly.JavaScript.valueToCode(block, 'NUM' + i, Blockly.JavaScript.ORDER_ATOMIC) || '0';
+    for (let i = 1; i < block.itemCount_; i++) {
+        let operator = block.getFieldValue('OP' + i);
+        let value = Blockly.JavaScript.valueToCode(block, 'NUM' + i, Blockly.JavaScript.ORDER_ATOMIC) || '0';
         
         switch(operator) {
             case 'ADD': code.push('+', value); break;
@@ -249,29 +253,31 @@ Blockly.JavaScript['math_operation'] = function(block) {
 };
 
 Blockly.JavaScript['math_constant'] = function(block) {
-    var constant = block.getFieldValue('CONSTANT');
+    let constant = block.getFieldValue('CONSTANT');
     return [constant, Blockly.JavaScript.ORDER_ATOMIC];
 };
 
 Blockly.JavaScript['math_function'] = function(block) {
-    var func = block.getFieldValue('FUNC');
-    var number = Blockly.JavaScript.valueToCode(block, 'NUMBER', Blockly.JavaScript.ORDER_ATOMIC) || '0';
+    let func = block.getFieldValue('FUNC');
+    let number = Blockly.JavaScript.valueToCode(block, 'NUMBER', Blockly.JavaScript.ORDER_ATOMIC) || '0';
     return [func + '(' + number + ')', Blockly.JavaScript.ORDER_ATOMIC];
 };
 
 Blockly.JavaScript['math_random'] = function(block) {
-    var type = block.getFieldValue('TYPE');
-    var code;
-    
+    let type = block.getFieldValue('TYPE');
+    let code;
+    let min;
+    let max
+
     switch(type) {
         case 'INT':
-            var min = Blockly.JavaScript.valueToCode(block, 'MIN', Blockly.JavaScript.ORDER_ATOMIC) || '0';
-            var max = Blockly.JavaScript.valueToCode(block, 'MAX', Blockly.JavaScript.ORDER_ATOMIC) || '100';
+            min = Blockly.JavaScript.valueToCode(block, 'MIN', Blockly.JavaScript.ORDER_ATOMIC) || '0';
+            max = Blockly.JavaScript.valueToCode(block, 'MAX', Blockly.JavaScript.ORDER_ATOMIC) || '100';
             code = `Math.floor(Math.random() * (${max} - ${min} + 1) + ${min})`;
             break;
         case 'FLOAT':
-            var min = Blockly.JavaScript.valueToCode(block, 'MIN', Blockly.JavaScript.ORDER_ATOMIC) || '0';
-            var max = Blockly.JavaScript.valueToCode(block, 'MAX', Blockly.JavaScript.ORDER_ATOMIC) || '1';
+            min = Blockly.JavaScript.valueToCode(block, 'MIN', Blockly.JavaScript.ORDER_ATOMIC) || '0';
+            max = Blockly.JavaScript.valueToCode(block, 'MAX', Blockly.JavaScript.ORDER_ATOMIC) || '1';
             code = `(Math.random() * (${max} - ${min}) + ${min})`;
             break;
         case 'RANDOM':

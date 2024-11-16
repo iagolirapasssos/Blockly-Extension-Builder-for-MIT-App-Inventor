@@ -69,9 +69,6 @@ Blockly.Blocks['function_return'] = {
 };
 
 // Define a function with parameters
-'use strict';
-
-// Function with editable parameters
 Blockly.Blocks['function_with_parameters'] = {
     init: function() {
         this.appendDummyInput("HEADER")
@@ -82,16 +79,17 @@ Blockly.Blocks['function_with_parameters'] = {
                 ["void", "void"],
                 ["String", "String"],
                 ["int", "int"],
+                ["double", "double"],
                 ["boolean", "boolean"],
-                ["double", "double"]
+                ["Object", "Object"]
             ]), "RETURN_TYPE");
         this.appendStatementInput("STACK")
             .appendField("do");
-        this.setMutator(new Blockly.Mutator(['parameter']));
+        this.setMutator(new Blockly.Mutator(['function_parameter']));
         this.paramCount_ = 0;
         this.paramNames_ = [];
         this.setColour('#827717');
-        this.setTooltip("Defines a function with editable parameters.");
+        this.setTooltip("Defines a function with editable and 'final' parameters.");
     },
 
     mutationToDom: function() {
@@ -101,6 +99,7 @@ Blockly.Blocks['function_with_parameters'] = {
             const paramNode = document.createElement('param');
             paramNode.setAttribute('name', param.name);
             paramNode.setAttribute('type', param.type);
+            paramNode.setAttribute('final', param.final ? 'true' : 'false');
             container.appendChild(paramNode);
         });
         return container;
@@ -112,10 +111,67 @@ Blockly.Blocks['function_with_parameters'] = {
         Array.from(xmlElement.children).forEach(param => {
             this.paramNames_.push({
                 name: param.getAttribute('name'),
-                type: param.getAttribute('type')
+                type: param.getAttribute('type'),
+                final: param.getAttribute('final') === 'true'
             });
         });
         this.updateShape_();
+    },
+
+    decompose: function(workspace) {
+        const containerBlock = workspace.newBlock('function_mutator');
+        containerBlock.initSvg();
+        let connection = containerBlock.getInput('STACK').connection;
+
+        this.paramNames_.forEach(param => {
+            const paramBlock = workspace.newBlock('function_parameter');
+            paramBlock.setFieldValue(param.name, 'PARAM_NAME');
+            paramBlock.setFieldValue(param.type, 'PARAM_TYPE');
+            paramBlock.setFieldValue(param.final ? 'TRUE' : 'FALSE', 'FINAL');
+            paramBlock.initSvg();
+            connection.connect(paramBlock.previousConnection);
+            connection = paramBlock.nextConnection;
+        });
+
+        return containerBlock;
+    },
+
+    compose: function(containerBlock) {
+        let paramBlock = containerBlock.getInputTargetBlock('STACK');
+        const newParamNames = [];
+
+        while (paramBlock) {
+            const paramName = paramBlock.getFieldValue('PARAM_NAME');
+            const paramType = paramBlock.getFieldValue('PARAM_TYPE');
+            const isFinal = paramBlock.getFieldValue('FINAL') === 'TRUE';
+
+            newParamNames.push({
+                name: paramName,
+                type: paramType,
+                final: isFinal
+            });
+
+            paramBlock = paramBlock.nextConnection && paramBlock.nextConnection.targetBlock();
+        }
+
+        this.paramCount_ = newParamNames.length;
+        this.paramNames_ = newParamNames;
+
+        this.updateShape_();
+
+        // Update Blockly variable list
+        const workspace = this.workspace;
+        const variableNames = newParamNames.map(param => param.name);
+        workspace.getAllVariables().forEach(variable => {
+            if (!variableNames.includes(variable.name)) {
+                workspace.deleteVariableById(variable.getId());
+            }
+        });
+        variableNames.forEach(name => {
+            if (!workspace.getVariable(name)) {
+                workspace.createVariable(name);
+            }
+        });
     },
 
     updateShape_: function() {
@@ -127,7 +183,7 @@ Blockly.Blocks['function_with_parameters'] = {
         // Add new parameter display
         if (this.paramCount_ > 0) {
             const paramDisplay = this.paramNames_
-                .map(param => `${param.type} ${param.name}`)
+                .map(param => `${param.final ? 'final ' : ''}${param.type} ${param.name}`)
                 .join(', ');
             this.getInput("HEADER")
                 .appendField("(" + paramDisplay + ")", "PARAMS");
@@ -135,50 +191,9 @@ Blockly.Blocks['function_with_parameters'] = {
             this.getInput("HEADER")
                 .appendField("()", "PARAMS");
         }
-    },
-
-    decompose: function(workspace) {
-        const containerBlock = workspace.newBlock('function_mutator');
-        containerBlock.initSvg();
-        let connection = containerBlock.getInput('STACK').connection;
-
-        this.paramNames_.forEach(param => {
-            const paramBlock = workspace.newBlock('parameter');
-            paramBlock.setFieldValue(param.name || "param", 'PARAM_NAME');
-            paramBlock.setFieldValue(param.type || "String", 'PARAM_TYPE');
-            paramBlock.initSvg();
-            connection.connect(paramBlock.previousConnection);
-            connection = paramBlock.nextConnection;
-        });
-
-        return containerBlock;
-    },
-
-    compose: function(containerBlock) {
-        let paramBlock = containerBlock.getInputTargetBlock('STACK');
-        this.paramCount_ = 0;
-        this.paramNames_ = [];
-
-        while (paramBlock) {
-            const paramName = paramBlock.getFieldValue('PARAM_NAME') || "param";
-            const paramType = paramBlock.getFieldValue('PARAM_TYPE') || "String";
-
-            // Add parameter details to the list
-            this.paramNames_.push({
-                name: paramName,
-                type: paramType
-            });
-
-            paramBlock = paramBlock.nextConnection && paramBlock.nextConnection.targetBlock();
-            this.paramCount_++;
-        }
-
-        this.updateShape_();
     }
 };
 
-
-// Mutator container block
 Blockly.Blocks['function_mutator'] = {
     init: function() {
         this.appendDummyInput()
@@ -191,25 +206,46 @@ Blockly.Blocks['function_mutator'] = {
     }
 };
 
-// Parameter block
-Blockly.Blocks['parameter'] = {
+Blockly.Blocks['function_parameter'] = {
     init: function() {
         this.appendDummyInput()
             .appendField("parameter")
-            .appendField(new Blockly.FieldTextInput("param"), "PARAM_NAME")
+            .appendField(new Blockly.FieldTextInput("param1"), "PARAM_NAME")
             .appendField(":")
             .appendField(new Blockly.FieldDropdown([
                 ["String", "String"],
                 ["int", "int"],
                 ["double", "double"],
-                ["boolean", "boolean"]
-            ]), "PARAM_TYPE");
+                ["boolean", "boolean"],
+                ["Object", "Object"]
+            ]), "PARAM_TYPE")
+            .appendField("final")
+            .appendField(new Blockly.FieldCheckbox("FALSE"), "FINAL");
         this.setPreviousStatement(true, "Parameter");
         this.setNextStatement(true, "Parameter");
         this.setColour('#827717');
         this.setTooltip("Defines a parameter for the function.");
     }
 };
+
+Blockly.JavaScript['function_with_parameters'] = function(block) {
+    const functionName = block.getFieldValue('FUNCTION_NAME');
+    const returnType = block.getFieldValue('RETURN_TYPE');
+    const paramList = block.paramNames_
+        .map(param => `${param.final ? 'final ' : ''}${param.type} ${param.name}`)
+        .join(', ');
+    const statements = Blockly.JavaScript.statementToCode(block, 'STACK');
+    return `public ${returnType} ${functionName}(${paramList}) {\n${statements}}\n`;
+};
+
+Blockly.JavaScript['function_parameter'] = function(block) {
+    const paramName = block.getFieldValue('PARAM_NAME');
+    const paramType = block.getFieldValue('PARAM_TYPE');
+    const isFinal = block.getFieldValue('FINAL') === "TRUE";
+    return `${isFinal ? 'final ' : ''}${paramType} ${paramName}`;
+};
+
+
 
 // JavaScript Generators
 Blockly.JavaScript['procedures_defnoreturn'] = function(block) {
@@ -235,18 +271,3 @@ Blockly.JavaScript['procedures_callreturn'] = function(block) {
     return [`${name}()`, Blockly.JavaScript.ORDER_ATOMIC];
 };
 
-Blockly.JavaScript['function_with_parameters'] = function(block) {
-    const name = block.getFieldValue('FUNCTION_NAME');
-    const returnType = block.getFieldValue('RETURN_TYPE');
-    const params = block.paramNames_
-        .map(param => `${param.type} ${param.name}`)
-        .join(', ');
-    const statements = Blockly.JavaScript.statementToCode(block, 'STACK');
-    return `public ${returnType} ${name}(${params}) {\n${statements}}\n`;
-};
-
-Blockly.JavaScript['parameter'] = function(block) {
-    const paramName = block.getFieldValue('PARAM_NAME');
-    const paramType = block.getFieldValue('PARAM_TYPE');
-    return `${paramType} ${paramName}`;
-};

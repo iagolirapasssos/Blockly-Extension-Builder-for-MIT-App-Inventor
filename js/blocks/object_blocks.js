@@ -119,51 +119,51 @@ Blockly.Blocks['object_cast'] = {
 
 // Geradores de código
 Blockly.JavaScript['object_create'] = function(block) {
-    var className = block.getFieldValue('CLASS_NAME');
-    var args = Blockly.JavaScript.statementToCode(block, 'CONSTRUCTOR_ARGS');
+    let className = block.getFieldValue('CLASS_NAME');
+    let args = Blockly.JavaScript.statementToCode(block, 'CONSTRUCTOR_ARGS');
     args = args.trim().replace(/,\s*$/, ''); // Remove última vírgula
     return [`new ${className}(${args})`, Blockly.JavaScript.ORDER_ATOMIC];
 };
 
 Blockly.JavaScript['constructor_arg'] = function(block) {
-    var value = Blockly.JavaScript.valueToCode(block, 'ARG_VALUE', Blockly.JavaScript.ORDER_ATOMIC) || 'null';
+    let value = Blockly.JavaScript.valueToCode(block, 'ARG_VALUE', Blockly.JavaScript.ORDER_ATOMIC) || 'null';
     return value + ', ';
 };
 
 Blockly.JavaScript['object_get_field'] = function(block) {
-    var object = Blockly.JavaScript.valueToCode(block, 'OBJECT', Blockly.JavaScript.ORDER_ATOMIC) || 'this';
-    var field = block.getFieldValue('FIELD_NAME');
+    let object = Blockly.JavaScript.valueToCode(block, 'OBJECT', Blockly.JavaScript.ORDER_ATOMIC) || 'this';
+    let field = block.getFieldValue('FIELD_NAME');
     return [`${object}.${field}`, Blockly.JavaScript.ORDER_ATOMIC];
 };
 
 Blockly.JavaScript['object_set_field'] = function(block) {
-    var object = Blockly.JavaScript.valueToCode(block, 'OBJECT', Blockly.JavaScript.ORDER_ATOMIC) || 'this';
-    var field = block.getFieldValue('FIELD_NAME');
-    var value = Blockly.JavaScript.valueToCode(block, 'VALUE', Blockly.JavaScript.ORDER_ATOMIC) || 'null';
+    let object = Blockly.JavaScript.valueToCode(block, 'OBJECT', Blockly.JavaScript.ORDER_ATOMIC) || 'this';
+    let field = block.getFieldValue('FIELD_NAME');
+    let value = Blockly.JavaScript.valueToCode(block, 'VALUE', Blockly.JavaScript.ORDER_ATOMIC) || 'null';
     return `${object}.${field} = ${value};\n`;
 };
 
 Blockly.JavaScript['object_call_method'] = function(block) {
-    var object = Blockly.JavaScript.valueToCode(block, 'OBJECT', Blockly.JavaScript.ORDER_ATOMIC) || 'this';
-    var method = block.getFieldValue('METHOD_NAME');
-    var args = Blockly.JavaScript.statementToCode(block, 'ARGS');
+    let object = Blockly.JavaScript.valueToCode(block, 'OBJECT', Blockly.JavaScript.ORDER_ATOMIC) || 'this';
+    let method = block.getFieldValue('METHOD_NAME');
+    let args = Blockly.JavaScript.statementToCode(block, 'ARGS');
     args = args.trim().replace(/,\s*$/, ''); // Remove última vírgula
     return [`${object}.${method}(${args})`, Blockly.JavaScript.ORDER_ATOMIC];
 };
 
 Blockly.JavaScript['method_arg'] = function(block) {
-    var value = Blockly.JavaScript.valueToCode(block, 'ARG_VALUE', Blockly.JavaScript.ORDER_ATOMIC) || 'null';
+    let value = Blockly.JavaScript.valueToCode(block, 'ARG_VALUE', Blockly.JavaScript.ORDER_ATOMIC) || 'null';
     return value + ', ';
 };
 
 Blockly.JavaScript['object_instance_of'] = function(block) {
-    var object = Blockly.JavaScript.valueToCode(block, 'OBJECT', Blockly.JavaScript.ORDER_ATOMIC) || 'this';
-    var type = block.getFieldValue('TYPE');
+    let object = Blockly.JavaScript.valueToCode(block, 'OBJECT', Blockly.JavaScript.ORDER_ATOMIC) || 'this';
+    let type = block.getFieldValue('TYPE');
     return [`${object} instanceof ${type}`, Blockly.JavaScript.ORDER_ATOMIC];
 };
 
 Blockly.JavaScript['object_cast'] = function(block) {
-    var object = Blockly.JavaScript.valueToCode(block, 'OBJECT', Blockly.JavaScript.ORDER_ATOMIC) || 'null';
-    var type = block.getFieldValue('TYPE');
+    let object = Blockly.JavaScript.valueToCode(block, 'OBJECT', Blockly.JavaScript.ORDER_ATOMIC) || 'null';
+    let type = block.getFieldValue('TYPE');
     return [`(${type}) ${object}`, Blockly.JavaScript.ORDER_ATOMIC];
 };

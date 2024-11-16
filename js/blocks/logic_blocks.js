@@ -32,7 +32,7 @@ Blockly.Blocks['logic_operation'] = {
     },
 
     mutationToDom: function() {
-        var container = document.createElement('mutation');
+        let container = document.createElement('mutation');
         container.setAttribute('items', this.itemCount_);
         return container;
     },
@@ -43,12 +43,12 @@ Blockly.Blocks['logic_operation'] = {
     },
 
     decompose: function(workspace) {
-        var containerBlock = workspace.newBlock('logic_operation_container');
+        let containerBlock = workspace.newBlock('logic_operation_container');
         containerBlock.initSvg();
         
-        var connection = containerBlock.getInput('STACK').connection;
-        for (var i = 0; i < this.itemCount_; i++) {
-            var itemBlock = workspace.newBlock('logic_operation_item');
+        let connection = containerBlock.getInput('STACK').connection;
+        for (let i = 0; i < this.itemCount_; i++) {
+            let itemBlock = workspace.newBlock('logic_operation_item');
             itemBlock.initSvg();
             connection.connect(itemBlock.previousConnection);
             connection = itemBlock.nextConnection;
@@ -58,8 +58,8 @@ Blockly.Blocks['logic_operation'] = {
     },
 
     compose: function(containerBlock) {
-        var itemBlock = containerBlock.getInputTargetBlock('STACK');
-        var connections = [];
+        let itemBlock = containerBlock.getInputTargetBlock('STACK');
+        let connections = [];
         while (itemBlock) {
             connections.push(itemBlock.valueConnection_);
             itemBlock = itemBlock.nextConnection &&
@@ -69,7 +69,7 @@ Blockly.Blocks['logic_operation'] = {
         this.itemCount_ = connections.length;
         this.updateShape_();
         
-        for (var i = 0; i < this.itemCount_; i++) {
+        for (let i = 0; i < this.itemCount_; i++) {
             if (connections[i]) {
                 this.getInput('ADD' + i).connection.connect(connections[i]);
             }
@@ -77,7 +77,7 @@ Blockly.Blocks['logic_operation'] = {
     },
 
     updateShape_: function() {
-        var i = 0;
+        let i = 0;
         while (this.getInput('ADD' + i)) {
             this.removeInput('ADD' + i);
             i++;
@@ -91,8 +91,8 @@ Blockly.Blocks['logic_operation'] = {
                 ]), 'OP');
         }
 
-        for (var i = 0; i < this.itemCount_; i++) {
-            var input = this.appendValueInput('ADD' + i)
+        for (let i = 0; i < this.itemCount_; i++) {
+            let input = this.appendValueInput('ADD' + i)
                 .setCheck('Boolean');
             if (i === 0) {
                 input.appendField('');
@@ -169,11 +169,11 @@ Blockly.Blocks['logic_operation_item'] = {
 
 // Geradores de código
 Blockly.JavaScript['logic_compare'] = function(block) {
-    var a = Blockly.JavaScript.valueToCode(block, 'A', Blockly.JavaScript.ORDER_ATOMIC) || '0';
-    var b = Blockly.JavaScript.valueToCode(block, 'B', Blockly.JavaScript.ORDER_ATOMIC) || '0';
-    var op = block.getFieldValue('OP');
+    let a = Blockly.JavaScript.valueToCode(block, 'A', Blockly.JavaScript.ORDER_ATOMIC) || '0';
+    let b = Blockly.JavaScript.valueToCode(block, 'B', Blockly.JavaScript.ORDER_ATOMIC) || '0';
+    let op = block.getFieldValue('OP');
     
-    var code = '';
+    let code = '';
     switch(op) {
         case 'EQ': code = `${a}.equals(${b})`; break;
         case 'NEQ': code = `!${a}.equals(${b})`; break;
@@ -186,26 +186,26 @@ Blockly.JavaScript['logic_compare'] = function(block) {
 };
 
 Blockly.JavaScript['logic_operation'] = function(block) {
-    var operator = block.getFieldValue('OP');
-    var code = [];
+    let operator = block.getFieldValue('OP');
+    let code = [];
     
-    for (var i = 0; i < block.itemCount_; i++) {
-        var value = Blockly.JavaScript.valueToCode(block, 'ADD' + i,
+    for (let i = 0; i < block.itemCount_; i++) {
+        let value = Blockly.JavaScript.valueToCode(block, 'ADD' + i,
             Blockly.JavaScript.ORDER_ATOMIC) || 'false';
         code.push(value);
     }
     
-    var operation = (operator === 'AND') ? ' && ' : ' || ';
+    let operation = (operator === 'AND') ? ' && ' : ' || ';
     return ['(' + code.join(operation) + ')', Blockly.JavaScript.ORDER_ATOMIC];
 };
 
 Blockly.JavaScript['logic_negate'] = function(block) {
-    var bool = Blockly.JavaScript.valueToCode(block, 'BOOL', Blockly.JavaScript.ORDER_ATOMIC) || 'false';
+    let bool = Blockly.JavaScript.valueToCode(block, 'BOOL', Blockly.JavaScript.ORDER_ATOMIC) || 'false';
     return [`!${bool}`, Blockly.JavaScript.ORDER_ATOMIC];
 };
 
 Blockly.JavaScript['logic_boolean'] = function(block) {
-    var code = (block.getFieldValue('BOOL') === 'TRUE') ? 'true' : 'false';
+    let code = (block.getFieldValue('BOOL') === 'TRUE') ? 'true' : 'false';
     return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
 
