@@ -1,5 +1,11 @@
+//js/main.js
+/*
+ * Author: Francisco Iago Lira Passos (iagolirapassos@gmail.com)
+ * New blocks in https://google.github.io/blockly-samples/examples/developer-tools/index.html
+ * MIT LICENSE
+ */
 // Variáveis globais
-let workspace;
+let workspace = Blockly.getMainWorkspace();
 let currentLanguage = 'pt-br';
 
 // Sistema de notificações
@@ -230,6 +236,42 @@ document.addEventListener('DOMContentLoaded', function() {
         a.href = URL.createObjectURL(blob);
         a.click();
     };
+
+    document.getElementById('blocklyDiv').addEventListener('dragover', handleDragOver);
+    document.getElementById('blocklyDiv').addEventListener('drop', handleFileDrop);
+
+    function handleDragOver(e) {
+      e.preventDefault();
+    }
+
+    function handleFileDrop(e) {
+      e.preventDefault();
+      var file = e.dataTransfer.files[0];
+      var reader = new FileReader();
+
+      reader.onload = function(event) {
+        var saveData = JSON.parse(event.target.result);
+        var xmlDom = Blockly.utils.xml.textToDom(saveData.blocks);
+        workspace.clear();
+        Blockly.Xml.domToWorkspace(xmlDom, workspace);
+      };
+
+      reader.readAsText(file);
+    }
+
+    Blockly.getMainWorkspace().addChangeListener(event => {
+        if (event.type === Blockly.Events.VAR_RENAME || 
+            event.type === Blockly.Events.VAR_CREATE || 
+            event.type === Blockly.Events.VAR_DELETE) {
+            
+            Blockly.getMainWorkspace().getAllBlocks().forEach(block => {
+                if (typeof block.updateVariableDropdown === 'function') {
+                    block.updateVariableDropdown();
+                }
+            });
+        }
+    });
+
 
 
     // Define o idioma inicial

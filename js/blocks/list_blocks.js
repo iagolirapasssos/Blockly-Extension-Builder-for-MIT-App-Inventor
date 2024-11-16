@@ -1,8 +1,11 @@
-// Criar Lista
+//blocks/list_blocks.js
+'use strict';
+
+// Create List
 Blockly.Blocks['lists_create'] = {
     init: function() {
         this.appendDummyInput()
-            .appendField('nova ArrayList<')
+            .appendField('new ArrayList<')
             .appendField(new Blockly.FieldDropdown([
                 ['String', 'String'],
                 ['Integer', 'Integer'],
@@ -12,229 +15,131 @@ Blockly.Blocks['lists_create'] = {
             .appendField('>');
         this.setOutput(true, 'ArrayList');
         this.setColour("#00ACC1");
-        this.setTooltip('Cria uma nova ArrayList');
+        this.setTooltip('Creates a new ArrayList.');
     }
 };
 
-// Operações com Lista
+// List Operations
+// List Operations with target list selection
 Blockly.Blocks['lists_operation'] = {
     init: function() {
         this.appendValueInput('LIST')
             .setCheck('ArrayList')
+            .appendField('Operate on list:');
+        this.appendDummyInput()
+            .appendField('Operation')
             .appendField(new Blockly.FieldDropdown([
-                ['adicionar', 'ADD'],
-                ['remover', 'REMOVE'],
-                ['obter', 'GET'],
-                ['tamanho', 'SIZE'],
-                ['limpar', 'CLEAR']
-            ]), 'OP');
+                ['add', 'ADD'],
+                ['remove', 'REMOVE'],
+                ['get', 'GET'],
+                ['size', 'SIZE'],
+                ['clear', 'CLEAR']
+            ]), 'OPERATION');
         this.appendValueInput('ITEM')
-            .setCheck(null);
+            .setCheck(null)
+            .appendField('Item'); // Only relevant for operations like add/remove/get
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour("#00ACC1");
-        this.setTooltip('Operações com ArrayList');
+        this.setTooltip('Perform operations on the specified ArrayList.');
     }
 };
 
-// Geradores de código para listas
-Blockly.JavaScript['lists_create'] = function(block) {
-    var type = block.getFieldValue('TYPE');
-    return [`new ArrayList<${type}>()`, Blockly.JavaScript.ORDER_ATOMIC];
-};
-
-Blockly.JavaScript['lists_operation'] = function(block) {
-    var list = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.ORDER_ATOMIC) || 'list';
-    var item = Blockly.JavaScript.valueToCode(block, 'ITEM', Blockly.JavaScript.ORDER_ATOMIC) || '""';
-    var op = block.getFieldValue('OP');
-    
-    switch(op) {
-        case 'ADD': return `${list}.add(${item});\n`;
-        case 'REMOVE': return `${list}.remove(${item});\n`;
-        case 'GET': return `${list}.get(${item});\n`;
-        case 'SIZE': return `${list}.size();\n`;
-        case 'CLEAR': return `${list}.clear();\n`;
-    }
-    return '';
-};
-
-// Blocos para Listas
+// Get Item from List
 Blockly.Blocks['lists_get_index'] = {
     init: function() {
         this.appendValueInput('LIST')
             .setCheck('ArrayList')
-            .appendField('obter item da lista');
+            .appendField('get item from list');
         this.appendValueInput('INDEX')
             .setCheck('Number')
-            .appendField('índice');
+            .appendField('at index');
         this.setOutput(true, null);
         this.setColour("#00ACC1");
-        this.setTooltip('Obtém um item da lista pelo índice');
+        this.setTooltip('Gets an item from the list at the specified index.');
     }
 };
 
+// Set Item in List
 Blockly.Blocks['lists_set_index'] = {
     init: function() {
         this.appendValueInput('LIST')
             .setCheck('ArrayList')
-            .appendField('definir item da lista');
+            .appendField('set item in list');
         this.appendValueInput('INDEX')
             .setCheck('Number')
-            .appendField('índice');
+            .appendField('at index');
         this.appendValueInput('ITEM')
-            .appendField('valor');
+            .appendField('to value');
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour("#00ACC1");
-        this.setTooltip('Define um item na lista pelo índice');
+        this.setTooltip('Sets an item in the list at the specified index.');
     }
 };
 
+// For Each Item in List
 Blockly.Blocks['lists_forEach'] = {
     init: function() {
         this.appendValueInput('LIST')
             .setCheck('ArrayList')
-            .appendField('para cada item');
+            .appendField('for each item in');
         this.appendDummyInput()
-            .appendField('como')
+            .appendField('as')
             .appendField(new Blockly.FieldTextInput('item'), 'VAR');
         this.appendStatementInput('DO')
-            .appendField('fazer');
+            .appendField('do');
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour("#00ACC1");
-        this.setTooltip('Executa ações para cada item da lista');
+        this.setTooltip('Performs actions for each item in the list.');
     }
 };
 
-// Blocos para Matemática
-Blockly.Blocks['math_number'] = {
-    init: function() {
-        this.appendDummyInput()
-            .appendField(new Blockly.FieldNumber(0), 'NUM');
-        this.setOutput(true, 'Number');
-        this.setColour(230);
-        this.setTooltip('Um número');
+// JavaScript Generators
+Blockly.JavaScript['lists_create'] = function(block) {
+    const type = block.getFieldValue('TYPE');
+    return [`new ArrayList<${type}>()`, Blockly.JavaScript.ORDER_ATOMIC];
+};
+
+// Updated JavaScript generator
+Blockly.JavaScript['lists_operation'] = function(block) {
+    const list = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.ORDER_ATOMIC) || 'list';
+    const item = Blockly.JavaScript.valueToCode(block, 'ITEM', Blockly.JavaScript.ORDER_ATOMIC) || 'null';
+    const operation = block.getFieldValue('OPERATION');
+    
+    switch (operation) {
+        case 'ADD':
+            return `${list}.add(${item});\n`;
+        case 'REMOVE':
+            return `${list}.remove(${item});\n`;
+        case 'GET':
+            return `const result = ${list}.get(${item});\n`;
+        case 'SIZE':
+            return `const size = ${list}.size();\n`;
+        case 'CLEAR':
+            return `${list}.clear();\n`;
+        default:
+            return '';
     }
 };
 
-Blockly.Blocks['math_constant'] = {
-    init: function() {
-        this.appendDummyInput()
-            .appendField(new Blockly.FieldDropdown([
-                ['π', 'Math.PI'],
-                ['e', 'Math.E'],
-                ['φ', '1.618034'],
-                ['√2', 'Math.SQRT2'],
-                ['√½', 'Math.SQRT1_2']
-            ]), 'CONSTANT');
-        this.setOutput(true, 'Number');
-        this.setColour(230);
-        this.setTooltip('Constantes matemáticas');
-    }
-};
-
-// Blocos para Texto
-Blockly.Blocks['text_charAt'] = {
-    init: function() {
-        this.appendValueInput('STRING')
-            .setCheck('String')
-            .appendField('caractere da string');
-        this.appendValueInput('INDEX')
-            .setCheck('Number')
-            .appendField('na posição');
-        this.setOutput(true, 'String');
-        this.setColour(160);
-        this.setTooltip('Retorna o caractere na posição especificada');
-    }
-};
-
-Blockly.Blocks['text_indexOf'] = {
-    init: function() {
-        this.appendValueInput('STRING')
-            .setCheck('String')
-            .appendField('posição em');
-        this.appendValueInput('FIND')
-            .setCheck('String')
-            .appendField('encontrar');
-        this.setOutput(true, 'Number');
-        this.setColour(160);
-        this.setTooltip('Retorna a posição de uma string dentro de outra');
-    }
-};
-
-// Blocos para Lógica
-Blockly.Blocks['logic_boolean'] = {
-    init: function() {
-        this.appendDummyInput()
-            .appendField(new Blockly.FieldDropdown([
-                ['verdadeiro', 'true'],
-                ['falso', 'false']
-            ]), 'BOOL');
-        this.setOutput(true, 'Boolean');
-        this.setColour(290);
-        this.setTooltip('Valor booleano verdadeiro ou falso');
-    }
-};
-
-Blockly.Blocks['logic_null'] = {
-    init: function() {
-        this.appendDummyInput()
-            .appendField('null');
-        this.setOutput(true, null);
-        this.setColour(290);
-        this.setTooltip('Valor nulo');
-    }
-};
-
-// Geradores de código para os blocos
 Blockly.JavaScript['lists_get_index'] = function(block) {
-    var list = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.ORDER_ATOMIC) || 'list';
-    var index = Blockly.JavaScript.valueToCode(block, 'INDEX', Blockly.JavaScript.ORDER_ATOMIC) || '0';
+    const list = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.ORDER_ATOMIC) || 'list';
+    const index = Blockly.JavaScript.valueToCode(block, 'INDEX', Blockly.JavaScript.ORDER_ATOMIC) || '0';
     return [`${list}.get(${index})`, Blockly.JavaScript.ORDER_ATOMIC];
 };
 
 Blockly.JavaScript['lists_set_index'] = function(block) {
-    var list = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.ORDER_ATOMIC) || 'list';
-    var index = Blockly.JavaScript.valueToCode(block, 'INDEX', Blockly.JavaScript.ORDER_ATOMIC) || '0';
-    var item = Blockly.JavaScript.valueToCode(block, 'ITEM', Blockly.JavaScript.ORDER_ATOMIC) || 'null';
+    const list = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.ORDER_ATOMIC) || 'list';
+    const index = Blockly.JavaScript.valueToCode(block, 'INDEX', Blockly.JavaScript.ORDER_ATOMIC) || '0';
+    const item = Blockly.JavaScript.valueToCode(block, 'ITEM', Blockly.JavaScript.ORDER_ATOMIC) || 'null';
     return `${list}.set(${index}, ${item});\n`;
 };
 
 Blockly.JavaScript['lists_forEach'] = function(block) {
-    var list = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.ORDER_ATOMIC) || 'list';
-    var varName = block.getFieldValue('VAR');
-    var branch = Blockly.JavaScript.statementToCode(block, 'DO') || '';
-    return `for (${varName} : ${list}) {\n${branch}}\n`;
-};
-
-Blockly.JavaScript['math_number'] = function(block) {
-    var number = block.getFieldValue('NUM');
-    return [number, Blockly.JavaScript.ORDER_ATOMIC];
-};
-
-Blockly.JavaScript['math_constant'] = function(block) {
-    var constant = block.getFieldValue('CONSTANT');
-    return [constant, Blockly.JavaScript.ORDER_ATOMIC];
-};
-
-Blockly.JavaScript['text_charAt'] = function(block) {
-    var string = Blockly.JavaScript.valueToCode(block, 'STRING', Blockly.JavaScript.ORDER_ATOMIC) || '""';
-    var index = Blockly.JavaScript.valueToCode(block, 'INDEX', Blockly.JavaScript.ORDER_ATOMIC) || '0';
-    return [`${string}.charAt(${index})`, Blockly.JavaScript.ORDER_ATOMIC];
-};
-
-Blockly.JavaScript['text_indexOf'] = function(block) {
-    var string = Blockly.JavaScript.valueToCode(block, 'STRING', Blockly.JavaScript.ORDER_ATOMIC) || '""';
-    var find = Blockly.JavaScript.valueToCode(block, 'FIND', Blockly.JavaScript.ORDER_ATOMIC) || '""';
-    return [`${string}.indexOf(${find})`, Blockly.JavaScript.ORDER_ATOMIC];
-};
-
-Blockly.JavaScript['logic_boolean'] = function(block) {
-    var bool = block.getFieldValue('BOOL');
-    return [bool, Blockly.JavaScript.ORDER_ATOMIC];
-};
-
-Blockly.JavaScript['logic_null'] = function(block) {
-    return ['null', Blockly.JavaScript.ORDER_ATOMIC];
+    const list = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.ORDER_ATOMIC) || 'list';
+    const varName = block.getFieldValue('VAR');
+    const branch = Blockly.JavaScript.statementToCode(block, 'DO') || '';
+    return `for (let ${varName} of ${list}) {\n${branch}}\n`;
 };

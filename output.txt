@@ -277,12 +277,155 @@ index.html:
 		<pre><code id="outputCode" class="language-java"></code></pre>
 	</div>
 
-	<xml id="toolbox" style="display: none"> <category id="cat_config" name="Configuration" colour="#5C6BC0"> <block type="extension_class"></block> <block type= "constructor_declaration"></block> <block type="constructor_parameter"></block> <block type="constructor_super_call"></block> <block type="package_declaration"></block> </category> <category id="cat_imports" name="Imports" colour="#00897B"> <block type="import_basic"></block> <block type="import_manual"></block> <block type="import_package">< /block> <block type="import_class"></block> <block type="import_static"></block> <block type="import_manual"> <field name="IMPORT_PATH">java.util.HashMap</field> </block> </category> <category id="cat_props" name="Properties" colour="#FB8C00"> <block type="property_declaration"> </block> <block type="designer_property"></block> </category> <category id="cat_methods" name="Methods" colour="#7CB342"> <block type="method_declaration"></block > <block type="method_return"></block> <block type="event_declaration"></block> </category> <sep></sep> <category id="cat_control" name="Control" color= "#E53935"> <block type="controls_if_java"></block> <block type="controls_for_java"></block> <block type="controls_while_java"></block> <block type="controls_try_catch"></block> <block type="controls_return"></block> </category> <category id="cat_math" name="Math" colour="#8E24AA"> <block type="math_operation"></block> <block type="math_function"></block> <block type="math_random" ></block> <block type="math_number"></block> <block type="math_constant"></block> </category> <category id="cat_text" name="Text" colour="#3949AB "> <block type="text_string"></block> <block type="text_join"></block> <block type="text_operation"></block> <block type="text_charAt"></block> <block type="text_indexOf"></block> </category> <category id="cat_lists" name="Lists" colour="#00ACC1"> <block type=" lists_create"></block> <block type="lists_operation"></block> <block type="lists_get_index"></block> <block type="lists_set_index"></block> <block type="lists_forEach" ></block> </category> <category id="cat_logic" name="Lógica" color="#FDD835"> <block type="logic_compare"></block> <block type="logic_operation"></ block> <block type="logic_negate"></block> <block type="logic_boolean"></block> <block type="logic_null"></block> </category> <category id="cat_dictionaries" name="Dictionaries" colour="#43A047"> <block type="dict_create"></block> <block type="dict_get"></block> <block type="dict_set">< /block> <block type="dict_remove"></block> <block type="dict_containsKey"></block> </category> <category id="cat_imported" name="Imported Classes" colour="#6D4C41" > <block type="imported_static_method"></block> <block type="imported_static_field"></block> <block type="imported_type_declaration"></block> <block type="imported_interface"></block> < /category> <category id="cat_object" name="Objects" colour="#F4511E"> <block type="object_create"></block> <block type="object_get_field"></block> <block type="object_set_field"></block> <block type="object_call_method"></block> <block type="object_instance_of"></block> <block type= "object_cast"></block> <sep gap="8"></sep> <block type="constructor_arg"></block> <block type="method_arg"></block> </category> <category id="cat_colors" name="Colors" colour="#D81B60"> <block type="color_picker"></block> <block type="color_rgb"></block> <block type="color_blend">< /block> <block type="color_random"></block> </category> <category id="cat_variables" name="Variables" colour="#546E7A" custom="VARIABLE"></category> <category id="cat_functions" name="Functions" colour="#827717"> <block type="procedures_defnoreturn"></block> <block type="procedures_defreturn">< /block> <block type="procedures_ifreturn"></block> <block type="procedures_callnoreturn"></block> <block type="procedures_callreturn"></block> <block type="function_return"></block > </category> </xml>
+	<xml id="toolbox" style="display: none">
+	    <category id="cat_config" name="Configuration" colour="#5C6BC0">
+	        <block type="extension_class"></block>
+	        <block type="custom_annotation"></block>
+	        <block type="constructor_declaration"></block>
+	        <block type="constructor_parameter"></block>
+	        <block type="constructor_super_call"></block>
+	        <block type="package_declaration"></block>
+	    </category>
+
+	    <category id="cat_imports" name="Imports" colour="#00897B">
+	        <block type="import_basic"></block>
+	        <block type="import_manual"></block>
+	        <block type="import_package"></block>
+	        <block type="import_class"></block>
+	        <block type="import_static"></block>
+	        <block type="import_manual">
+	            <field name="IMPORT_PATH">java.util.HashMap</field>
+	        </block>		    
+	    </category>
+
+	    <category id="cat_imported" name="Imported Classes" colour="#6D4C41">
+	        <block type="imported_static_method"></block>
+	        <block type="imported_static_field"></block>
+	        <block type="imported_type_declaration"></block>
+	        <block type="imported_interface"></block>
+	    </category>
+	    
+	    <category id="cat_props" name="Properties" colour="#FB8C00">
+	        <block type="property_declaration"></block>
+	        <block type="designer_property"></block>
+	        <block type="set_property"></block>
+	        <block type="get_property"></block>
+	    </category>
+
+	    <category id="cat_method_inserts" name="Method Inserts" colour="#4CAF50">
+		    <block type="post_runnable"></block>
+		    <block type="run_on_ui_thread"></block>
+		    <block type="set_on_click_listener"></block>
+		    <block type="add_text_view"></block>
+		    <block type="add_image_view"></block>
+		    <block type="scroll_to_bottom"></block>
+		    <block type="show_toast"></block>
+		</category>
+
+	    
+	    <category id="cat_methods" name="Methods" colour="#7CB342">
+	        <block type="method_declaration"></block>
+	        <block type="event_declaration"></block>
+	        <block type="custom_dispatcher"></block>
+	        <block type="method_return"></block>
+	        <block type="method_call"></block>
+	    </category>
+
+	    <sep></sep>
+
+	    <category id="cat_control" name="Control" colour="#E53935">
+	        <block type="controls_if_java"></block>
+	        <block type="controls_for_java"></block>
+	        <block type="controls_while_java"></block>
+	        <block type="controls_try_catch"></block>
+	        <block type="controls_return"></block>
+	    </category>
+
+	    <category id="cat_logic" name="Logic" colour="#FDD835">
+	        <block type="logic_compare"></block>
+	        <block type="logic_operation"></block>
+	        <block type="logic_negate"></block>
+	        <block type="logic_boolean"></block>
+	        <block type="logic_null"></block>
+	    </category>
+
+	    <category id="cat_math" name="Math" colour="#8E24AA">
+	        <block type="math_operation"></block>
+	        <block type="math_function"></block>
+	        <block type="math_random"></block>
+	        <block type="math_number"></block>
+	        <block type="math_constant"></block>
+	    </category>
+
+	    <category id="cat_text" name="Text" colour="#3949AB">
+	        <block type="text_string"></block>
+	        <block type="text_join"></block>
+	        <block type="text_operation"></block>
+	        <block type="text_charAt"></block>
+	        <block type="text_indexOf"></block>
+	        <block type="log_message"></block>
+        	<block type="log_message_tagged"></block>
+        	<block type="single_line_comment"></block>
+        	<block type="multi_line_comment"></block>
+	    </category>
+
+	    <category id="cat_lists" name="Lists" colour="#00ACC1">
+	        <block type="lists_create"></block>
+	        <block type="lists_operation"></block>
+	        <block type="lists_get_index"></block>
+	        <block type="lists_set_index"></block>
+	        <block type="lists_forEach"></block>
+	    </category>
+
+	    <category id="cat_dictionaries" name="Dictionaries" colour="#43A047">
+	        <block type="dict_create"></block>
+	        <block type="dict_get"></block>
+	        <block type="dict_set"></block>
+	        <block type="dict_remove"></block>
+	        <block type="dict_containsKey"></block>
+	    </category>
+
+	    <category id="cat_object" name="Objects" colour="#F4511E">
+	        <block type="object_create"></block>
+	        <block type="object_get_field"></block>
+	        <block type="object_set_field"></block>
+	        <block type="object_call_method"></block>
+	        <block type="object_instance_of"></block>
+	        <block type="object_cast"></block>
+	        <sep gap="8"></sep>
+	        <block type="constructor_arg"></block>
+	        <block type="method_arg"></block>
+	    </category>
+
+	    <category id="cat_colors" name="Colors" colour="#D81B60">
+	        <block type="color_picker"></block>
+	        <block type="color_rgb"></block>
+	        <block type="color_blend"></block>
+	        <block type="color_random"></block>
+	    </category>
+
+	    <category id="cat_variables_custom" name="Variables" colour="#546E7A">
+		    <block type="create_variable"></block>
+		    <block type="set_variable"></block>
+		    <block type="get_variable"></block>
+		</category>
+
+
+	    <category id="cat_functions" name="Functions" colour="#827717">
+	        <block type="procedures_defnoreturn"></block>
+	        <block type="procedures_defreturn"></block>
+	        <block type="procedures_ifreturn"></block>
+	        <block type="procedures_callnoreturn"></block>
+	        <block type="procedures_callreturn"></block>
+	        <block type="function_return"></block>
+	    </category>
+	</xml>
+
 
 	<!-- Scripts próprios -->
 	<script src="js/translations.js"></script>
 	<script src="js/blocks/functions.js"></script>
-	<script src="js/blocks/constructor_blocks.js"></script>
+	<script src="js/blocks/methods.js"></script>
 	<script src="js/blocks/control_blocks.js"></script>
 	<script src="js/blocks/math_blocks.js"></script>
 	<script src="js/blocks/text_blocks.js"></script>
@@ -295,43 +438,23 @@ index.html:
 	<script src="js/blocks/object_blocks.js"></script>
 	<script src="js/blocks/imported_class_blocks.js"></script>
 	<script src="js/blocks/blocks.js"></script>
+	<script src="js/blocks/configurations.js"></script>
+	<script src="js/blocks/method_inserts.js"></script>
+	<script src="js/blocks/variables.js"></script>
 	<script src="js/main.js"></script>
 </body>
 </html>
 
 
 js/blocks/blocks.js:
-// Define blocos customizados
-Blockly.Blocks['extension_class'] = {
-    init: function() {
-        this.appendDummyInput()
-            .appendField("Criar extensão")
-            .appendField(new Blockly.FieldTextInput("MinhaExtensao"), "CLASS_NAME");
-        this.appendStatementInput("MEMBERS")
-            .setCheck(null);
-        this.setColour(210);
-        this.setTooltip("Define a classe principal da extensão");
-        this.setHelpUrl("");
-    }
-};
+// Define custom blocks
 
-Blockly.Blocks['package_declaration'] = {
-    init: function() {
-        this.appendDummyInput()
-            .appendField("Package")
-            .appendField(new Blockly.FieldTextInput("com.example.extension"), "PACKAGE");
-        this.setPreviousStatement(true, null);
-        this.setNextStatement(true, null);
-        this.setColour(210);
-        this.setTooltip("Declares the extension package");
-        this.setHelpUrl("");
-    }
-};
+
 
 Blockly.Blocks['import_basic'] = {
     init: function() {
         this.appendDummyInput()
-            .appendField("Importar")
+            .appendField("Import")
             .appendField(new Blockly.FieldDropdown([
                 ["com.google.appinventor.components.annotations.*", "ANNOTATIONS"],
                 ["com.google.appinventor.components.common.*", "COMMON"],
@@ -341,98 +464,12 @@ Blockly.Blocks['import_basic'] = {
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(210);
-        this.setTooltip("Importa bibliotecas necessárias");
+        this.setTooltip("Imports necessary libraries");
         this.setHelpUrl("");
     }
 };
 
-// Importação Manual
-Blockly.Blocks['import_manual'] = {
-    init: function() {
-        this.appendDummyInput()
-            .appendField('import')
-            .appendField(new Blockly.FieldTextInput('java.util.ArrayList'), 'IMPORT_PATH');
-        this.appendDummyInput()
-            .appendField(new Blockly.FieldCheckbox('FALSE'), 'IS_STATIC')
-            .appendField('static')
-            .appendField(new Blockly.FieldCheckbox('FALSE'), 'IS_WILDCARD')
-            .appendField('.*');
-        this.setPreviousStatement(true, null);
-        this.setNextStatement(true, null);
-        this.setColour(210);
-        this.setTooltip('Importação manual de classe ou pacote');
-    }
-};
-
-// Importar Pacote Específico
-Blockly.Blocks['import_package'] = {
-    init: function() {
-        this.appendDummyInput()
-            .appendField('import package')
-            .appendField(new Blockly.FieldTextInput('com.example'), 'PACKAGE')
-            .appendField('.')
-            .appendField(new Blockly.FieldTextInput('util'), 'SUB_PACKAGE')
-            .appendField('.*');
-        this.setPreviousStatement(true, null);
-        this.setNextStatement(true, null);
-        this.setColour(210);
-        this.setTooltip('Importar todas as classes de um pacote');
-    }
-};
-
-// Importar Classe Específica
-Blockly.Blocks['import_class'] = {
-    init: function() {
-        this.appendDummyInput()
-            .appendField('import class')
-            .appendField(new Blockly.FieldTextInput('java.util.List'), 'CLASS_PATH');
-        this.appendDummyInput()
-            .appendField('as')
-            .appendField(new Blockly.FieldTextInput(''), 'ALIAS')
-            .appendField('(opcional)');
-        this.setPreviousStatement(true, null);
-        this.setNextStatement(true, null);
-        this.setColour(210);
-        this.setTooltip('Importar uma classe específica com alias opcional');
-    }
-};
-
-// Importar Método Estático
-Blockly.Blocks['import_static'] = {
-    init: function() {
-        this.appendDummyInput()
-            .appendField('import static')
-            .appendField(new Blockly.FieldTextInput('java.lang.Math'), 'CLASS')
-            .appendField('.')
-            .appendField(new Blockly.FieldTextInput('*'), 'METHOD');
-        this.setPreviousStatement(true, null);
-        this.setNextStatement(true, null);
-        this.setColour(210);
-        this.setTooltip('Importar método estático de uma classe');
-    }
-};
-
-
-Blockly.Blocks['property_declaration'] = {
-    init: function() {
-        this.appendDummyInput()
-            .appendField(new Blockly.FieldTextInput("myProperty"), "PROPERTY_NAME")
-            .appendField("type")
-            .appendField(new Blockly.FieldDropdown([
-                ["String", "String"],
-                ["int", "int"],
-                ["boolean", "boolean"],
-                ["double", "double"]
-            ]), "TYPE");
-        this.appendStatementInput("PROPERTY_CONTENT")
-            .setCheck(null);
-        this.setPreviousStatement(true, null);
-        this.setNextStatement(true, null);
-        this.setColour(160);
-        this.setTooltip("Declares a property");
-        this.setHelpUrl("");
-    }
-};
+// Import Static Method
 
 Blockly.Blocks['designer_property'] = {
     init: function() {
@@ -445,8 +482,21 @@ Blockly.Blocks['designer_property'] = {
                 ["integer", "PropertyTypeConstants.PROPERTY_TYPE_INTEGER"],
                 ["color", "PropertyTypeConstants.PROPERTY_TYPE_COLOR"]
             ]), "TYPE");
-        this.appendStatementInput("DESIGNER_PROPERTY_CONTENT")
-            .setCheck(null);
+        this.appendDummyInput()
+            .appendField("Description")
+            .appendField(new Blockly.FieldTextInput("A designer property"), "DESCRIPTION");
+        this.appendDummyInput()
+            .appendField("Category")
+            .appendField(new Blockly.FieldDropdown([
+                ["BEHAVIOR", "PropertyCategory.BEHAVIOR"],
+                ["APPEARANCE", "PropertyCategory.APPEARANCE"]
+            ]), "CATEGORY");
+        this.appendStatementInput("DESIGNER_PROPERTY_SETTER")
+            .setCheck(null)
+            .appendField("Setter");
+        this.appendStatementInput("DESIGNER_PROPERTY_GETTER")
+            .setCheck(null)
+            .appendField("Getter");
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(160);
@@ -455,75 +505,111 @@ Blockly.Blocks['designer_property'] = {
     }
 };
 
-// Bloco de retorno de função para métodos
-Blockly.Blocks['method_return'] = {
-    init: function() {
-        this.appendValueInput('RETURN_VALUE')
-            .setCheck(null)
-            .appendField('return');
-        this.setPreviousStatement(true, null);
-        this.setNextStatement(false, null); // Não permite bloco seguinte
-        this.setColour(290); // Mesma cor dos métodos
-        this.setTooltip('Retorna um valor do método');
-    }
-};
-
-// Bloco de método atualizado com campo de conteúdo
-Blockly.Blocks['method_declaration'] = {
+Blockly.Blocks['property_declaration'] = {
     init: function() {
         this.appendDummyInput()
-            .appendField(new Blockly.FieldTextInput("myMethod"), "METHOD_NAME")
-            .appendField("return")
+            .appendField(new Blockly.FieldTextInput("myProperty"), "PROPERTY_NAME")
+            .appendField("type")
             .appendField(new Blockly.FieldDropdown([
-                ["void", "void"],
                 ["String", "String"],
                 ["int", "int"],
-                ["boolean", "boolean"]
-            ]), "RETURN_TYPE");
-        this.appendStatementInput("METHOD_CONTENT")
+                ["boolean", "boolean"],
+                ["double", "double"]
+            ]), "TYPE");
+        this.appendStatementInput("PROPERTY_SETTER")
             .setCheck(null)
-            .appendField("content");
+            .appendField("Setter");
+        this.appendStatementInput("PROPERTY_GETTER")
+            .setCheck(null)
+            .appendField("Getter");
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
-        this.setColour(290);
-        this.setTooltip("Declares a method with return value");
-    }
-};
-
-Blockly.Blocks['event_declaration'] = {
-    init: function() {
-        this.appendDummyInput()
-            .appendField(new Blockly.FieldTextInput("MyEvent"), "EVENT_NAME");
-        this.appendStatementInput("EVENT_CONTENT")
-            .setCheck(null);
-        this.setPreviousStatement(true, null);
-        this.setNextStatement(true, null);
-        this.setColour(290);
-        this.setTooltip("Declares an event");
+        this.setColour(160);
+        this.setTooltip("Declares a property");
         this.setHelpUrl("");
     }
 };
 
-//Generators
-// Gerador de código Java
-Blockly.JavaScript['extension_class'] = function(block) {
-    var className = block.getFieldValue('CLASS_NAME');
-    var members = Blockly.JavaScript.statementToCode(block, 'MEMBERS');
-    
-    var code = `@DesignerComponent(version = 1,
-    description = "Uma extensão personalizada",
-    category = ComponentCategory.EXTENSION,
-    nonVisible = true,
-    iconName = "images/extension.png")
-@SimpleObject(external = true)
-public class ${className} extends AndroidNonvisibleComponent {
-${members}}`;
-    return code;
+Blockly.Blocks['set_property'] = {
+  init: function() {
+    this.appendValueInput("VALUE")
+        .setCheck(null)
+        .appendField("set")
+        .appendField(new Blockly.FieldTextInput("myProperty"), "PROPERTY");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(290);
+    this.setTooltip("Set property value");
+    this.setHelpUrl("");
+  }
 };
 
-Blockly.JavaScript['package_declaration'] = function(block) {
-    var package = block.getFieldValue('PACKAGE');
-    return `package ${package};\n\n`;
+
+Blockly.Blocks['get_property'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("get")
+        .appendField(new Blockly.FieldTextInput("myProperty"), "PROPERTY");
+    this.setOutput(true, null);
+    this.setColour(290);
+    this.setTooltip("Get property value");
+    this.setHelpUrl("");
+  }
+};
+
+
+
+
+//Generators
+// Java code generator
+Blockly.JavaScript['set_property'] = function(block) {
+  var property = block.getFieldValue('PROPERTY');
+  var value = Blockly.JavaScript.valueToCode(block, 'VALUE', Blockly.JavaScript.ORDER_ATOMIC);
+  var code = `set${property.charAt(0).toUpperCase() + property.slice(1)}(${value});\n`;
+  return code;
+};
+
+Blockly.JavaScript['get_property'] = function(block) {
+  var property = block.getFieldValue('PROPERTY');
+  var code = `get${property.charAt(0).toUpperCase() + property.slice(1)}()`;
+  return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
+};
+
+Blockly.JavaScript['property_declaration'] = function(block) {
+    var propertyName = block.getFieldValue('PROPERTY_NAME');
+    var type = block.getFieldValue('TYPE');
+    var setterContent = Blockly.JavaScript.statementToCode(block, 'PROPERTY_SETTER');
+    var getterContent = Blockly.JavaScript.statementToCode(block, 'PROPERTY_GETTER');
+    
+    return `    private ${type} ${propertyName};
+    
+    public void set${propertyName.charAt(0).toUpperCase() + propertyName.slice(1)}(${type} value) {
+        ${setterContent}
+    }
+    
+    public ${type} get${propertyName.charAt(0).toUpperCase() + propertyName.slice(1)}() {
+        ${getterContent}
+    }\n`;
+};
+
+Blockly.JavaScript['designer_property'] = function(block) {
+    var propertyName = block.getFieldValue('PROPERTY_NAME');
+    var type = block.getFieldValue('TYPE');
+    var description = block.getFieldValue('DESCRIPTION');
+    var category = block.getFieldValue('CATEGORY');
+    var setterContent = Blockly.JavaScript.statementToCode(block, 'DESIGNER_PROPERTY_SETTER');
+    var getterContent = Blockly.JavaScript.statementToCode(block, 'DESIGNER_PROPERTY_GETTER');
+    
+    return `    @DesignerProperty(editorType = ${type}, defaultValue = "")
+    @SimpleProperty(description = "${description}")
+    public void ${propertyName}(String value) {
+        ${setterContent}
+    }
+    
+    @SimpleProperty(category = ${category})
+    public String ${propertyName}() {
+        ${getterContent}
+    }\n`;
 };
 
 Blockly.JavaScript['import_basic'] = function(block) {
@@ -537,99 +623,9 @@ Blockly.JavaScript['import_basic'] = function(block) {
     return `import ${imports[importType]};\n`;
 };
 
-Blockly.JavaScript['property_declaration'] = function(block) {
-    var propertyName = block.getFieldValue('PROPERTY_NAME');
-    var type = block.getFieldValue('TYPE');
-    var content = Blockly.JavaScript.statementToCode(block, 'PROPERTY_CONTENT');
-    
-    return `    private ${type} ${propertyName};
-    
-    public ${type} get${propertyName.charAt(0).toUpperCase() + propertyName.slice(1)}() {
-        return ${propertyName};
-    }
-    
-    public void set${propertyName.charAt(0).toUpperCase() + propertyName.slice(1)}(${type} value) {
-        this.${propertyName} = value;
-    }${content}\n`;
-};
 
-Blockly.JavaScript['designer_property'] = function(block) {
-    var propertyName = block.getFieldValue('PROPERTY_NAME');
-    var type = block.getFieldValue('TYPE');
-    var content = Blockly.JavaScript.statementToCode(block, 'DESIGNER_PROPERTY_CONTENT');
-    
-    return `    @DesignerProperty(editorType = ${type})
-    @SimpleProperty(description = "A designer property")
-    public void ${propertyName}(String value) {
-        // Implementation
-        ${content}
-    }
-    
-    @SimpleProperty(category = PropertyCategory.BEHAVIOR)
-    public String ${propertyName}() {
-        // Implementation
-        return "";
-    }\n`;
-};
 
-// Geradores de código atualizados
-Blockly.JavaScript['method_return'] = function(block) {
-    var returnValue = Blockly.JavaScript.valueToCode(block, 'RETURN_VALUE', Blockly.JavaScript.ORDER_ATOMIC) || '';
-    return `        return ${returnValue};\n`;
-};
 
-Blockly.JavaScript['method_declaration'] = function(block) {
-    var methodName = block.getFieldValue('METHOD_NAME');
-    var returnType = block.getFieldValue('RETURN_TYPE');
-    var content = Blockly.JavaScript.statementToCode(block, 'METHOD_CONTENT');
-    
-    return `    @SimpleFunction(description = "Um método personalizado")
-    public ${returnType} ${methodName}() {
-${content}    }\n`;
-};
-
-Blockly.JavaScript['event_declaration'] = function(block) {
-    var eventName = block.getFieldValue('EVENT_NAME');
-    return `    @SimpleEvent(description = "Um evento personalizado")
-    public void ${eventName}() {
-        EventDispatcher.dispatchEvent(this, "${eventName}");
-    }\n`;
-};
-
-// Geradores de código
-Blockly.JavaScript['import_manual'] = function(block) {
-    var path = block.getFieldValue('IMPORT_PATH');
-    var isStatic = block.getFieldValue('IS_STATIC') === 'TRUE';
-    var isWildcard = block.getFieldValue('IS_WILDCARD') === 'TRUE';
-    
-    var code = 'import ';
-    if (isStatic) code += 'static ';
-    code += path;
-    if (isWildcard) code += '.*';
-    return code + ';\n';
-};
-
-Blockly.JavaScript['import_package'] = function(block) {
-    var pkg = block.getFieldValue('PACKAGE');
-    var subPkg = block.getFieldValue('SUB_PACKAGE');
-    return `import ${pkg}.${subPkg}.*;\n`;
-};
-
-Blockly.JavaScript['import_class'] = function(block) {
-    var classPath = block.getFieldValue('CLASS_PATH');
-    var alias = block.getFieldValue('ALIAS');
-    var code = `import ${classPath}`;
-    if (alias) {
-        code += ` as ${alias}`;
-    }
-    return code + ';\n';
-};
-
-Blockly.JavaScript['import_static'] = function(block) {
-    var className = block.getFieldValue('CLASS');
-    var method = block.getFieldValue('METHOD');
-    return `import static ${className}.${method};\n`;
-};
 
 js/blocks/color_blocks.js:
 // Seletor de cor
@@ -716,8 +712,58 @@ Blockly.JavaScript['color_random'] = function(block) {
         Blockly.JavaScript.ORDER_ATOMIC];
 };
 
-js/blocks/constructor_blocks.js:
-'use strict';
+js/blocks/configurations.js:
+//blocks/configurations.js
+
+//Blocks
+Blockly.Blocks['extension_class'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldLabelSerializable("Create Extension"), "className")
+        .appendField(new Blockly.FieldTextInput("MyExtension"), "classNameEdit");
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldLabelSerializable("Description"), "descriptionName")
+        .appendField(new Blockly.FieldTextInput("A custom extension"), "descriptionNameEdit");
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldLabelSerializable("Category"), "categoryName")
+        .appendField(new Blockly.FieldTextInput("EXTENSION"), "extensionNameEdit");
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldLabelSerializable("Non-visible"), "NAME")
+        .appendField(new Blockly.FieldCheckbox("TRUE"), "checkBoxNonVisible");
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldLabelSerializable("Icon Name"), "NAME")
+        .appendField(new Blockly.FieldTextInput("image/icon.png"), "imageURL");
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldLabelSerializable("Interfaces"), "interfacesLabel")
+        .appendField(new Blockly.FieldTextInput(""), "interfaces");
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldLabelSerializable("ANNOTATIONS"), "annotationsText");
+    this.appendStatementInput("annotationBlocks")
+        .setCheck(null);
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldLabelSerializable("BLOCKS"), "blocksExtensions");
+    this.appendStatementInput("statementBlocks")
+        .setCheck(null);
+    this.setPreviousStatement(true, null);
+    this.setColour("#5C6BC0");
+    this.setTooltip("");
+    this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['custom_annotation'] = {
+    init: function() {
+        this.appendDummyInput()
+            .appendField("Custom Annotation")
+            .appendField(new Blockly.FieldTextInput("@MyAnnotation"), "ANNOTATION");
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour("#5C6BC0");
+        this.setTooltip("Adds a custom annotation above @SimpleObject");
+        this.setHelpUrl("");
+    }
+};
+
 
 // Bloco do construtor
 Blockly.Blocks['constructor_declaration'] = {
@@ -804,9 +850,6 @@ Blockly.Blocks['constructor_super_call'] = {
             .appendField('super(')
             .appendField(new Blockly.FieldTextInput('container.$context()'), 'SUPER_PARAMS')
             .appendField(')');
-        this.appendStatementInput('AFTER_SUPER')
-            .setCheck(null)
-            .appendField('after super');
         this.setPreviousStatement(true, 'constructor_super_call');
         this.setNextStatement(true, null);
         this.setColour("#5C6BC0");
@@ -814,14 +857,54 @@ Blockly.Blocks['constructor_super_call'] = {
     }
 };
 
-// Geradores de código
+Blockly.Blocks['package_declaration'] = {
+    init: function() {
+        this.appendDummyInput()
+            .appendField("Package")
+            .appendField(new Blockly.FieldTextInput("com.example.extension"), "PACKAGE");
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour("#5C6BC0");
+        this.setTooltip("Declares the extension package");
+        this.setHelpUrl("");
+    }
+};
+
+//Generators
+Blockly.JavaScript['extension_class'] = function(block) {
+  var interfaces = block.getFieldValue('interfaces');
+  var className = block.getFieldValue('classNameEdit');
+  var description = block.getFieldValue('descriptionNameEdit');
+  var category = block.getFieldValue('extensionNameEdit');
+  var nonVisible = block.getFieldValue('checkBoxNonVisible') === 'TRUE';
+  var iconName = block.getFieldValue('imageURL');
+  var annotations = Blockly.JavaScript.statementToCode(block, 'annotationBlocks');
+  var members = Blockly.JavaScript.statementToCode(block, 'statementBlocks');
+
+  var code = `@DesignerComponent(version = 1,
+    description = "${description}",
+    category = ComponentCategory.${category},
+    nonVisible = ${nonVisible},
+    iconName = "${iconName}")
+@SimpleObject(external = true)
+${annotations}public class ${className} extends AndroidNonvisibleComponent${interfaces ? ' implements ' + interfaces : ''} {
+${members}}`;
+
+  return code;
+};
+
+Blockly.JavaScript['custom_annotation'] = function(block) {
+    var annotation = block.getFieldValue('ANNOTATION');
+    return `${annotation}\n`;
+};
+
 Blockly.JavaScript['constructor_declaration'] = function(block) {
     var isDefault = block.getFieldValue('IS_DEFAULT') == 'TRUE';
     var content = Blockly.JavaScript.statementToCode(block, 'CONSTRUCTOR_CONTENT') || '';
     
     if (isDefault) {
         return `    public Constructor(ComponentContainer container) {
-        super(container.$context());
+        
 ${content}    }\n`;
     } else {
         var parameters = Blockly.JavaScript.statementToCode(block, 'PARAMETERS') || '';
@@ -847,6 +930,11 @@ Blockly.JavaScript['constructor_super_call'] = function(block) {
     
     return `        super(${params});
 ${afterSuper}`;
+};
+
+Blockly.JavaScript['package_declaration'] = function(block) {
+    var package = block.getFieldValue('PACKAGE');
+    return `package ${package};\n\n`;
 };
 
 js/blocks/control_blocks.js:
@@ -1983,18 +2071,18 @@ Blockly.JavaScript['logic_operation_item'] = function(block) {
 };
 
 js/blocks/math_blocks.js:
-// Bloco de número
+// Number block
 Blockly.Blocks['math_number'] = {
     init: function() {
         this.appendDummyInput()
             .appendField(new Blockly.FieldNumber(0), 'NUM');
         this.setOutput(true, 'Number');
         this.setColour("#8E24AA");
-        this.setTooltip('Um número');
+        this.setTooltip('A number');
     }
 };
 
-// Operações matemáticas múltiplas
+// Multiple Math Operations
 Blockly.Blocks['math_operation'] = {
     init: function() {
         this.setHelpUrl('');
@@ -2003,7 +2091,7 @@ Blockly.Blocks['math_operation'] = {
         this.updateShape_();
         this.setOutput(true, 'Number');
         this.setMutator(new Blockly.Mutator(['math_operation_item']));
-        this.setTooltip('Combina números com operações matemáticas');
+        this.setTooltip('Combines numbers with mathematical operations');
     },
 
     mutationToDom: function() {
@@ -2083,19 +2171,19 @@ Blockly.Blocks['math_operation'] = {
     }
 };
 
-// Bloco container para o mutator
+// Container block for mutator
 Blockly.Blocks['math_operation_container'] = {
     init: function() {
         this.setColour("#8E24AA");
         this.appendDummyInput()
-            .appendField('números');
+            .appendField('numbers');
         this.appendStatementInput('STACK');
-        this.setTooltip('Adicione números para operações matemáticas');
+        this.setTooltip('Add numbers for math operations');
         this.contextMenu = false;
     }
 };
 
-// Bloco item para o mutator
+// Item block for mutator
 Blockly.Blocks['math_operation_item'] = {
     init: function() {
         this.setColour("#8E24AA");
@@ -2110,46 +2198,46 @@ Blockly.Blocks['math_operation_item'] = {
             ]), 'OP');
         this.setPreviousStatement(true);
         this.setNextStatement(true);
-        this.setTooltip('Adiciona um novo número com operador');
+        this.setTooltip('Adds a new number with operator');
         this.contextMenu = false;
     }
 };
 
-// Funções matemáticas
+// Math functions
 Blockly.Blocks['math_function'] = {
     init: function() {
         this.appendValueInput('NUMBER')
             .setCheck('Number')
             .appendField(new Blockly.FieldDropdown([
                 ['abs', 'Math.abs'],
-                ['raiz', 'Math.sqrt'],
-                ['potência', 'Math.pow'],
-                ['seno', 'Math.sin'],
-                ['cosseno', 'Math.cos'],
-                ['tangente', 'Math.tan'],
-                ['arredonda', 'Math.round'],
-                ['teto', 'Math.ceil'],
-                ['piso', 'Math.floor'],
+                ['sqrt', 'Math.sqrt'],
+                ['pow', 'Math.pow'],
+                ['sin', 'Math.sin'],
+                ['cos', 'Math.cos'],
+                ['tan', 'Math.tan'],
+                ['round', 'Math.round'],
+                ['ceil', 'Math.ceil'],
+                ['floor', 'Math.floor'],
                 ['log', 'Math.log'],
                 ['log10', 'Math.log10'],
                 ['exp', 'Math.exp']
             ]), 'FUNC');
         this.setOutput(true, 'Number');
         this.setColour("#8E24AA");
-        this.setTooltip('Funções matemáticas avançadas');
+        this.setTooltip('Advanced mathematical functions');
     }
 };
 
-// Random com opções
+// Random with options
 Blockly.Blocks['math_random'] = {
     init: function() {
         this.appendDummyInput()
-            .appendField('aleatório')
+            .appendField('random')
             .appendField(new Blockly.FieldDropdown([
-                ['número entre', 'INT'],
-                ['decimal entre', 'FLOAT'],
+                ['number between', 'INT'],
+                ['decimal between', 'FLOAT'],
                 ['decimal 0-1', 'RANDOM'],
-                ['booleano', 'BOOL']
+                ['boolean', 'BOOL']
             ]), 'TYPE');
         this.appendValueInput('MIN')
             .setCheck('Number')
@@ -2159,7 +2247,7 @@ Blockly.Blocks['math_random'] = {
             .appendField('max');
         this.setOutput(true, ['Number', 'Boolean']);
         this.setColour("#8E24AA");
-        this.setTooltip('Gera números aleatórios');
+        this.setTooltip('Generates random numbers');
         this.updateShape_();
     },
 
@@ -2187,7 +2275,7 @@ Blockly.Blocks['math_random'] = {
     }
 };
 
-// Constantes matemáticas
+// Mathematical constants
 Blockly.Blocks['math_constant'] = {
     init: function() {
         this.appendDummyInput()
@@ -2201,11 +2289,11 @@ Blockly.Blocks['math_constant'] = {
             ]), 'CONSTANT');
         this.setOutput(true, 'Number');
         this.setColour("#8E24AA");
-        this.setTooltip('Constantes matemáticas');
+        this.setTooltip('Mathematical constants');
     }
 };
 
-// Geradores de código
+// Code Generators
 Blockly.JavaScript['math_number'] = function(block) {
     var number = block.getFieldValue('NUM');
     return [number, Blockly.JavaScript.ORDER_ATOMIC];
@@ -2222,8 +2310,8 @@ Blockly.JavaScript['math_operation'] = function(block) {
         
         switch(operator) {
             case 'ADD': code.push('+', value); break;
-            case 'SUBTRACT': code.push('-', value); break;
-            case 'MULTIPLY': code.push('*', value); break;
+            case 'SUBTRACT': code.push('-', value); break; 
+            case 'MULTIPLY': code.push('*', value); break; 
             case 'DIVIDE': code.push('/', value); break;
             case 'MODULO': code.push('%', value); break;
             case 'POWER': code.push('Math.pow(' + code.pop() + ',', value + ')'); break;
@@ -2275,6 +2363,732 @@ Blockly.JavaScript['math_operation_container'] = function(block) {
 
 Blockly.JavaScript['math_operation_item'] = function(block) {
     return null;
+};
+
+
+js/blocks/method_inserts.js:
+//blocks/method_inserts.js
+'use strict';
+Blockly.Blocks['post_runnable'] = {
+    init: function() {
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldTextInput("prefix"), "PREFIX")
+            .appendField(".post new Runnable");
+        this.appendStatementInput("CONTENT")
+            .setCheck(null)
+            .appendField("content");
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour("#4CAF50");
+        this.setTooltip("Executes code inside a Runnable using post with a prefix.");
+        this.setHelpUrl("");
+    }
+};
+
+Blockly.JavaScript['post_runnable'] = function(block) {
+    const prefix = block.getFieldValue('PREFIX');
+    const content = Blockly.JavaScript.statementToCode(block, 'CONTENT');
+    return `${prefix}.post(new Runnable() {\n    @Override\n    public void run() {\n${content}    }\n});\n`;
+};
+
+Blockly.Blocks['run_on_ui_thread'] = {
+    init: function() {
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldTextInput("prefix"), "PREFIX")
+            .appendField(".$form().runOnUiThread");
+        this.appendStatementInput("CONTENT")
+            .setCheck(null)
+            .appendField("content");
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour("#4CAF50");
+        this.setTooltip("Runs code on the UI thread with a prefix.");
+        this.setHelpUrl("");
+    }
+};
+
+Blockly.JavaScript['run_on_ui_thread'] = function(block) {
+    const prefix = block.getFieldValue('PREFIX');
+    const content = Blockly.JavaScript.statementToCode(block, 'CONTENT');
+    return `${prefix}.runOnUiThread(new Runnable() {\n    @Override\n    public void run() {\n${content}    }\n});\n`;
+};
+
+
+Blockly.Blocks['set_on_click_listener'] = {
+    init: function() {
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldTextInput("prefix"), "PREFIX")
+            .appendField(".setOnClickListener");
+        this.appendStatementInput("CONTENT")
+            .setCheck(null)
+            .appendField("content");
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour("#4CAF50");
+        this.setTooltip("Sets an OnClickListener with a prefix.");
+        this.setHelpUrl("");
+    }
+};
+
+Blockly.JavaScript['set_on_click_listener'] = function(block) {
+    const prefix = block.getFieldValue('PREFIX');
+    const content = Blockly.JavaScript.statementToCode(block, 'CONTENT');
+    return `${prefix}.setOnClickListener(new View.OnClickListener() {\n    @Override\n    public void onClick(View v) {\n${content}    }\n});\n`;
+};
+
+Blockly.Blocks['add_text_view'] = {
+    init: function() {
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldTextInput("prefix"), "PREFIX")
+            .appendField(".addTextView");
+        this.appendValueInput("TEXT")
+            .setCheck("String")
+            .appendField("with text");
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour("#4CAF50");
+        this.setTooltip("Adds a TextView with specified text to a layout.");
+        this.setHelpUrl("");
+    }
+};
+
+Blockly.JavaScript['add_text_view'] = function(block) {
+    const prefix = block.getFieldValue('PREFIX');
+    const text = Blockly.JavaScript.valueToCode(block, 'TEXT', Blockly.JavaScript.ORDER_ATOMIC);
+    return `${prefix}.addView(new TextView(context) {{ setText(${text}); }});\n`;
+};
+
+Blockly.Blocks['add_image_view'] = {
+    init: function() {
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldTextInput("prefix"), "PREFIX")
+            .appendField(".addImageView");
+        this.appendValueInput("IMAGE_PATH")
+            .setCheck("String")
+            .appendField("with image path");
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour("#4CAF50");
+        this.setTooltip("Adds an ImageView with the specified image path.");
+        this.setHelpUrl("");
+    }
+};
+
+Blockly.JavaScript['add_image_view'] = function(block) {
+    const prefix = block.getFieldValue('PREFIX');
+    const imagePath = Blockly.JavaScript.valueToCode(block, 'IMAGE_PATH', Blockly.JavaScript.ORDER_ATOMIC);
+    return `${prefix}.addView(new ImageView(context) {{ setImageURI(Uri.parse(${imagePath})); }});\n`;
+};
+
+Blockly.Blocks['scroll_to_bottom'] = {
+    init: function() {
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldTextInput("prefix"), "PREFIX")
+            .appendField(".scrollToBottom");
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour("#4CAF50");
+        this.setTooltip("Scrolls a ScrollView to the bottom.");
+        this.setHelpUrl("");
+    }
+};
+
+Blockly.JavaScript['scroll_to_bottom'] = function(block) {
+    const prefix = block.getFieldValue('PREFIX');
+    return `${prefix}.post(new Runnable() {\n    @Override\n    public void run() {\n        ${prefix}.fullScroll(View.FOCUS_DOWN);\n    }\n});\n`;
+};
+
+Blockly.Blocks['show_toast'] = {
+    init: function() {
+        this.appendDummyInput()
+            .appendField("Show Toast");
+        this.appendValueInput("MESSAGE")
+            .setCheck("String")
+            .appendField("message");
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour("#4CAF50");
+        this.setTooltip("Shows a toast message.");
+        this.setHelpUrl("");
+    }
+};
+
+Blockly.JavaScript['show_toast'] = function(block) {
+    const message = Blockly.JavaScript.valueToCode(block, 'MESSAGE', Blockly.JavaScript.ORDER_ATOMIC);
+    return `Toast.makeText(context, ${message}, Toast.LENGTH_SHORT).show();\n`;
+};
+
+
+
+js/blocks/methods.js:
+//blocks/methods.js
+'use strict';
+
+//blocks
+// Function return block for methods
+Blockly.Blocks['method_return'] = {
+    init: function() {
+        this.appendValueInput('RETURN_VALUE')
+            .setCheck(null)
+            .appendField('return');
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(false, null); // Does not allow following block
+        this.setColour("#7CB342"); // Same color as methods
+        this.setTooltip('Returns a value from the method');
+    }
+};
+
+Blockly.Blocks['method_mutator'] = {
+    init: function() {
+        this.appendDummyInput()
+            .appendField("Parameters");
+        this.appendStatementInput("STACK")
+            .setCheck("Parameter");
+        this.setColour("#7CB342");
+        this.setTooltip("Add or remove parameters.");
+        this.contextMenu = false;
+    }
+};
+
+Blockly.Blocks['parameter'] = {
+    init: function() {
+        this.setColour("#7CB342");
+        this.appendDummyInput()
+            .appendField('parameter');
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+    }
+};
+
+// Updated method block with content field
+Blockly.Blocks['method_declaration'] = {
+    init: function() {
+        this.appendDummyInput("HEADER")
+            .appendField(new Blockly.FieldTextInput("myMethod"), "METHOD_NAME")
+            .appendField("return")
+            .appendField(new Blockly.FieldDropdown([
+                ["void", "void"],
+                ["String", "String"],
+                ["int", "int"],
+                ["double", "double"],
+                ["boolean", "boolean"]
+            ]), "RETURN_TYPE");
+        this.appendDummyInput("DESCRIPTION")
+            .appendField("description")
+            .appendField(new Blockly.FieldTextInput("A custom method"), "DESCRIPTION");
+        this.appendStatementInput("METHOD_CONTENT")
+            .setCheck(null)
+            .appendField("content");
+        this.setMutator(new Blockly.Mutator(['method_parameter']));
+        this.paramCount_ = 0;
+        this.paramNames_ = [];
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour("#7CB342");
+        this.setTooltip("Declares a method with customizable parameters.");
+    },
+
+    mutationToDom: function() {
+        const container = document.createElement('mutation');
+        container.setAttribute('params', this.paramCount_);
+        this.paramNames_.forEach(param => {
+            const paramNode = document.createElement('param');
+            paramNode.setAttribute('name', param.name);
+            paramNode.setAttribute('type', param.type);
+            paramNode.setAttribute('final', param.final);
+            container.appendChild(paramNode);
+        });
+        return container;
+    },
+
+    domToMutation: function(xmlElement) {
+        this.paramCount_ = parseInt(xmlElement.getAttribute('params'), 10);
+        this.paramNames_ = [];
+        Array.from(xmlElement.children).forEach(param => {
+            this.paramNames_.push({
+                name: param.getAttribute('name'),
+                type: param.getAttribute('type'),
+                final: param.getAttribute('final') === 'true'
+            });
+        });
+        this.updateShape_();
+    },
+
+    updateShape_: function() {
+        if (this.getField("PARAMS")) {
+            this.getInput("HEADER").removeField("PARAMS");
+        }
+
+        if (this.paramCount_ > 0) {
+            const paramDisplay = this.paramNames_
+                .map(param => (param.final ? 'final ' : '') + `${param.type} ${param.name}`)
+                .join(', ');
+            this.getInput("HEADER")
+                .appendField("(" + paramDisplay + ")", "PARAMS");
+        } else {
+            this.getInput("HEADER")
+                .appendField("()", "PARAMS");
+        }
+    }
+};
+
+
+Blockly.Blocks['method_parameter'] = {
+    init: function() {
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldTextInput("param1"), "PARAM_NAME")
+            .appendField(":")
+            .appendField(new Blockly.FieldDropdown([
+                ["String", "String"],
+                ["int", "int"],
+                ["double", "double"],
+                ["boolean", "boolean"]
+            ]), "PARAM_TYPE")
+            .appendField("final")
+            .appendField(new Blockly.FieldCheckbox("TRUE"), "FINAL");
+        this.setPreviousStatement(true, "Parameter");
+        this.setNextStatement(true, "Parameter");
+        this.setColour("#7CB342");
+        this.setTooltip("Defines a parameter for a method.");
+    }
+};
+
+//Events
+Blockly.Blocks['event_declaration'] = {
+    init: function() {
+        this.appendDummyInput("HEADER")
+            .appendField(new Blockly.FieldTextInput("MyEvent"), "EVENT_NAME")
+            .appendField("parameters");
+        this.appendDummyInput("DESCRIPTION")
+            .appendField("description")
+            .appendField(new Blockly.FieldTextInput("A custom event"), "DESCRIPTION");
+        this.appendStatementInput("EVENT_CONTENT")
+            .setCheck(null)
+            .appendField("content");
+        this.setMutator(new Blockly.Mutator(['event_parameter']));
+        this.paramCount_ = 0;
+        this.paramNames_ = [];
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour("#7CB342");
+        this.setTooltip("Declares an event with customizable parameters.");
+    },
+
+    mutationToDom: function() {
+        const container = document.createElement('mutation');
+        container.setAttribute('params', this.paramCount_);
+        this.paramNames_.forEach(param => {
+            const paramNode = document.createElement('param');
+            paramNode.setAttribute('name', param.name);
+            paramNode.setAttribute('type', param.type);
+            paramNode.setAttribute('final', param.final);
+            container.appendChild(paramNode);
+        });
+        return container;
+    },
+
+    domToMutation: function(xmlElement) {
+        this.paramCount_ = parseInt(xmlElement.getAttribute('params'), 10);
+        this.paramNames_ = [];
+        Array.from(xmlElement.children).forEach(param => {
+            this.paramNames_.push({
+                name: param.getAttribute('name'),
+                type: param.getAttribute('type'),
+                final: param.getAttribute('final') === 'true'
+            });
+        });
+        this.updateShape_();
+    },
+
+    updateShape_: function() {
+        if (this.getField("PARAMS")) {
+            this.getInput("HEADER").removeField("PARAMS");
+        }
+
+        if (this.paramCount_ > 0) {
+            const paramDisplay = this.paramNames_
+                .map(param => (param.final ? 'final ' : '') + `${param.type} ${param.name}`)
+                .join(', ');
+            this.getInput("HEADER")
+                .appendField("(" + paramDisplay + ")", "PARAMS");
+        } else {
+            this.getInput("HEADER")
+                .appendField("()", "PARAMS");
+        }
+    }
+};
+
+
+Blockly.Blocks['event_mutator'] = {
+    init: function() {
+        this.appendDummyInput()
+            .appendField("Parameters");
+        this.appendStatementInput("STACK")
+            .setCheck("Parameter");
+        this.setColour("#7CB342");
+        this.setTooltip("Add or remove event parameters.");
+        this.contextMenu = false;
+    }
+};
+
+Blockly.Blocks['event_parameter'] = {
+    init: function() {
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldTextInput("param1"), "PARAM_NAME")
+            .appendField(":")
+            .appendField(new Blockly.FieldDropdown([
+                ["String", "String"],
+                ["int", "int"],
+                ["double", "double"],
+                ["boolean", "boolean"]
+            ]), "PARAM_TYPE")
+            .appendField("final")
+            .appendField(new Blockly.FieldCheckbox("TRUE"), "FINAL");
+        this.setPreviousStatement(true, "Parameter");
+        this.setNextStatement(true, "Parameter");
+        this.setColour("#7CB342");
+        this.setTooltip("Defines a parameter for an event.");
+    }
+};
+
+
+Blockly.Blocks['custom_dispatcher'] = {
+    init: function() {
+        this.appendDummyInput("HEADER")
+            .appendField(new Blockly.FieldTextInput("Dispatcher"), "EVENT_NAME")
+            .appendField("parameters");
+        this.appendDummyInput("PARAMETERS")
+            .appendField("content");
+        this.setMutator(new Blockly.Mutator(['custom_dispatcher_parameter']));
+        this.paramCount_ = 0;
+        this.paramNames_ = [];
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour("#7CB342");
+        this.setTooltip("Custom Event Dispatcher with dynamic parameters.");
+    },
+    
+    mutationToDom: function() {
+        const container = document.createElement('mutation');
+        container.setAttribute('params', this.paramCount_);
+        this.paramNames_.forEach(param => {
+            const paramNode = document.createElement('param');
+            paramNode.setAttribute('name', param.name);
+            paramNode.setAttribute('type', param.type);
+            container.appendChild(paramNode);
+        });
+        return container;
+    },
+    
+    domToMutation: function(xmlElement) {
+        this.paramCount_ = parseInt(xmlElement.getAttribute('params'), 10);
+        this.paramNames_ = [];
+        Array.from(xmlElement.children).forEach(param => {
+            this.paramNames_.push({
+                name: param.getAttribute('name'),
+                type: param.getAttribute('type')
+            });
+        });
+        this.updateShape_();
+    },
+
+    decompose: function(workspace) {
+        const containerBlock = workspace.newBlock('custom_dispatcher_mutator');
+        containerBlock.initSvg();
+        const connection = containerBlock.getInput('STACK').connection;
+
+        this.paramNames_.forEach(param => {
+            const paramBlock = workspace.newBlock('custom_dispatcher_parameter');
+            paramBlock.setFieldValue(param.name, 'PARAM_NAME');
+            paramBlock.setFieldValue(param.type, 'PARAM_TYPE');
+            paramBlock.initSvg();
+            connection.connect(paramBlock.previousConnection);
+            connection = paramBlock.nextConnection;
+        });
+
+        return containerBlock;
+    },
+
+    compose: function(containerBlock) {
+        let paramBlock = containerBlock.getInputTargetBlock('STACK');
+        this.paramCount_ = 0;
+        this.paramNames_ = [];
+
+        while (paramBlock) {
+            const paramName = paramBlock.getFieldValue('PARAM_NAME');
+            const paramType = paramBlock.getFieldValue('PARAM_TYPE');
+
+            this.paramCount_++;
+            this.paramNames_.push({
+                name: paramName,
+                type: paramType
+            });
+            paramBlock = paramBlock.nextConnection && paramBlock.nextConnection.targetBlock();
+        }
+
+        this.updateShape_();
+    },
+
+    updateShape_: function() {
+        // Remove the old parameter display
+        if (this.getField("PARAMS")) {
+            this.getInput("HEADER").removeField("PARAMS");
+        }
+
+        // Add the new parameter display
+        if (this.paramCount_ > 0) {
+            const paramDisplay = this.paramNames_
+                .map(param => `${param.type} ${param.name}`)
+                .join(', ');
+            this.getInput("HEADER")
+                .appendField("(" + paramDisplay + ")", "PARAMS");
+        } else {
+            this.getInput("HEADER")
+                .appendField("()", "PARAMS");
+        }
+    }
+};
+
+
+Blockly.Blocks['custom_dispatcher_mutator'] = {
+    init: function() {
+        this.appendDummyInput()
+            .appendField("Parameters");
+        this.appendStatementInput("STACK")
+            .setCheck("Parameter");
+        this.setColour("#7CB342");
+        this.setTooltip("Add or remove parameters for the custom dispatcher.");
+        this.contextMenu = false;
+    }
+};
+
+Blockly.Blocks['custom_dispatcher_parameter'] = {
+    init: function() {
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldTextInput("param1"), "PARAM_NAME")
+            .appendField(":")
+            .appendField(new Blockly.FieldDropdown([
+                ["String", "String"],
+                ["int", "int"],
+                ["double", "double"],
+                ["boolean", "boolean"]
+            ]), "PARAM_TYPE");
+        this.setPreviousStatement(true, "Parameter");
+        this.setNextStatement(true, "Parameter");
+        this.setColour("#7CB342");
+        this.setTooltip("Defines a parameter for the custom dispatcher.");
+    }
+};
+
+Blockly.Blocks['method_call'] = {
+    init: function() {
+        this.appendDummyInput("HEADER")
+            .appendField("call method")
+            .appendField(new Blockly.FieldTextInput("Method Name"), "METHOD_NAME");
+        this.setMutator(new Blockly.Mutator(['custom_dispatcher_parameter']));
+        this.paramCount_ = 0;
+        this.paramNames_ = [];
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour("#7CB342");
+        this.setTooltip("Call a method with dynamic parameters.");
+    },
+    
+    mutationToDom: function() {
+        const container = document.createElement('mutation');
+        container.setAttribute('params', this.paramCount_);
+        this.paramNames_.forEach(param => {
+            const paramNode = document.createElement('param');
+            paramNode.setAttribute('name', param.name);
+            paramNode.setAttribute('type', param.type);
+            container.appendChild(paramNode);
+        });
+        return container;
+    },
+    
+    domToMutation: function(xmlElement) {
+        this.paramCount_ = parseInt(xmlElement.getAttribute('params'), 10);
+        this.paramNames_ = [];
+        Array.from(xmlElement.children).forEach(param => {
+            this.paramNames_.push({
+                name: param.getAttribute('name'),
+                type: param.getAttribute('type')
+            });
+        });
+        this.updateShape_();
+    },
+
+    decompose: function(workspace) {
+        const containerBlock = workspace.newBlock('call_event_mutator');
+        containerBlock.initSvg();
+        const connection = containerBlock.getInput('STACK').connection;
+
+        this.paramNames_.forEach(param => {
+            const paramBlock = workspace.newBlock('call_event_parameter');
+            paramBlock.setFieldValue(param.name, 'PARAM_NAME');
+            paramBlock.setFieldValue(param.type, 'PARAM_TYPE');
+            paramBlock.initSvg();
+            connection.connect(paramBlock.previousConnection);
+            connection = paramBlock.nextConnection;
+        });
+
+        return containerBlock;
+    },
+
+    compose: function(containerBlock) {
+        let paramBlock = containerBlock.getInputTargetBlock('STACK');
+        this.paramCount_ = 0;
+        this.paramNames_ = [];
+
+        while (paramBlock) {
+            const paramName = paramBlock.getFieldValue('PARAM_NAME');
+            const paramType = paramBlock.getFieldValue('PARAM_TYPE');
+
+            this.paramCount_++;
+            this.paramNames_.push({
+                name: paramName,
+                type: paramType
+            });
+            paramBlock = paramBlock.nextConnection && paramBlock.nextConnection.targetBlock();
+        }
+
+        this.updateShape_();
+    },
+
+    updateShape_: function() {
+        // Remove the old parameter display
+        if (this.getField("PARAMS")) {
+            this.getInput("HEADER").removeField("PARAMS");
+        }
+
+        // Add the new parameter display
+        if (this.paramCount_ > 0) {
+            const paramDisplay = this.paramNames_
+                .map(param => `${param.type} ${param.name}`)
+                .join(', ');
+            this.getInput("HEADER")
+                .appendField("(" + paramDisplay + ")", "PARAMS");
+        } else {
+            this.getInput("HEADER")
+                .appendField("()", "PARAMS");
+        }
+    }
+};
+
+
+
+Blockly.Blocks['call_event_mutator'] = {
+    init: function() {
+        this.appendDummyInput()
+            .appendField("Parameters");
+        this.appendStatementInput("STACK")
+            .setCheck("Parameter");
+        this.setColour("#7CB342");
+        this.setTooltip("Add or remove parameters for the custom dispatcher.");
+        this.contextMenu = false;
+    }
+};
+
+Blockly.Blocks['call_event_parameter'] = {
+    init: function() {
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldTextInput("param1"), "PARAM_NAME")
+            .appendField(":")
+            .appendField(new Blockly.FieldDropdown([
+                ["String", "String"],
+                ["int", "int"],
+                ["double", "double"],
+                ["boolean", "boolean"]
+            ]), "PARAM_TYPE");
+        this.setPreviousStatement(true, "Parameter");
+        this.setNextStatement(true, "Parameter");
+        this.setColour("#7CB342");
+        this.setTooltip("Defines a parameter for the custom dispatcher.");
+    }
+};
+
+
+
+//generators
+
+Blockly.JavaScript['method_call'] = function(block) {
+    const eventName = block.getFieldValue('METHOD_NAME');
+    const content = Blockly.JavaScript.statementToCode(block, 'EVENT_CONTENT');
+
+    // Coleta os parâmetros diretamente do `paramNames_`
+    const parameters = block.paramNames_ || [];
+
+    // Junta os parâmetros no formato "tipo nome" para o cabeçalho
+    const paramString = parameters.map(param => `${param.type} ${param.name}`).join(', ');
+
+    // Apenas os nomes dos parâmetros para usar no `EventDispatcher.dispatchEvent`
+    const paramNames = parameters.map(param => param.name).join(', ');
+
+    // Gera o evento com os parâmetros no cabeçalho e no dispatcher
+    return `${eventName}"(${paramNames});\n`;
+};
+
+
+
+Blockly.JavaScript['event_declaration'] = function(block) {
+    const eventName = block.getFieldValue('EVENT_NAME');
+    const description = block.getFieldValue('DESCRIPTION');
+    const content = Blockly.JavaScript.statementToCode(block, 'EVENT_CONTENT');
+
+    const parameters = block.paramNames_ || [];
+    const paramString = parameters.map(param => (param.final ? 'final ' : '') + `${param.type} ${param.name}`).join(', ');
+
+    return `    @SimpleEvent(description = "${description}")
+    public void ${eventName}(${paramString}) {
+${content}
+    }\n`;
+};
+
+
+Blockly.JavaScript['custom_dispatcher'] = function(block) {
+    const eventName = block.getFieldValue('EVENT_NAME');
+    const content = Blockly.JavaScript.statementToCode(block, 'EVENT_CONTENT');
+
+    // Coleta os parâmetros diretamente do `paramNames_`
+    const parameters = block.paramNames_ || [];
+
+    // Junta os parâmetros no formato "tipo nome" para o cabeçalho
+    const paramString = parameters.map(param => `${param.type} ${param.name}`).join(', ');
+
+    // Apenas os nomes dos parâmetros para usar no `EventDispatcher.dispatchEvent`
+    const paramNames = parameters.map(param => param.name).join(', ');
+
+    // Gera o evento com os parâmetros no cabeçalho e no dispatcher
+    return `       EventDispatcher.dispatchEvent(this, "${eventName}", ${paramNames});\n`;
+};
+
+Blockly.JavaScript['method_parameter'] = function(block) {
+    const paramName = block.getFieldValue('PARAM_NAME');
+    const paramType = block.getFieldValue('PARAM_TYPE');
+    const paramFinal = block.getFieldValue('FINAL') === 'TRUE';
+
+    // Retorna o parâmetro formatado como "tipo nome"
+    return (paramFinal ? 'final ' : '') + `${paramType} ${paramName}`;
+};
+
+Blockly.JavaScript['method_declaration'] = function(block) {
+    const methodName = block.getFieldValue('METHOD_NAME');
+    const description = block.getFieldValue('DESCRIPTION');
+    const returnType = block.getFieldValue('RETURN_TYPE');
+    const content = Blockly.JavaScript.statementToCode(block, 'METHOD_CONTENT');
+
+    const parameters = block.paramNames_ || [];
+    const paramString = parameters.map(param => (param.final ? 'final ' : '') + `${param.type} ${param.name}`).join(', ');
+
+    return `    @SimpleFunction(description = "${description}")
+    public ${returnType} ${methodName}(${paramString}) {
+${content}
+    }\n`;
+};
+
+Blockly.JavaScript['method_return'] = function(block) {
+    var returnValue = Blockly.JavaScript.valueToCode(block, 'RETURN_VALUE', Blockly.JavaScript.ORDER_ATOMIC) || '';
+    return `        return ${returnValue};\n`;
 };
 
 js/blocks/object_blocks.js:
@@ -2493,6 +3307,126 @@ Blockly.Blocks['text_operation'] = {
     }
 };
 
+// Log message block
+Blockly.Blocks['log_message'] = {
+    init: function() {
+        this.appendValueInput('MESSAGE')
+            .setCheck('String')
+            .appendField(new Blockly.FieldDropdown([
+                ['Info', 'INFO'],
+                ['Warning', 'WARNING'],
+                ['Error', 'ERROR'],
+                ['Debug', 'DEBUG']
+            ]), 'LOG_LEVEL')
+            .appendField('Log');
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour("#3949AB");
+        this.setTooltip('Logs a message at the selected log level');
+        this.setHelpUrl('');
+    }
+};
+
+// Log message with tag
+Blockly.Blocks['log_message_tagged'] = {
+    init: function() {
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldDropdown([
+                ['Info', 'INFO'],
+                ['Warning', 'WARNING'],
+                ['Error', 'ERROR'],
+                ['Debug', 'DEBUG']
+            ]), 'LOG_LEVEL')
+            .appendField('Log with tag');
+        this.appendValueInput('TAG')
+            .setCheck('String')
+            .appendField('Tag');
+        this.appendValueInput('MESSAGE')
+            .setCheck('String')
+            .appendField('Message');
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour("#3949AB");
+        this.setTooltip('Logs a message with a custom tag at the selected log level');
+        this.setHelpUrl('');
+    }
+};
+
+Blockly.Blocks['single_line_comment'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("//")
+        .appendField(new Blockly.FieldTextInput("comment"), "COMMENT");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour("#3949AB");
+    this.setTooltip("Single-line comment");
+  }
+};
+
+Blockly.Blocks['multi_line_comment'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("/*");
+    this.appendStatementInput("COMMENT_LINES")
+        .setCheck(null);
+    this.appendDummyInput()
+        .appendField("*/");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour("#3949AB");
+    this.setTooltip("Multi-line comment");
+  }
+};
+
+//Generators
+Blockly.JavaScript['single_line_comment'] = function(block) {
+  var comment = block.getFieldValue('COMMENT');
+  return '// ' + comment + '\n';
+};
+
+Blockly.JavaScript['multi_line_comment'] = function(block) {
+  var lines = Blockly.JavaScript.statementToCode(block, 'COMMENT_LINES');
+  return '/*\n' + lines + '*/\n';
+};
+
+// Log generator functions
+Blockly.JavaScript['log_message'] = function(block) {
+    var logLevel = block.getFieldValue('LOG_LEVEL');
+    var message = Blockly.JavaScript.valueToCode(block, 'MESSAGE', Blockly.JavaScript.ORDER_ATOMIC) || '""';
+
+    var logMethod;
+    switch (logLevel) {
+        case 'INFO': logMethod = 'console.info'; break;
+        case 'WARNING': logMethod = 'console.warn'; break;
+        case 'ERROR': logMethod = 'console.error'; break;
+        case 'DEBUG': logMethod = 'console.debug'; break;
+        default: logMethod = 'console.log';
+    }
+
+    var code = `${logMethod}(${message});\n`;
+    return code;
+};
+
+Blockly.JavaScript['log_message_tagged'] = function(block) {
+    var logLevel = block.getFieldValue('LOG_LEVEL');
+    var tag = Blockly.JavaScript.valueToCode(block, 'TAG', Blockly.JavaScript.ORDER_ATOMIC) || '""';
+    var message = Blockly.JavaScript.valueToCode(block, 'MESSAGE', Blockly.JavaScript.ORDER_ATOMIC) || '""';
+
+    var logMethod;
+    switch (logLevel) {
+        case 'INFO': logMethod = 'console.info'; break;
+        case 'WARNING': logMethod = 'console.warn'; break;
+        case 'ERROR': logMethod = 'console.error'; break;
+        case 'DEBUG': logMethod = 'console.debug'; break;
+        default: logMethod = 'console.log';
+    }
+
+    var code = `${logMethod}("[${tag}] " + ${message});\n`;
+    return code;
+};
+
+
 // Geradores de código para texto
 Blockly.JavaScript['text_string'] = function(block) {
     var text = block.getFieldValue('TEXT');
@@ -2520,9 +3454,123 @@ Blockly.JavaScript['text_operation'] = function(block) {
 };
 
 
+js/blocks/variables.js:
+//blocks/variables.js
+'use strict';
+
+// Criação de variável
+Blockly.Blocks['create_variable'] = {
+    init: function() {
+        this.appendDummyInput()
+            .appendField("Create Variable")
+            .appendField(new Blockly.FieldTextInput("varName", this.validateVariableName), "VAR_NAME")
+            .appendField("type")
+            .appendField(new Blockly.FieldDropdown([
+                ["int", "int"],
+                ["String", "String"],
+                ["boolean", "boolean"],
+                ["double", "double"],
+                ["Object", "Object"]
+            ]), "VAR_TYPE")
+            .appendField("final")
+            .appendField(new Blockly.FieldCheckbox("FALSE"), "IS_FINAL");
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour("#546E7A");
+        this.setTooltip("Creates a new variable.");
+        this.setHelpUrl("");
+    },
+
+    validateVariableName: function(name) {
+        const workspace = this.workspace;
+        if (!workspace) return name;
+
+        const variables = workspace.getVariablesOfType('');
+        const variableNames = variables.map(v => v.name);
+
+        if (variableNames.includes(name)) {
+            alert(`Variable "${name}" already exists.`);
+            return null; // Nome inválido
+        }
+        return name; // Nome válido
+    }
+};
+
+Blockly.JavaScript['create_variable'] = function(block) {
+    const varName = block.getFieldValue('VAR_NAME');
+    const varType = block.getFieldValue('VAR_TYPE');
+    const isFinal = block.getFieldValue('IS_FINAL') === 'TRUE' ? 'final ' : '';
+    return `${isFinal}${varType} ${varName};\n`;
+};
+
+
+// Atribuição de valor
+Blockly.Blocks['set_variable'] = {
+    init: function() {
+        this.appendDummyInput()
+            .appendField("Set Variable")
+            .appendField(new Blockly.FieldDropdown(this.updateVariableOptions.bind(this)), "VAR_NAME")
+            .appendField("=");
+        this.appendValueInput("VALUE")
+            .setCheck(null);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour("#546E7A");
+        this.setTooltip("Sets a value to an existing variable.");
+        this.setHelpUrl("");
+    },
+
+    updateVariableOptions: function() {
+        const workspace = Blockly.getMainWorkspace();
+        const variables = workspace.getAllVariables();
+        return variables.length > 0
+            ? variables.map(v => [v.name, v.name])
+            : [["No Variables", ""]];
+    }
+};
+
+Blockly.JavaScript['set_variable'] = function(block) {
+    const varName = block.getFieldValue('VAR_NAME');
+    const value = Blockly.JavaScript.valueToCode(block, 'VALUE', Blockly.JavaScript.ORDER_ATOMIC) || 'null';
+    return `${varName} = ${value};\n`;
+};
+
+// Obter valor de variável
+Blockly.Blocks['get_variable'] = {
+    init: function() {
+        this.appendDummyInput()
+            .appendField("Get Variable")
+            .appendField(new Blockly.FieldDropdown(this.updateVariableOptions.bind(this)), "VAR_NAME");
+        this.setOutput(true, null);
+        this.setColour("#546E7A");
+        this.setTooltip("Gets the value of a variable.");
+        this.setHelpUrl("");
+    },
+
+    updateVariableOptions: function() {
+        const workspace = Blockly.getMainWorkspace();
+        const variables = workspace.getAllVariables();
+        return variables.length > 0
+            ? variables.map(v => [v.name, v.name])
+            : [["No Variables", ""]];
+    }
+};
+
+Blockly.JavaScript['get_variable'] = function(block) {
+    const varName = block.getFieldValue('VAR_NAME');
+    return [`${varName}`, Blockly.JavaScript.ORDER_ATOMIC];
+};
+
+
+
 js/main.js:
+/*
+ * Author: Francisco Iago Lira Passos (iagolirapassos@gmail.com)
+ * New blocks in https://google.github.io/blockly-samples/examples/developer-tools/index.html
+ * MIT LICENSE
+ */
 // Variáveis globais
-let workspace;
+let workspace = Blockly.getMainWorkspace();
 let currentLanguage = 'pt-br';
 
 // Sistema de notificações
@@ -2753,6 +3801,36 @@ document.addEventListener('DOMContentLoaded', function() {
         a.href = URL.createObjectURL(blob);
         a.click();
     };
+
+    document.getElementById('blocklyDiv').addEventListener('dragover', handleDragOver);
+    document.getElementById('blocklyDiv').addEventListener('drop', handleFileDrop);
+
+    function handleDragOver(e) {
+      e.preventDefault();
+    }
+
+    function handleFileDrop(e) {
+      e.preventDefault();
+      var file = e.dataTransfer.files[0];
+      var reader = new FileReader();
+
+      reader.onload = function(event) {
+        var saveData = JSON.parse(event.target.result);
+        var xmlDom = Blockly.utils.xml.textToDom(saveData.blocks);
+        workspace.clear();
+        Blockly.Xml.domToWorkspace(xmlDom, workspace);
+      };
+
+      reader.readAsText(file);
+    }
+
+    // Atualiza a lista de variáveis para todos os blocos relevantes
+    
+    Blockly.getMainWorkspace().addChangeListener((event) => {
+        if (event.type === Blockly.Events.VAR_CREATE || event.type === Blockly.Events.VAR_DELETE || event.type === Blockly.Events.VAR_RENAME) {
+            updateVariableList();
+        }
+    });
 
 
     // Define o idioma inicial

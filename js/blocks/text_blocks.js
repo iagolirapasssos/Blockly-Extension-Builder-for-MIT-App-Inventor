@@ -1,4 +1,7 @@
-// Texto simples
+//blocks/text_blocks.js
+'use strict';
+
+// Simple Text Block
 Blockly.Blocks['text_string'] = {
     init: function() {
         this.appendDummyInput()
@@ -7,11 +10,11 @@ Blockly.Blocks['text_string'] = {
             .appendField('"');
         this.setOutput(true, 'String');
         this.setColour("#3949AB");
-        this.setTooltip('String de texto');
+        this.setTooltip('Text string');
     }
 };
 
-// Concatenar textos
+// Concatenate Texts Block
 Blockly.Blocks['text_join'] = {
     init: function() {
         this.appendValueInput('A')
@@ -21,131 +24,140 @@ Blockly.Blocks['text_join'] = {
             .appendField('+');
         this.setOutput(true, 'String');
         this.setColour("#3949AB");
-        this.setTooltip('Concatena textos');
+        this.setTooltip('Concatenates texts');
     }
 };
 
-// Operações com texto
+// Text Operations Block
 Blockly.Blocks['text_operation'] = {
     init: function() {
         this.appendValueInput('TEXT')
             .setCheck('String')
             .appendField(new Blockly.FieldDropdown([
-                ['comprimento', 'LENGTH'],
-                ['maiúsculas', 'UPPER'],
-                ['minúsculas', 'LOWER'],
+                ['length', 'LENGTH'],
+                ['to uppercase', 'UPPER'],
+                ['to lowercase', 'LOWER'],
                 ['trim', 'TRIM']
             ]), 'OP');
         this.setOutput(true, ['String', 'Number']);
         this.setColour("#3949AB");
-        this.setTooltip('Operações com texto');
+        this.setTooltip('Text operations');
     }
 };
 
-// Log message block
-Blockly.Blocks['log_message'] = {
+// Character at index Block
+Blockly.Blocks['text_charAt'] = {
     init: function() {
-        this.appendValueInput('MESSAGE')
+        this.appendValueInput('STRING')
             .setCheck('String')
-            .appendField(new Blockly.FieldDropdown([
-                ['Info', 'INFO'],
-                ['Warning', 'WARNING'],
-                ['Error', 'ERROR'],
-                ['Debug', 'DEBUG']
-            ]), 'LOG_LEVEL')
-            .appendField('Log');
-        this.setPreviousStatement(true, null);
-        this.setNextStatement(true, null);
+            .appendField('character at');
+        this.appendValueInput('INDEX')
+            .setCheck('Number')
+            .appendField('position');
+        this.setOutput(true, 'String');
         this.setColour("#3949AB");
-        this.setTooltip('Logs a message at the selected log level');
-        this.setHelpUrl('');
+        this.setTooltip('Returns the character at the specified position in the string');
     }
 };
 
-// Log message with tag
-Blockly.Blocks['log_message_tagged'] = {
+// Find Index of Substring Block
+Blockly.Blocks['text_indexOf'] = {
     init: function() {
-        this.appendDummyInput()
-            .appendField(new Blockly.FieldDropdown([
-                ['Info', 'INFO'],
-                ['Warning', 'WARNING'],
-                ['Error', 'ERROR'],
-                ['Debug', 'DEBUG']
-            ]), 'LOG_LEVEL')
-            .appendField('Log with tag');
-        this.appendValueInput('TAG')
+        this.appendValueInput('STRING')
             .setCheck('String')
-            .appendField('Tag');
-        this.appendValueInput('MESSAGE')
+            .appendField('find in');
+        this.appendValueInput('SUBSTRING')
             .setCheck('String')
-            .appendField('Message');
-        this.setPreviousStatement(true, null);
-        this.setNextStatement(true, null);
+            .appendField('substring');
+        this.setOutput(true, 'Number');
         this.setColour("#3949AB");
-        this.setTooltip('Logs a message with a custom tag at the selected log level');
-        this.setHelpUrl('');
+        this.setTooltip('Finds the position of a substring in the text');
     }
 };
 
-// Log generator functions
-Blockly.JavaScript['log_message'] = function(block) {
-    var logLevel = block.getFieldValue('LOG_LEVEL');
-    var message = Blockly.JavaScript.valueToCode(block, 'MESSAGE', Blockly.JavaScript.ORDER_ATOMIC) || '""';
-
-    var logMethod;
-    switch (logLevel) {
-        case 'INFO': logMethod = 'console.info'; break;
-        case 'WARNING': logMethod = 'console.warn'; break;
-        case 'ERROR': logMethod = 'console.error'; break;
-        case 'DEBUG': logMethod = 'console.debug'; break;
-        default: logMethod = 'console.log';
+// Replace Text Block
+Blockly.Blocks['text_replace'] = {
+    init: function() {
+        this.appendValueInput('STRING')
+            .setCheck('String')
+            .appendField('replace in');
+        this.appendValueInput('TARGET')
+            .setCheck('String')
+            .appendField('target');
+        this.appendValueInput('REPLACEMENT')
+            .setCheck('String')
+            .appendField('with');
+        this.setOutput(true, 'String');
+        this.setColour("#3949AB");
+        this.setTooltip('Replaces occurrences of the target text with replacement text');
     }
-
-    var code = `${logMethod}(${message});\n`;
-    return code;
 };
 
-Blockly.JavaScript['log_message_tagged'] = function(block) {
-    var logLevel = block.getFieldValue('LOG_LEVEL');
-    var tag = Blockly.JavaScript.valueToCode(block, 'TAG', Blockly.JavaScript.ORDER_ATOMIC) || '""';
-    var message = Blockly.JavaScript.valueToCode(block, 'MESSAGE', Blockly.JavaScript.ORDER_ATOMIC) || '""';
-
-    var logMethod;
-    switch (logLevel) {
-        case 'INFO': logMethod = 'console.info'; break;
-        case 'WARNING': logMethod = 'console.warn'; break;
-        case 'ERROR': logMethod = 'console.error'; break;
-        case 'DEBUG': logMethod = 'console.debug'; break;
-        default: logMethod = 'console.log';
+// Split Text Block
+Blockly.Blocks['text_split'] = {
+    init: function() {
+        this.appendValueInput('STRING')
+            .setCheck('String')
+            .appendField('split');
+        this.appendValueInput('DELIMITER')
+            .setCheck('String')
+            .appendField('by');
+        this.setOutput(true, 'Array');
+        this.setColour("#3949AB");
+        this.setTooltip('Splits the string into an array using a delimiter');
     }
-
-    var code = `${logMethod}("[${tag}] " + ${message});\n`;
-    return code;
 };
 
-
-// Geradores de código para texto
+// JavaScript Generators
 Blockly.JavaScript['text_string'] = function(block) {
-    var text = block.getFieldValue('TEXT');
+    const text = block.getFieldValue('TEXT');
     return [`"${text}"`, Blockly.JavaScript.ORDER_ATOMIC];
 };
 
 Blockly.JavaScript['text_join'] = function(block) {
-    var a = Blockly.JavaScript.valueToCode(block, 'A', Blockly.JavaScript.ORDER_ATOMIC) || '""';
-    var b = Blockly.JavaScript.valueToCode(block, 'B', Blockly.JavaScript.ORDER_ATOMIC) || '""';
+    const a = Blockly.JavaScript.valueToCode(block, 'A', Blockly.JavaScript.ORDER_ATOMIC) || '""';
+    const b = Blockly.JavaScript.valueToCode(block, 'B', Blockly.JavaScript.ORDER_ATOMIC) || '""';
     return [`${a} + ${b}`, Blockly.JavaScript.ORDER_ATOMIC];
 };
 
 Blockly.JavaScript['text_operation'] = function(block) {
-    var text = Blockly.JavaScript.valueToCode(block, 'TEXT', Blockly.JavaScript.ORDER_ATOMIC) || '""';
-    var op = block.getFieldValue('OP');
-    var code = '';
-    
-    switch(op) {
-        case 'LENGTH': code = `${text}.length()`; break;
-        case 'UPPER': code = `${text}.toUpperCase()`; break;
-        case 'LOWER': code = `${text}.toLowerCase()`; break;
-        case 'TRIM': code = `${text}.trim()`; break;
+    const text = Blockly.JavaScript.valueToCode(block, 'TEXT', Blockly.JavaScript.ORDER_ATOMIC) || '""';
+    const op = block.getFieldValue('OP');
+    switch (op) {
+        case 'LENGTH':
+            return [`${text}.length()`, Blockly.JavaScript.ORDER_ATOMIC];
+        case 'UPPER':
+            return [`${text}.toUpperCase()`, Blockly.JavaScript.ORDER_ATOMIC];
+        case 'LOWER':
+            return [`${text}.toLowerCase()`, Blockly.JavaScript.ORDER_ATOMIC];
+        case 'TRIM':
+            return [`${text}.trim()`, Blockly.JavaScript.ORDER_ATOMIC];
+        default:
+            return ['""', Blockly.JavaScript.ORDER_ATOMIC];
     }
-    return [code, Blockly.JavaScript.ORDER_ATOMIC];
+};
+
+Blockly.JavaScript['text_charAt'] = function(block) {
+    const string = Blockly.JavaScript.valueToCode(block, 'STRING', Blockly.JavaScript.ORDER_ATOMIC) || '""';
+    const index = Blockly.JavaScript.valueToCode(block, 'INDEX', Blockly.JavaScript.ORDER_ATOMIC) || '0';
+    return [`${string}.charAt(${index})`, Blockly.JavaScript.ORDER_ATOMIC];
+};
+
+Blockly.JavaScript['text_indexOf'] = function(block) {
+    const string = Blockly.JavaScript.valueToCode(block, 'STRING', Blockly.JavaScript.ORDER_ATOMIC) || '""';
+    const substring = Blockly.JavaScript.valueToCode(block, 'SUBSTRING', Blockly.JavaScript.ORDER_ATOMIC) || '""';
+    return [`${string}.indexOf(${substring})`, Blockly.JavaScript.ORDER_ATOMIC];
+};
+
+Blockly.JavaScript['text_replace'] = function(block) {
+    const string = Blockly.JavaScript.valueToCode(block, 'STRING', Blockly.JavaScript.ORDER_ATOMIC) || '""';
+    const target = Blockly.JavaScript.valueToCode(block, 'TARGET', Blockly.JavaScript.ORDER_ATOMIC) || '""';
+    const replacement = Blockly.JavaScript.valueToCode(block, 'REPLACEMENT', Blockly.JavaScript.ORDER_ATOMIC) || '""';
+    return [`${string}.replace(${target}, ${replacement})`, Blockly.JavaScript.ORDER_ATOMIC];
+};
+
+Blockly.JavaScript['text_split'] = function(block) {
+    const string = Blockly.JavaScript.valueToCode(block, 'STRING', Blockly.JavaScript.ORDER_ATOMIC) || '""';
+    const delimiter = Blockly.JavaScript.valueToCode(block, 'DELIMITER', Blockly.JavaScript.ORDER_ATOMIC) || '""';
+    return [`${string}.split(${delimiter})`, Blockly.JavaScript.ORDER_ATOMIC];
 };

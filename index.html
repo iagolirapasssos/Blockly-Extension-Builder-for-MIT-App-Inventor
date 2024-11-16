@@ -62,6 +62,7 @@
 	<xml id="toolbox" style="display: none">
 	    <category id="cat_config" name="Configuration" colour="#5C6BC0">
 	        <block type="extension_class"></block>
+	        <block type="custom_annotation"></block>
 	        <block type="constructor_declaration"></block>
 	        <block type="constructor_parameter"></block>
 	        <block type="constructor_super_call"></block>
@@ -78,16 +79,38 @@
 	            <field name="IMPORT_PATH">java.util.HashMap</field>
 	        </block>		    
 	    </category>
+
+	    <category id="cat_imported" name="Imported Classes" colour="#6D4C41">
+	        <block type="imported_static_method"></block>
+	        <block type="imported_static_field"></block>
+	        <block type="imported_type_declaration"></block>
+	        <block type="imported_interface"></block>
+	    </category>
 	    
 	    <category id="cat_props" name="Properties" colour="#FB8C00">
 	        <block type="property_declaration"></block>
 	        <block type="designer_property"></block>
+	        <block type="set_property"></block>
+	        <block type="get_property"></block>
 	    </category>
+
+	    <category id="cat_method_inserts" name="Method Inserts" colour="#4CAF50">
+		    <block type="post_runnable"></block>
+		    <block type="run_on_ui_thread"></block>
+		    <block type="set_on_click_listener"></block>
+		    <block type="add_text_view"></block>
+		    <block type="add_image_view"></block>
+		    <block type="scroll_to_bottom"></block>
+		    <block type="show_toast"></block>
+		</category>
+
 	    
 	    <category id="cat_methods" name="Methods" colour="#7CB342">
 	        <block type="method_declaration"></block>
-	        <block type="method_return"></block>
 	        <block type="event_declaration"></block>
+	        <block type="custom_dispatcher"></block>
+	        <block type="method_return"></block>
+	        <block type="method_call"></block>
 	    </category>
 
 	    <sep></sep>
@@ -100,6 +123,14 @@
 	        <block type="controls_return"></block>
 	    </category>
 
+	    <category id="cat_logic" name="Logic" colour="#FDD835">
+	        <block type="logic_compare"></block>
+	        <block type="logic_operation"></block>
+	        <block type="logic_negate"></block>
+	        <block type="logic_boolean"></block>
+	        <block type="logic_null"></block>
+	    </category>
+
 	    <category id="cat_math" name="Math" colour="#8E24AA">
 	        <block type="math_operation"></block>
 	        <block type="math_function"></block>
@@ -109,14 +140,15 @@
 	    </category>
 
 	    <category id="cat_text" name="Text" colour="#3949AB">
-	        <block type="text_string"></block>
-	        <block type="text_join"></block>
-	        <block type="text_operation"></block>
-	        <block type="text_charAt"></block>
-	        <block type="text_indexOf"></block>
-	        <block type="log_message"></block>
-        	<block type="log_message_tagged"></block>
-	    </category>
+		    <block type="text_string"></block>
+		    <block type="text_join"></block>
+		    <block type="text_operation"></block>
+		    <block type="text_charAt"></block>
+		    <block type="text_indexOf"></block>
+		    <block type="text_replace"></block>
+		    <block type="text_split"></block>
+		</category>
+
 
 	    <category id="cat_lists" name="Lists" colour="#00ACC1">
 	        <block type="lists_create"></block>
@@ -126,28 +158,16 @@
 	        <block type="lists_forEach"></block>
 	    </category>
 
-	    <category id="cat_logic" name="Logic" colour="#FDD835">
-	        <block type="logic_compare"></block>
-	        <block type="logic_operation"></block>
-	        <block type="logic_negate"></block>
-	        <block type="logic_boolean"></block>
-	        <block type="logic_null"></block>
-	    </category>
-
 	    <category id="cat_dictionaries" name="Dictionaries" colour="#43A047">
-	        <block type="dict_create"></block>
-	        <block type="dict_get"></block>
-	        <block type="dict_set"></block>
-	        <block type="dict_remove"></block>
-	        <block type="dict_containsKey"></block>
-	    </category>
+		    <block type="dict_create"></block>
+		    <block type="dict_get"></block>
+		    <block type="dict_set"></block>
+		    <block type="dict_remove"></block>
+		    <block type="dict_containsKey"></block>
+		    <block type="dict_keys"></block>
+		    <block type="dict_values"></block>
+		</category>
 
-	    <category id="cat_imported" name="Imported Classes" colour="#6D4C41">
-	        <block type="imported_static_method"></block>
-	        <block type="imported_static_field"></block>
-	        <block type="imported_type_declaration"></block>
-	        <block type="imported_interface"></block>
-	    </category>
 
 	    <category id="cat_object" name="Objects" colour="#F4511E">
 	        <block type="object_create"></block>
@@ -168,23 +188,29 @@
 	        <block type="color_random"></block>
 	    </category>
 
-	    <category id="cat_variables" name="Variables" colour="#546E7A" custom="VARIABLE"></category>
+	    <category id="cat_variables_custom" name="Variables" colour="#546E7A">
+		    <block type="create_variable"></block>
+		    <block type="set_variable"></block>
+		    <block type="get_variable"></block>
+		</category>
+
 
 	    <category id="cat_functions" name="Functions" colour="#827717">
-	        <block type="procedures_defnoreturn"></block>
-	        <block type="procedures_defreturn"></block>
-	        <block type="procedures_ifreturn"></block>
-	        <block type="procedures_callnoreturn"></block>
-	        <block type="procedures_callreturn"></block>
-	        <block type="function_return"></block>
-	    </category>
+		    <block type="procedures_defnoreturn"></block>
+		    <block type="procedures_defreturn"></block>
+		    <block type="procedures_callnoreturn"></block>
+		    <block type="procedures_callreturn"></block>
+		    <block type="function_return"></block>
+		    <block type="function_with_parameters"></block>
+		</category>
+
 	</xml>
 
 
 	<!-- Scripts próprios -->
 	<script src="js/translations.js"></script>
 	<script src="js/blocks/functions.js"></script>
-	<script src="js/blocks/constructor_blocks.js"></script>
+	<script src="js/blocks/methods.js"></script>
 	<script src="js/blocks/control_blocks.js"></script>
 	<script src="js/blocks/math_blocks.js"></script>
 	<script src="js/blocks/text_blocks.js"></script>
@@ -197,6 +223,9 @@
 	<script src="js/blocks/object_blocks.js"></script>
 	<script src="js/blocks/imported_class_blocks.js"></script>
 	<script src="js/blocks/blocks.js"></script>
+	<script src="js/blocks/configurations.js"></script>
+	<script src="js/blocks/method_inserts.js"></script>
+	<script src="js/blocks/variables.js"></script>
 	<script src="js/main.js"></script>
 </body>
 </html>

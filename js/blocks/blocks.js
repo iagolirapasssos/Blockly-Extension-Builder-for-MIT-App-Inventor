@@ -1,29 +1,6 @@
 // Define custom blocks
-Blockly.Blocks['extension_class'] = {
-    init: function() {
-        this.appendDummyInput()
-            .appendField("Create Extension")
-            .appendField(new Blockly.FieldTextInput("MyExtension"), "CLASS_NAME");
-        this.appendStatementInput("MEMBERS")
-            .setCheck(null);
-        this.setColour(210);
-        this.setTooltip("Defines the main class of the extension");
-        this.setHelpUrl("");
-    }
-};
 
-Blockly.Blocks['package_declaration'] = {
-    init: function() {
-        this.appendDummyInput()
-            .appendField("Package")
-            .appendField(new Blockly.FieldTextInput("com.example.extension"), "PACKAGE");
-        this.setPreviousStatement(true, null);
-        this.setNextStatement(true, null);
-        this.setColour(210);
-        this.setTooltip("Declares the extension package");
-        this.setHelpUrl("");
-    }
-};
+
 
 Blockly.Blocks['import_basic'] = {
     init: function() {
@@ -43,93 +20,7 @@ Blockly.Blocks['import_basic'] = {
     }
 };
 
-// Manual Import
-Blockly.Blocks['import_manual'] = {
-    init: function() {
-        this.appendDummyInput()
-            .appendField('import')
-            .appendField(new Blockly.FieldTextInput('java.util.ArrayList'), 'IMPORT_PATH');
-        this.appendDummyInput()
-            .appendField(new Blockly.FieldCheckbox('FALSE'), 'IS_STATIC')
-            .appendField('static')
-            .appendField(new Blockly.FieldCheckbox('FALSE'), 'IS_WILDCARD')
-            .appendField('.*');
-        this.setPreviousStatement(true, null);
-        this.setNextStatement(true, null);
-        this.setColour(210);
-        this.setTooltip('Manual class or package import');
-    }
-};
-
-// Import Specific Package
-Blockly.Blocks['import_package'] = {
-    init: function() {
-        this.appendDummyInput()
-            .appendField('import package')
-            .appendField(new Blockly.FieldTextInput('com.example'), 'PACKAGE')
-            .appendField('.')
-            .appendField(new Blockly.FieldTextInput('util'), 'SUB_PACKAGE')
-            .appendField('.*');
-        this.setPreviousStatement(true, null);
-        this.setNextStatement(true, null);
-        this.setColour(210);
-        this.setTooltip('Imports all classes from a package');
-    }
-};
-
-// Import Specific Class
-Blockly.Blocks['import_class'] = {
-    init: function() {
-        this.appendDummyInput()
-            .appendField('import class')
-            .appendField(new Blockly.FieldTextInput('java.util.List'), 'CLASS_PATH');
-        this.appendDummyInput()
-            .appendField('as')
-            .appendField(new Blockly.FieldTextInput(''), 'ALIAS')
-            .appendField('(optional)');
-        this.setPreviousStatement(true, null);
-        this.setNextStatement(true, null);
-        this.setColour(210);
-        this.setTooltip('Imports a specific class with optional alias');
-    }
-};
-
 // Import Static Method
-Blockly.Blocks['import_static'] = {
-    init: function() {
-        this.appendDummyInput()
-            .appendField('import static')
-            .appendField(new Blockly.FieldTextInput('java.lang.Math'), 'CLASS')
-            .appendField('.')
-            .appendField(new Blockly.FieldTextInput('*'), 'METHOD');
-        this.setPreviousStatement(true, null);
-        this.setNextStatement(true, null);
-        this.setColour(210);
-        this.setTooltip('Imports static method from a class');
-    }
-};
-
-
-Blockly.Blocks['property_declaration'] = {
-    init: function() {
-        this.appendDummyInput()
-            .appendField(new Blockly.FieldTextInput("myProperty"), "PROPERTY_NAME")
-            .appendField("type")
-            .appendField(new Blockly.FieldDropdown([
-                ["String", "String"],
-                ["int", "int"],
-                ["boolean", "boolean"],
-                ["double", "double"]
-            ]), "TYPE");
-        this.appendStatementInput("PROPERTY_CONTENT")
-            .setCheck(null);
-        this.setPreviousStatement(true, null);
-        this.setNextStatement(true, null);
-        this.setColour(160);
-        this.setTooltip("Declares a property");
-        this.setHelpUrl("");
-    }
-};
 
 Blockly.Blocks['designer_property'] = {
     init: function() {
@@ -142,8 +33,21 @@ Blockly.Blocks['designer_property'] = {
                 ["integer", "PropertyTypeConstants.PROPERTY_TYPE_INTEGER"],
                 ["color", "PropertyTypeConstants.PROPERTY_TYPE_COLOR"]
             ]), "TYPE");
-        this.appendStatementInput("DESIGNER_PROPERTY_CONTENT")
-            .setCheck(null);
+        this.appendDummyInput()
+            .appendField("Description")
+            .appendField(new Blockly.FieldTextInput("A designer property"), "DESCRIPTION");
+        this.appendDummyInput()
+            .appendField("Category")
+            .appendField(new Blockly.FieldDropdown([
+                ["BEHAVIOR", "PropertyCategory.BEHAVIOR"],
+                ["APPEARANCE", "PropertyCategory.APPEARANCE"]
+            ]), "CATEGORY");
+        this.appendStatementInput("DESIGNER_PROPERTY_SETTER")
+            .setCheck(null)
+            .appendField("Setter");
+        this.appendStatementInput("DESIGNER_PROPERTY_GETTER")
+            .setCheck(null)
+            .appendField("Getter");
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(160);
@@ -152,75 +56,111 @@ Blockly.Blocks['designer_property'] = {
     }
 };
 
-// Function return block for methods
-Blockly.Blocks['method_return'] = {
-    init: function() {
-        this.appendValueInput('RETURN_VALUE')
-            .setCheck(null)
-            .appendField('return');
-        this.setPreviousStatement(true, null);
-        this.setNextStatement(false, null); // Does not allow following block
-        this.setColour(290); // Same color as methods
-        this.setTooltip('Returns a value from the method');
-    }
-};
-
-// Updated method block with content field
-Blockly.Blocks['method_declaration'] = {
+Blockly.Blocks['property_declaration'] = {
     init: function() {
         this.appendDummyInput()
-            .appendField(new Blockly.FieldTextInput("myMethod"), "METHOD_NAME")
-            .appendField("return")
+            .appendField(new Blockly.FieldTextInput("myProperty"), "PROPERTY_NAME")
+            .appendField("type")
             .appendField(new Blockly.FieldDropdown([
-                ["void", "void"],
                 ["String", "String"],
                 ["int", "int"],
-                ["boolean", "boolean"]
-            ]), "RETURN_TYPE");
-        this.appendStatementInput("METHOD_CONTENT")
+                ["boolean", "boolean"],
+                ["double", "double"]
+            ]), "TYPE");
+        this.appendStatementInput("PROPERTY_SETTER")
             .setCheck(null)
-            .appendField("content");
+            .appendField("Setter");
+        this.appendStatementInput("PROPERTY_GETTER")
+            .setCheck(null)
+            .appendField("Getter");
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
-        this.setColour(290);
-        this.setTooltip("Declares a method with return value");
-    }
-};
-
-Blockly.Blocks['event_declaration'] = {
-    init: function() {
-        this.appendDummyInput()
-            .appendField(new Blockly.FieldTextInput("MyEvent"), "EVENT_NAME");
-        this.appendStatementInput("EVENT_CONTENT")
-            .setCheck(null);
-        this.setPreviousStatement(true, null);
-        this.setNextStatement(true, null);
-        this.setColour(290);
-        this.setTooltip("Declares an event");
+        this.setColour(160);
+        this.setTooltip("Declares a property");
         this.setHelpUrl("");
     }
 };
 
-//Generators
-// Java code generator
-Blockly.JavaScript['extension_class'] = function(block) {
-    var className = block.getFieldValue('CLASS_NAME');
-    var members = Blockly.JavaScript.statementToCode(block, 'MEMBERS');
-    
-    var code = `@DesignerComponent(version = 1,
-    description = "A custom extension",
-    category = ComponentCategory.EXTENSION,
-    nonVisible = true,
-    iconName = "images/extension.png")
-@SimpleObject(external = true)
-public class ${className} extends AndroidNonvisibleComponent {
-${members}}`;
-    return code;
+Blockly.Blocks['set_property'] = {
+  init: function() {
+    this.appendValueInput("VALUE")
+        .setCheck(null)
+        .appendField("set")
+        .appendField(new Blockly.FieldTextInput("myProperty"), "PROPERTY");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(290);
+    this.setTooltip("Set property value");
+    this.setHelpUrl("");
+  }
 };
 
-Blockly.JavaScript['package_declaration'] = function(block) {
-    var package = block.getFieldValue('PACKAGE');
-    return `package ${package};\n\n`;
+
+Blockly.Blocks['get_property'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("get")
+        .appendField(new Blockly.FieldTextInput("myProperty"), "PROPERTY");
+    this.setOutput(true, null);
+    this.setColour(290);
+    this.setTooltip("Get property value");
+    this.setHelpUrl("");
+  }
+};
+
+
+
+
+//Generators
+// Java code generator
+Blockly.JavaScript['set_property'] = function(block) {
+  var property = block.getFieldValue('PROPERTY');
+  var value = Blockly.JavaScript.valueToCode(block, 'VALUE', Blockly.JavaScript.ORDER_ATOMIC);
+  var code = `set${property.charAt(0).toUpperCase() + property.slice(1)}(${value});\n`;
+  return code;
+};
+
+Blockly.JavaScript['get_property'] = function(block) {
+  var property = block.getFieldValue('PROPERTY');
+  var code = `get${property.charAt(0).toUpperCase() + property.slice(1)}()`;
+  return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
+};
+
+Blockly.JavaScript['property_declaration'] = function(block) {
+    var propertyName = block.getFieldValue('PROPERTY_NAME');
+    var type = block.getFieldValue('TYPE');
+    var setterContent = Blockly.JavaScript.statementToCode(block, 'PROPERTY_SETTER');
+    var getterContent = Blockly.JavaScript.statementToCode(block, 'PROPERTY_GETTER');
+    
+    return `    private ${type} ${propertyName};
+    
+    public void set${propertyName.charAt(0).toUpperCase() + propertyName.slice(1)}(${type} value) {
+        ${setterContent}
+    }
+    
+    public ${type} get${propertyName.charAt(0).toUpperCase() + propertyName.slice(1)}() {
+        ${getterContent}
+    }\n`;
+};
+
+Blockly.JavaScript['designer_property'] = function(block) {
+    var propertyName = block.getFieldValue('PROPERTY_NAME');
+    var type = block.getFieldValue('TYPE');
+    var description = block.getFieldValue('DESCRIPTION');
+    var category = block.getFieldValue('CATEGORY');
+    var setterContent = Blockly.JavaScript.statementToCode(block, 'DESIGNER_PROPERTY_SETTER');
+    var getterContent = Blockly.JavaScript.statementToCode(block, 'DESIGNER_PROPERTY_GETTER');
+    
+    return `    @DesignerProperty(editorType = ${type}, defaultValue = "")
+    @SimpleProperty(description = "${description}")
+    public void ${propertyName}(String value) {
+        ${setterContent}
+    }
+    
+    @SimpleProperty(category = ${category})
+    public String ${propertyName}() {
+        ${getterContent}
+    }\n`;
 };
 
 Blockly.JavaScript['import_basic'] = function(block) {
@@ -234,96 +174,5 @@ Blockly.JavaScript['import_basic'] = function(block) {
     return `import ${imports[importType]};\n`;
 };
 
-Blockly.JavaScript['property_declaration'] = function(block) {
-    var propertyName = block.getFieldValue('PROPERTY_NAME');
-    var type = block.getFieldValue('TYPE');
-    var content = Blockly.JavaScript.statementToCode(block, 'PROPERTY_CONTENT');
-    
-    return `    private ${type} ${propertyName};
-    
-    public ${type} get${propertyName.charAt(0).toUpperCase() + propertyName.slice(1)}() {
-        return ${propertyName};
-    }
-    
-    public void set${propertyName.charAt(0).toUpperCase() + propertyName.slice(1)}(${type} value) {
-        this.${propertyName} = value;
-    }${content}\n`;
-};
 
-Blockly.JavaScript['designer_property'] = function(block) {
-    var propertyName = block.getFieldValue('PROPERTY_NAME');
-    var type = block.getFieldValue('TYPE');
-    var content = Blockly.JavaScript.statementToCode(block, 'DESIGNER_PROPERTY_CONTENT');
-    
-    return `    @DesignerProperty(editorType = ${type})
-    @SimpleProperty(description = "A designer property")
-    public void ${propertyName}(String value) {
-        // Implementation
-        ${content}
-    }
-    
-    @SimpleProperty(category = PropertyCategory.BEHAVIOR)
-    public String ${propertyName}() {
-        // Implementation
-        return "";
-    }\n`;
-};
 
-// Updated code generators
-Blockly.JavaScript['method_return'] = function(block) {
-    var returnValue = Blockly.JavaScript.valueToCode(block, 'RETURN_VALUE', Blockly.JavaScript.ORDER_ATOMIC) || '';
-    return `        return ${returnValue};\n`;
-};
-
-Blockly.JavaScript['method_declaration'] = function(block) {
-    var methodName = block.getFieldValue('METHOD_NAME');
-    var returnType = block.getFieldValue('RETURN_TYPE');
-    var content = Blockly.JavaScript.statementToCode(block, 'METHOD_CONTENT');
-    
-    return `    @SimpleFunction(description = "A custom method")
-    public ${returnType} ${methodName}() {
-${content}    }\n`;
-};
-
-Blockly.JavaScript['event_declaration'] = function(block) {
-    var eventName = block.getFieldValue('EVENT_NAME');
-    return `    @SimpleEvent(description = "A custom event")
-    public void ${eventName}() {
-        EventDispatcher.dispatchEvent(this, "${eventName}");
-    }\n`;
-};
-
-// Code generators
-Blockly.JavaScript['import_manual'] = function(block) {
-    var path = block.getFieldValue('IMPORT_PATH');
-    var isStatic = block.getFieldValue('IS_STATIC') === 'TRUE';
-    var isWildcard = block.getFieldValue('IS_WILDCARD') === 'TRUE';
-    
-    var code = 'import ';
-    if (isStatic) code += 'static ';
-    code += path;
-    if (isWildcard) code += '.*';
-    return code + ';\n';
-};
-
-Blockly.JavaScript['import_package'] = function(block) {
-    var pkg = block.getFieldValue('PACKAGE');
-    var subPkg = block.getFieldValue('SUB_PACKAGE');
-    return `import ${pkg}.${subPkg}.*;\n`;
-};
-
-Blockly.JavaScript['import_class'] = function(block) {
-    var classPath = block.getFieldValue('CLASS_PATH');
-    var alias = block.getFieldValue('ALIAS');
-    var code = `import ${classPath}`;
-    if (alias) {
-        code += ` as ${alias}`;
-    }
-    return code + ';\n';
-};
-
-Blockly.JavaScript['import_static'] = function(block) {
-    var className = block.getFieldValue('CLASS');
-    var method = block.getFieldValue('METHOD');
-    return `import static ${className}.${method};\n`;
-};
