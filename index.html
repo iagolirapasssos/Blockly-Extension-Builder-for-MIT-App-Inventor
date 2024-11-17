@@ -37,14 +37,20 @@
 					<option value="en">English</option>
 					<option value="pt-br">Português</option>
 				</select>
-				<button class="button" onclick="saveBlocks()" title="Salvar Blocos">
+				<button class="button" onclick="saveBlocks()" title="Salve Blocks">
 					<span class="text-save">💾</span>
 				</button>
-				<button class="button" onclick="loadBlocks()" title="Carregar Blocos">
+				<button class="button" onclick="loadBlocks()" title="Upload Blocks">
 					<span class="text-load">📂</span>
 				</button>
+
+				<button class="button" onclick="compileExtension()">
+				    <span class="text-compile">Compile Extension</span>
+				</button>
+
+
 				<button class="button" onclick="generateJavaCode()">
-					<span class="text-generate">Gerar Código Java</span>
+					<span class="text-generate">Build Java File</span>
 				</button>
 				<button class="button" onclick="downloadCode()">
 					<span class="text-download">Download .java</span>
@@ -133,6 +139,7 @@
 
 	    <category id="cat_math" name="Math" colour="#8E24AA">
 	        <block type="math_operation"></block>
+	        <block type="math_compare"></block>
 	        <block type="math_function"></block>
 	        <block type="math_random"></block>
 	        <block type="math_number"></block>
@@ -141,6 +148,7 @@
 
 	    <category id="cat_text" name="Text" colour="#3949AB">
 		    <block type="text_string"></block>
+		    <block type="text_compare"></block>
 		    <block type="text_join"></block>
 		    <block type="text_operation"></block>
 		    <block type="text_charAt"></block>
@@ -221,6 +229,8 @@
 
 	<!-- Scripts próprios -->
 	<script src="js/translations.js"></script>
+
+	<script src="js/blocks/constructor_blocks.js"></script>
 	<script src="js/blocks/functions.js"></script>
 	<script src="js/blocks/methods.js"></script>
 	<script src="js/blocks/control_blocks.js"></script>
@@ -235,7 +245,6 @@
 	<script src="js/blocks/object_blocks.js"></script>
 	<script src="js/blocks/imported_class_blocks.js"></script>
 	<script src="js/blocks/blocks.js"></script>
-	<script src="js/blocks/configurations.js"></script>
 	<script src="js/blocks/method_inserts.js"></script>
 	<script src="js/blocks/variables.js"></script>
 	<script src="js/blocks/comments_blocks.js"></script>

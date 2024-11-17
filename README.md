@@ -14,14 +14,43 @@ This repository offers an interactive IDE for creating Java extensions for MIT A
 
 ---
 
+## Prerequisites
+
+- **Java Runtime**:
+  - Install the latest Java JDK for your operating system.
+  - Ensure `java` is available in your PATH.
+
+- **Fast CLI**:
+  - Download Fast CLI from [Fast CLI GitHub](https://github.com/jewelshkjony/fast-cli).
+  - Place the `fast.jar` in the following directory:
+    - **Linux/MacOS**: `~/.local/share/Fast/fast.jar`
+    - **Windows**: `%USERPROFILE%\.local\share\Fast\fast.jar`
+
+- **Python**:
+  - Python 3.8+ is required to run the Flask server.
+
+- **SSL Certificates**:
+  - Generate `localhost.crt` and `localhost.key` in the same directory as `server.py`.
+
+---
+
+## Setup Instructions
+
+### 1. Clone the Repository
+git clone https://github.com/iagolirapassos/Blockly-Extension-Builder-for-MIT-App-Inventor.git
+cd Blockly-Extension-Builder-for-MIT-App-Inventor
+
+---
+
 ### Instructions for Developers
 
 #### 1. **Setting Up the Project**
    - Clone the repository:
-     ```bash
+     
+bash
      git clone https://github.com/iagolirapasssos/Blockly-Extension-Builder-for-MIT-App-Inventor.git
-     ```
-   - Open `index.html` in your browser to start using the IDE.
+
+   - Open index.html in your browser to start using the IDE.
 
 #### 2. **Custom Blocks for Extensions**
 The IDE supports predefined and custom blocks to generate Java code for:
@@ -36,8 +65,8 @@ The IDE supports predefined and custom blocks to generate Java code for:
    - **Colors**
 
 #### 3. **Supported Blocks and Code Generators**
-##### **Example Block**: Creating a Property [See Docs](https://blockly-demo.appspot.com/static/demos/blockfactory/index.html)
-```javascript
+##### **Example Block**: Creating a Property ([See Docs](https://blockly-demo.appspot.com/static/demos/blockfactory/index.html) and [new doc](https://google.github.io/blockly-samples/examples/developer-tools/index.html))
+javascript
 Blockly.Blocks['property_declaration'] = {
     init: function() {
         this.appendDummyInput()
@@ -61,10 +90,10 @@ Blockly.Blocks['property_declaration'] = {
         this.setTooltip("Declares a property");
     }
 };
-```
+
 
 **Generated Code**:
-```java
+java
 private String myProperty;
 
 public void setMyProperty(String value) {
@@ -74,7 +103,7 @@ public void setMyProperty(String value) {
 public String getMyProperty() {
     return this.myProperty;
 }
-```
+
 
 ---
 
@@ -87,17 +116,20 @@ We are actively looking for:
 **Contributing Guide**:
 1. Fork the repository.
 2. Create a branch:
-   ```bash
+   
+bash
    git checkout -b feature-name
-   ```
+
 3. Make changes and commit:
-   ```bash
+   
+bash
    git commit -m "Added new feature"
-   ```
+
 4. Push to your branch:
-   ```bash
+   
+bash
    git push origin feature-name
-   ```
+
 5. Open a pull request.
 
 ---
@@ -145,10 +177,11 @@ A visual and dynamic interface that uses Blockly to create MIT App Inventor exte
 ### Installation
 
 1. Clone this repository:
-   ```bash
+   
+bash
    git clone https://github.com/iagolirapasssos/Blockly-Extension-Builder-for-MIT-App-Inventor.git
-   ```
-2. Open `index.html` in a web browser to start using the tool.
+
+2. Open index.html in a web browser to start using the tool.
 
 ## Usage
 
@@ -158,8 +191,8 @@ A visual and dynamic interface that uses Blockly to create MIT App Inventor exte
 
 ## Development and Contributions
 
-1. Add custom block definitions in `blocks.js` and update generators in `generators.js`.
+1. Add custom block definitions in blocks.js and update generators in generators.js.
 2. To contribute, fork the repository, make updates, and submit a pull request.
 
 ## License
-This project is licensed under the MIT License. See the `LICENSE` file for more details.
+This project is licensed under the MIT License. See the LICENSE file for more details.

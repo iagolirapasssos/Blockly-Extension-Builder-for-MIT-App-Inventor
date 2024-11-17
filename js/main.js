@@ -226,16 +226,44 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 	};
 
-    window.downloadCode = function() {
+    window.downloadCode = function () {
         const outputElement = document.getElementById('outputCode');
-        // Pega o texto sem formatação HTML
         const code = outputElement.textContent || outputElement.innerText;
-        const blob = new Blob([code], { type: 'text/java;charset=utf-8' });
-        const a = document.createElement('a');
-        a.download = 'MinhaExtensao.java';
-        a.href = URL.createObjectURL(blob);
-        a.click();
+
+        if (!code) {
+            showNotification("No code generated. Please generate code first.", "error");
+            return;
+        }
+
+        try {
+            // Extração do package e nome da classe
+            const packageMatch = code.match(/package\s+([\w\.]+);/);
+            const classMatch = code.match(/public\s+class\s+(\w+)/);
+
+            if (!packageMatch || !classMatch) {
+                throw new Error("Invalid Java code. Could not extract package or class name.");
+            }
+
+            const packageName = packageMatch[1];
+            const className = classMatch[1];
+
+            // Criar o nome do arquivo
+            const fileName = `${className}.java`;
+
+            // Criação do arquivo Java para download
+            const blob = new Blob([code], { type: "text/java;charset=utf-8" });
+            const a = document.createElement("a");
+            a.download = fileName;
+            a.href = URL.createObjectURL(blob);
+            a.click();
+
+            showNotification(`Code downloaded as ${fileName}`, "success");
+        } catch (error) {
+            console.error("Error while downloading code:", error);
+            showNotification("Failed to download code. Check the console for details.", "error");
+        }
     };
+
 
     document.getElementById('blocklyDiv').addEventListener('dragover', handleDragOver);
     document.getElementById('blocklyDiv').addEventListener('drop', handleFileDrop);
@@ -278,3 +306,123 @@ document.addEventListener('DOMContentLoaded', function() {
     changeLanguage('en');
     changeTheme('light');
 });
+
+// Função para compilar extensão
+async function compileExtension() {
+    const progressModal = showProgressModal();
+
+    try {
+        const outputElement = document.getElementById('outputCode');
+        const code = outputElement.textContent || outputElement.innerText;
+
+        if (!code) {
+            showNotification("No code generated. Please generate code first.", "error");
+            progressModal.close();
+            return;
+        }
+
+        // Extract package and class name from the code
+        const packageMatch = code.match(/package\s+([\w\.]+);/);
+        const classMatch = code.match(/public\s+class\s+(\w+)/);
+
+        if (!classMatch) {
+            throw new Error("Invalid Java code. Could not extract class name.");
+        }
+
+        const className = classMatch[1];
+        const packageName = packageMatch ? packageMatch[1] : "com.example";
+
+        console.log("Class Name:", className);
+        console.log("Package Name:", packageName);
+
+        // Fetch the compiled extension from the server
+        const response = await fetch("https://localhost:8080/compile", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ code, className, packageName }),
+        });
+
+        console.log("Response Status:", response.status);
+
+        if (!response.ok) {
+            const errorDetails = await response.json().catch(() => null);
+            const errorMessage = errorDetails?.error || "Unknown error occurred.";
+            throw new Error(`Failed to compile the extension: ${errorMessage}`);
+        }
+
+        const blob = await response.blob();
+        const downloadUrl = URL.createObjectURL(blob);
+
+        progressModal.updateWithDownload(downloadUrl, `${className}.aix`);
+
+        await cleanupProjectDirectory(className);
+    } catch (error) {
+        console.error("Error during compilation:", error);
+        showNotification("Failed to compile the extension. Check the console for details.", "error");
+        progressModal.close();
+    }
+}
+
+function showProgressModal() {
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+
+    modal.innerHTML = `
+        <div class="modal-content">
+            <h2>Please wait...</h2>
+            <p>Your extension is being generated. This might take a few seconds.</p>
+            <div class="progress-circle"></div>
+            <button class="close-modal">Close</button>
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    // Method to update the modal with a download link
+    modal.updateWithDownload = (downloadUrl, fileName) => {
+        modal.innerHTML = `
+            <div class="modal-content">
+                <h2>Extension Compiled Successfully!</h2>
+                <p>Your extension is ready for download:</p>
+                <a href="${downloadUrl}" download="${fileName}" class="download-link">Download ${fileName}</a>
+                <button class="close-modal">Close</button>
+            </div>
+        `;
+
+        modal.querySelector('.close-modal').addEventListener('click', () => {
+            document.body.removeChild(modal);
+        });
+    };
+
+    // Method to close the modal
+    modal.close = () => {
+        document.body.removeChild(modal);
+    };
+
+    return modal;
+}
+
+async function cleanupProjectDirectory(className) {
+    try {
+        const response = await fetch(`https://localhost:8080/cleanup/${className}`, {
+            method: "DELETE",
+        });
+
+        if (!response.ok) {
+            console.error("Failed to cleanup project directory. Response status:", response.status);
+        } else {
+            console.log(`Project directory for ${className} cleaned up successfully.`);
+        }
+    } catch (error) {
+        console.error("Error during project directory cleanup:", error);
+    }
+}
+
+
+
+
+
+// Evento de clique no botão
+//document.querySelector('.button').addEventListener('click', compileExtension);

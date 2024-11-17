@@ -14,6 +14,28 @@ Blockly.Blocks['text_string'] = {
     }
 };
 
+Blockly.Blocks['text_compare'] = {
+    init: function() {
+        this.appendValueInput('TEXT1')
+            .setCheck('String')
+            .appendField('compare text');
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldDropdown([
+                ['is equal to', 'EQ'],
+                ['is not equal to', 'NEQ'],
+                ['contains', 'CONTAINS'],
+                ['does not contain', 'NOT_CONTAINS']
+            ]), 'OP');
+        this.appendValueInput('TEXT2')
+            .setCheck('String')
+            .appendField('with text');
+        this.setOutput(true, 'Boolean');
+        this.setColour("#3949AB");
+        this.setTooltip('Compares two texts or checks if one contains the other.');
+        this.setHelpUrl('');
+    }
+};
+
 // Concatenate Texts Block
 Blockly.Blocks['text_join'] = {
     init: function() {
@@ -109,6 +131,32 @@ Blockly.Blocks['text_split'] = {
 };
 
 // JavaScript Generators
+Blockly.JavaScript['text_compare'] = function(block) {
+    const text1 = Blockly.JavaScript.valueToCode(block, 'TEXT1', Blockly.JavaScript.ORDER_ATOMIC) || '""';
+    const text2 = Blockly.JavaScript.valueToCode(block, 'TEXT2', Blockly.JavaScript.ORDER_ATOMIC) || '""';
+    const operator = block.getFieldValue('OP');
+
+    let code;
+    switch (operator) {
+        case 'EQ': // Igual a
+            code = `${text1} === ${text2}`;
+            break;
+        case 'NEQ': // Diferente de
+            code = `${text1} !== ${text2}`;
+            break;
+        case 'CONTAINS': // Contém
+            code = `${text1}.includes(${text2})`;
+            break;
+        case 'NOT_CONTAINS': // Não contém
+            code = `!${text1}.includes(${text2})`;
+            break;
+        default:
+            code = 'false';
+    }
+
+    return [code, Blockly.JavaScript.ORDER_RELATIONAL];
+};
+
 Blockly.JavaScript['text_string'] = function(block) {
     const text = block.getFieldValue('TEXT');
     return [`"${text}"`, Blockly.JavaScript.ORDER_ATOMIC];

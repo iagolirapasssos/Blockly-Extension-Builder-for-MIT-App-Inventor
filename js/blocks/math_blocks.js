@@ -18,11 +18,11 @@ Blockly.Blocks['math_operation'] = {
     init: function() {
         this.setHelpUrl('');
         this.setColour("#8E24AA");
-        this.itemCount_ = 2;
+        this.itemCount_ = 2; // Começa com duas entradas
         this.updateShape_();
         this.setOutput(true, 'Number');
         this.setMutator(new Blockly.Mutator(['math_operation_item']));
-        this.setTooltip('Combines numbers with mathematical operations');
+        this.setTooltip('Performs mathematical operations on numbers.');
     },
 
     mutationToDom: function() {
@@ -39,7 +39,7 @@ Blockly.Blocks['math_operation'] = {
     decompose: function(workspace) {
         let containerBlock = workspace.newBlock('math_operation_container');
         containerBlock.initSvg();
-        
+
         let connection = containerBlock.getInput('STACK').connection;
         for (let i = 0; i < this.itemCount_ - 1; i++) {
             let itemBlock = workspace.newBlock('math_operation_item');
@@ -47,7 +47,7 @@ Blockly.Blocks['math_operation'] = {
             connection.connect(itemBlock.previousConnection);
             connection = itemBlock.nextConnection;
         }
-        
+
         return containerBlock;
     },
 
@@ -61,16 +61,16 @@ Blockly.Blocks['math_operation'] = {
             itemBlock = itemBlock.nextConnection &&
                 itemBlock.nextConnection.targetBlock();
         }
-        
+
         this.itemCount_ = connections.length + 1;
         this.updateShape_();
-        
+
         for (let i = 1; i < this.itemCount_; i++) {
-            if (operators[i-1]) {
-                this.getField('OP' + i).setValue(operators[i-1]);
+            if (operators[i - 1]) {
+                this.getField('OP' + i).setValue(operators[i - 1]);
             }
-            if (connections[i-1]) {
-                this.getInput('NUM' + i).connection.connect(connections[i-1]);
+            if (connections[i - 1]) {
+                this.getInput('NUM' + i).connection.connect(connections[i - 1]);
             }
         }
     },
@@ -94,13 +94,12 @@ Blockly.Blocks['math_operation'] = {
                     ['+', 'ADD'],
                     ['-', 'SUBTRACT'],
                     ['×', 'MULTIPLY'],
-                    ['÷', 'DIVIDE'],
-                    ['%', 'MODULO'],
-                    ['^', 'POWER']
+                    ['÷', 'DIVIDE']
                 ]), 'OP' + i);
         }
     }
 };
+
 
 // Container block for mutator
 Blockly.Blocks['math_operation_container'] = {
@@ -224,7 +223,65 @@ Blockly.Blocks['math_constant'] = {
     }
 };
 
+Blockly.Blocks['math_compare'] = {
+    init: function() {
+        this.appendValueInput('A')
+            .setCheck('Number')
+            .appendField('if');
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldDropdown([
+                ['=', 'EQ'],
+                ['≠', 'NEQ'],
+                ['>', 'GT'],
+                ['≥', 'GTE'],
+                ['<', 'LT'],
+                ['≤', 'LTE']
+            ]), 'OP');
+        this.appendValueInput('B')
+            .setCheck('Number')
+            .appendField('then');
+        this.setOutput(true, 'Boolean');
+        this.setColour("#8E24AA");
+        this.setTooltip('Compares two numbers');
+        this.setHelpUrl('');
+    }
+};
+
+
 // Code Generators
+Blockly.JavaScript['math_compare'] = function(block) {
+    const valueA = Blockly.JavaScript.valueToCode(block, 'A', Blockly.JavaScript.ORDER_ATOMIC) || '0';
+    const valueB = Blockly.JavaScript.valueToCode(block, 'B', Blockly.JavaScript.ORDER_ATOMIC) || '0';
+    const operator = block.getFieldValue('OP');
+
+    let code;
+    switch (operator) {
+        case 'EQ': // Igual a
+            code = `${valueA} == ${valueB}`;
+            break;
+        case 'NEQ': // Diferente de
+            code = `${valueA} != ${valueB}`;
+            break;
+        case 'GT': // Maior que
+            code = `${valueA} > ${valueB}`;
+            break;
+        case 'GTE': // Maior ou igual a
+            code = `${valueA} >= ${valueB}`;
+            break;
+        case 'LT': // Menor que
+            code = `${valueA} < ${valueB}`;
+            break;
+        case 'LTE': // Menor ou igual a
+            code = `${valueA} <= ${valueB}`;
+            break;
+        default:
+            code = 'false';
+    }
+
+    return [code, Blockly.JavaScript.ORDER_RELATIONAL];
+};
+
+
 Blockly.JavaScript['math_number'] = function(block) {
     let number = block.getFieldValue('NUM');
     return [number, Blockly.JavaScript.ORDER_ATOMIC];
@@ -232,25 +289,36 @@ Blockly.JavaScript['math_number'] = function(block) {
 
 Blockly.JavaScript['math_operation'] = function(block) {
     let code = [];
-    
-    code.push(Blockly.JavaScript.valueToCode(block, 'NUM0', Blockly.JavaScript.ORDER_ATOMIC) || '0');
-    
+    let firstValue = Blockly.JavaScript.valueToCode(block, 'NUM0', Blockly.JavaScript.ORDER_ATOMIC) || '0';
+
+    code.push(firstValue);
+
     for (let i = 1; i < block.itemCount_; i++) {
         let operator = block.getFieldValue('OP' + i);
         let value = Blockly.JavaScript.valueToCode(block, 'NUM' + i, Blockly.JavaScript.ORDER_ATOMIC) || '0';
-        
-        switch(operator) {
-            case 'ADD': code.push('+', value); break;
-            case 'SUBTRACT': code.push('-', value); break; 
-            case 'MULTIPLY': code.push('*', value); break; 
-            case 'DIVIDE': code.push('/', value); break;
-            case 'MODULO': code.push('%', value); break;
-            case 'POWER': code.push('Math.pow(' + code.pop() + ',', value + ')'); break;
+
+        switch (operator) {
+            case 'ADD':
+                code.push('+', value);
+                break;
+            case 'SUBTRACT':
+                code.push('-', value);
+                break;
+            case 'MULTIPLY':
+                code.push('*', value);
+                break;
+            case 'DIVIDE':
+                if (value === '0') {
+                    throw new Error("Division by zero error.");
+                }
+                code.push('/', value);
+                break;
         }
     }
-    
+
     return ['(' + code.join(' ') + ')', Blockly.JavaScript.ORDER_ATOMIC];
 };
+
 
 Blockly.JavaScript['math_constant'] = function(block) {
     let constant = block.getFieldValue('CONSTANT');
