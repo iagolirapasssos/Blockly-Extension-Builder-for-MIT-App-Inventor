@@ -1,65 +1,142 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>MIT App Inventor Extension Builder</title>
-	
-	<!-- Favicon -->
-	<link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA/4QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAERERERERERERAAAAAAAAERAQAAAAAAEBEAEAAAAAEAEQABAAAAEAARAAAQAAAQABEAAAEAAAEAEQAAAQAAEAARAAABAAEAABAAAAEAAAAAAQAAAQAAAAAAEAAAEAAAAAAAQAAAQAAAAAAEAAAAAAAAAAAAAARERERERERERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" />
-	
-	<!-- Blockly -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/blockly/9.3.1/blockly.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/blockly/9.3.1/msg/pt-br.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/blockly/9.3.1/msg/en.js"></script>
-	
-	<!-- Prism.js para syntax highlighting -->
-	<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-clike.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
-	
-	<!-- CSS próprio -->
-	<link rel="stylesheet" href="css/styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>MIT App Inventor Extension Builder</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA/4QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAERERERERERERAAAAAAAAERAQAAAAAAEBEAEAAAAAEAEQABAAAAEAARAAAQAAAQABEAAAEAAAEAEQAAAQAAEAARAAABAAEAABAAAAEAAAAAAQAAAQAAAAAAEAAAEAAAAAAAQAAAQAAAAAAEAAAAAAAAAAAAAARERERERERERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" />
+    
+    <!-- Blockly -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/blockly/9.3.1/blockly.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/blockly/9.3.1/msg/pt-br.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/blockly/9.3.1/msg/en.js"></script>
+    
+    <!-- Prism.js para syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-clike.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+    
+    <!-- CSS próprio -->
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-	<div class="header">
-		<h2 id="title">MIT App Inventor Extension Builder</h2>
-			<div class="header-controls">
-				<select id="themeSelect" class="theme-select">
-					<option value="light">Light Theme</option>
-					<option value="dark">Dark Theme</option>
-					<option value="github">GitHub</option>
-					<option value="monokai">Monokai</option>
-				</select>
-				<select id="languageSelect" class="language-select">
-					<option value="en">English</option>
-					<option value="pt-br">Português</option>
-				</select>
-				<button class="button" onclick="saveBlocks()" title="Salve Blocks">
-					<span class="text-save">💾</span>
-				</button>
-				<button class="button" onclick="loadBlocks()" title="Upload Blocks">
-					<span class="text-load">📂</span>
-				</button>
+    <div class="header">
+        <h2 id="title">MIT App Inventor Extension Builder</h2>
+            <div class="header-controls">
+                <select id="themeSelect" class="theme-select">
+                    <option value="light">Light Theme</option>
+                    <option value="dark">Dark Theme</option>
+                    <option value="github">GitHub</option>
+                    <option value="monokai">Monokai</option>
+                </select>
+                <select id="languageSelect" class="language-select">
+                    <option value="en">English</option>
+                    <option value="pt-br">Português</option>
+                </select>
+                <button class="button" onclick="saveBlocks()" title="Salve Blocks">
+                    <span class="text-save">💾</span>
+                </button>
+                <button class="button" onclick="loadBlocks()" title="Upload Blocks">
+                    <span class="text-load">📂</span>
+                </button>
 
-				<button class="button" onclick="compileExtension()">
-				    <span class="text-compile">Compile Extension</span>
-				</button>
+                <button class="button" onclick="compileExtension()">
+                    <span class="text-compile">Compile Extension</span>
+                </button>
 
+                <button class="button" onclick="generateJavaCode()">
+                    <span class="text-generate">Build Java File</span>
+                </button>
+                <button class="button" onclick="downloadCode()">
+                    <span class="text-download">Download .java</span>
+                </button>
+            </div>
+    </div>
 
-				<button class="button" onclick="generateJavaCode()">
-					<span class="text-generate">Build Java File</span>
-				</button>
-				<button class="button" onclick="downloadCode()">
-					<span class="text-download">Download .java</span>
-				</button>
-			</div>
-	</div>
-	<div class="main-content">
-		<div id="blocklyDiv"></div>
-	</div>
+    <!-- Tab Navigation -->
+    <div class="tab-container">
+        <button class="tab-button active" onclick="showTab('ideTab')">IDE</button>
+        <button class="tab-button" onclick="showTab('manifestTab')">AndroidManifest.xml</button>
+        <button class="tab-button" onclick="showTab('fastTab')">fast.yml</button>
+    </div>
+
+    <!-- Tab Content -->
+    <div id="ideTab" class="tab-content active">
+        <div id="blocklyDiv"></div>
+    </div>
+
+    <div id="manifestTab" class="tab-content">
+        <textarea id="androidManifest" class="code-editor" placeholder="Edit AndroidManifest.xml here">
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  package="com.mypackage.testextension.testextension">
+
+  <application>
+    <!-- You can use any manifest tag that goes inside the <application> tag -->
+    <!-- <service android:name="com.example.MyService"> ... </service> -->
+  </application>
+
+  <!-- Other than <application> level tags, you can use <uses-permission> & <queries> tags -->
+  <!-- <uses-permission android:name="android.permission.INTERNET"/> -->
+  <!-- <queries> ... </queries> -->
+
+</manifest>
+        </textarea>
+    </div>
+
+    <div id="fastTab" class="tab-content">
+        <textarea id="fastYml" class="code-editor" placeholder="Edit fast.yml here">
+# The name of the extension developer
+author: BosonsHiggs
+
+# If enabled, the version number of every component will be increased automatically.
+auto_version: true
+
+# The minimum Android SDK level your extension supports. Minimum SDK defined in
+# AndroidManifest.xml or @DesignerComponent are ignored, you should always define it here.
+min_sdk: 7
+
+# If enabled, Kotlin Standard Libraries (V1.9.24) will be included with the extension.
+# If you want to add specific Kotlin Standard Libraries so disable it.
+kotlin: false
+
+# If enabled, you will be able to use Java 8 language features in your extension source code.
+# When you use .kt classes, by default Fast will desugar sources.
+desugar_sources: false
+
+# Enable it, if any of your dependencies use Java 8 language features.
+# If kotlin is enabled, by default Fast will desugar dependencies.
+desugar_deps: false
+
+# If enabled, the D8 tool will generate desugared (classes.jar) classes.dex
+desugar_dex: true
+
+# If enabled, @annotations will be not present in built extension.
+deannonate: true
+
+# If enabled, matching classes provided by MIT will not be included in the built extension.
+filter_mit_classes: false
+
+# If enabled, it will optimizes the extension with ProGuard.
+proguard: true
+
+# If enabled, R8 will be used instead of ProGuard and D8 dexer.
+# NOTE: It's an experimental feature.
+R8: false
+
+# Extension dependencies (JAR) [Should be present into deps directory]
+# dependencies:
+# - mylibrary.jar
+
+# Extension assets. [Should be present into assets directory]
+#assets:
+#- my-awesome-asset.anything
+        </textarea>
+    </div>
 	<div class="output-panel">
 		<div class="resize-handle"></div>
 		<pre><code id="outputCode" class="language-java"></code></pre>

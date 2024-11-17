@@ -307,21 +307,37 @@ document.addEventListener('DOMContentLoaded', function() {
     changeTheme('light');
 });
 
+
+function showTab(tabId) {
+    const tabs = document.querySelectorAll('.tab-content');
+    const buttons = document.querySelectorAll('.tab-button');
+
+    tabs.forEach(tab => tab.classList.remove('active'));
+    buttons.forEach(button => button.classList.remove('active'));
+
+    document.getElementById(tabId).classList.add('active');
+    document.querySelector(`.tab-button[onclick="showTab('${tabId}')"]`).classList.add('active');
+}
+
 // Função para compilar extensão
 async function compileExtension() {
     const progressModal = showProgressModal();
 
     try {
+        // Captura os valores do código, AndroidManifest.xml e fast.yml
         const outputElement = document.getElementById('outputCode');
         const code = outputElement.textContent || outputElement.innerText;
+        const manifestContent = document.getElementById('androidManifest').value;
+        const fastYmlContent = document.getElementById('fastYml').value;
 
+        // Valida se o código foi gerado
         if (!code) {
             showNotification("No code generated. Please generate code first.", "error");
             progressModal.close();
             return;
         }
 
-        // Extract package and class name from the code
+        // Extrai packageName e className do código
         const packageMatch = code.match(/package\s+([\w\.]+);/);
         const classMatch = code.match(/public\s+class\s+(\w+)/);
 
@@ -332,20 +348,31 @@ async function compileExtension() {
         const className = classMatch[1];
         const packageName = packageMatch ? packageMatch[1] : "com.example";
 
+        // Atualiza o packageName no AndroidManifest.xml se necessário
+        const updatedManifestContent = manifestContent.replace(
+            /package="[^"]*"/,
+            `package="${packageName}"`
+        );
+
         console.log("Class Name:", className);
         console.log("Package Name:", packageName);
 
-        // Fetch the compiled extension from the server
+        // Envia os dados para o servidor
         const response = await fetch("https://localhost:8080/compile", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ code, className, packageName }),
+            body: JSON.stringify({
+                code,
+                className,
+                packageName,
+                androidManifest: updatedManifestContent,
+                fastYml: fastYmlContent,
+            }),
         });
 
-        console.log("Response Status:", response.status);
-
+        // Lida com a resposta do servidor
         if (!response.ok) {
             const errorDetails = await response.json().catch(() => null);
             const errorMessage = errorDetails?.error || "Unknown error occurred.";
@@ -355,8 +382,10 @@ async function compileExtension() {
         const blob = await response.blob();
         const downloadUrl = URL.createObjectURL(blob);
 
+        // Atualiza o modal com o link para download
         progressModal.updateWithDownload(downloadUrl, `${className}.aix`);
 
+        // Solicita limpeza do diretório temporário
         await cleanupProjectDirectory(className);
     } catch (error) {
         console.error("Error during compilation:", error);
@@ -364,6 +393,7 @@ async function compileExtension() {
         progressModal.close();
     }
 }
+
 
 function showProgressModal() {
     const modal = document.createElement('div');
@@ -419,9 +449,6 @@ async function cleanupProjectDirectory(className) {
         console.error("Error during project directory cleanup:", error);
     }
 }
-
-
-
 
 
 // Evento de clique no botão

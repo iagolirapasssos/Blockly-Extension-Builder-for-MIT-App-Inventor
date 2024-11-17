@@ -6,7 +6,7 @@ import shutil
 import platform
 
 app = Flask(__name__)
-CORS(app)  # Enable Cross-Origin Resource Sharing
+CORS(app, supports_credentials=True)  # Enable Cross-Origin Resource Sharing
 
 # Determine the operating system and set the path for `fast.jar`
 SYSTEM = platform.system().lower()
@@ -62,28 +62,72 @@ def create_fast_structure(base_dir, package_name, class_name, code):
     # Create `fast.yml` configuration file
     with open(os.path.join(base_dir, "fast.yml"), "w") as f:
         f.write("""\
-# Fast CLI Configuration
-author: DeveloperName
+# The name of the extension developer
+author: BosonsHiggs
+
+# If enabled, the version number of every component will be increased automatically.
 auto_version: true
+
+# The minimum Android SDK level your extension supports. Minimum SDK defined in
+# AndroidManifest.xml or @DesignerComponent are ignored, you should always define it here.
 min_sdk: 7
-desugar_sources: true
-desugar_deps: true
+
+# If enabled, Kotlin Standard Libraries (V1.9.24) will be included with the extension.
+# If you want to add specific Kotlin Standard Libraries so disable it.
+kotlin: false
+
+# If enabled, you will be able to use Java 8 language features in your extension source code.
+# When you use .kt classes, by default Fast will desugar sources.
+desugar_sources: false
+
+# Enable it, if any of your dependencies use Java 8 language features.
+# If kotlin is enabled, by default Fast will desugar dependencies.
+desugar_deps: false
+
+# If enabled, the D8 tool will generate desugared (classes.jar) classes.dex
 desugar_dex: true
-proguard: true
-R8: false
+
+# If enabled, @annotations will be not present in built extension.
 deannonate: true
+
+# If enabled, matching classes provided by MIT will not be included in the built extension.
 filter_mit_classes: false
+
+# If enabled, it will optimizes the extension with ProGuard.
+proguard: true
+
+# If enabled, R8 will be used instead of ProGuard and D8 dexer.
+# NOTE: It's an experimental feature.
+R8: false
+
+# Extension dependencies (JAR) [Should be present into deps directory]
+# dependencies:
+# - mylibrary.jar
+
+# Extension assets. [Should be present into assets directory]
+#assets:
+#- my-awesome-asset.anything
+
 """)
 
     # Create AndroidManifest.xml
     with open(os.path.join(src_dir, "AndroidManifest.xml"), "w") as f:
-        f.write(f"""\
+        f.write(f'''\
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   package="{package_name}">
-  <application />
+
+  <application>
+    <!-- You can use any manifest tag that goes inside the <application> tag -->
+    <!-- <service android:name="com.example.MyService"> ... </service> -->
+  </application>
+
+  <!-- Other than <application> level tags, you can use <uses-permission> & <queries> tags -->
+  <!-- <uses-permission android:name="android.permission.INTERNET"/> -->
+  <!-- <queries> ... </queries> -->
+
 </manifest>
-""")
+''')
 
     # Save the Java source file
     with open(os.path.join(package_dir, f"{class_name}.java"), "w") as f:
@@ -97,38 +141,42 @@ filter_mit_classes: false
 
     return base_dir
 
+@app.after_request
+def add_cors_headers(response):
+    response.headers["Access-Control-Allow-Private-Network"] = "true"
+    response.headers["Access-Control-Allow-Origin"] = "*"  # Ajuste conforme necessário
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST, DELETE, OPTIONS"
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+    return response
+
 # Endpoint to compile an extension
 @app.route("/compile", methods=["POST"])
 def compile_extension():
-    """
-    Handles the compilation of an MIT App Inventor extension.
-    Accepts JSON input with `code`, `className`, and `packageName` fields.
-    Returns the compiled .aix file or an error message.
-    """
     try:
-        # Parse the JSON request
         data = request.json
         code = data.get("code", "")
         class_name = data.get("className", "TestExtension")
         package_name = data.get("packageName", "com.example.testextension")
+        android_manifest = data.get("androidManifest", "")
+        fast_yml = data.get("fastYml", "")
 
-        # Validate input
         if not code:
             return jsonify({"error": "No code provided"}), 400
 
-        # Prepare the project directory
         temp_dir = get_or_create_temp_dir()
         project_dir = os.path.join(temp_dir, f"{class_name}_project")
         if os.path.exists(project_dir):
-            shutil.rmtree(project_dir)  # Clean up existing directory
+            shutil.rmtree(project_dir)
         os.makedirs(project_dir, exist_ok=True)
 
-        # Create the project structure
+        # Save the files
         create_fast_structure(project_dir, package_name, class_name, code)
+        with open(os.path.join(project_dir, "src", "AndroidManifest.xml"), "w") as f:
+            f.write(android_manifest)
+        with open(os.path.join(project_dir, "fast.yml"), "w") as f:
+            f.write(fast_yml)
 
-        # Run the Fast CLI build command
         command = ["java", "-jar", FAST_JAR_PATH, "build"]
-        print(f"Running command: {' '.join(command)} in {project_dir}")
         result = subprocess.run(
             command,
             cwd=project_dir,
@@ -136,29 +184,19 @@ def compile_extension():
             text=True,
         )
 
-        # Log the Fast CLI output
-        print("Fast CLI stdout:", result.stdout)
-        print("Fast CLI stderr:", result.stderr)
-
-        # Check for build errors
         if result.returncode != 0:
             return jsonify({"error": "Compilation failed", "details": result.stderr}), 500
 
-        # Construct the expected .aix file path
         aix_file_name = f"{package_name}.aix"
         aix_file_path = os.path.join(project_dir, "out", aix_file_name)
-
-        # Verify the .aix file exists
+        print(f'aix_file_name: {aix_file_name} and aix_file_path: {aix_file_path}')
         if not os.path.exists(aix_file_path):
-            print(f"AIX file not found: {aix_file_path}")
             return jsonify({"error": "AIX file not found"}), 500
 
-        # Serve the .aix file for download
         return send_file(aix_file_path, as_attachment=True, download_name=f"{class_name}.aix")
-
     except Exception as e:
-        print("Internal server error:", str(e))
         return jsonify({"error": str(e)}), 500
+
 
 @app.route("/cleanup/<class_name>", methods=["DELETE"])
 def cleanup_project_directory(class_name):
