@@ -30,7 +30,7 @@ This repository offers an interactive IDE for creating Java extensions for MIT A
   - Python 3.8+ is required to run the Flask server.
 
 - **SSL Certificates**:
-  - Generate `localhost.crt` and `localhost.key` in the same directory as `server.py`.
+  - Generate `localhost.crt` and `localhost.key` in the same directory as `server.py` or `server.js`.
 
 ---
 
@@ -66,7 +66,8 @@ The IDE supports predefined and custom blocks to generate Java code for:
 
 #### 3. **Supported Blocks and Code Generators**
 ##### **Example Block**: Creating a Property ([See Docs](https://blockly-demo.appspot.com/static/demos/blockfactory/index.html) and [new doc](https://google.github.io/blockly-samples/examples/developer-tools/index.html))
-javascript
+
+```javascript
 Blockly.Blocks['property_declaration'] = {
     init: function() {
         this.appendDummyInput()
@@ -90,10 +91,10 @@ Blockly.Blocks['property_declaration'] = {
         this.setTooltip("Declares a property");
     }
 };
-
+```
 
 **Generated Code**:
-java
+```java
 private String myProperty;
 
 public void setMyProperty(String value) {
@@ -103,7 +104,7 @@ public void setMyProperty(String value) {
 public String getMyProperty() {
     return this.myProperty;
 }
-
+```
 
 ---
 
@@ -117,19 +118,19 @@ We are actively looking for:
 1. Fork the repository.
 2. Create a branch:
    
-bash
+```bash
    git checkout -b feature-name
-
+```
 3. Make changes and commit:
    
-bash
+```bash
    git commit -m "Added new feature"
-
+```
 4. Push to your branch:
    
-bash
+```bash
    git push origin feature-name
-
+```
 5. Open a pull request.
 
 ---
