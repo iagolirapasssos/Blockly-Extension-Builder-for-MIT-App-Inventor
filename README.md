@@ -1,7 +1,7 @@
 ## CodeCrafter AIX - Blockly Extension Builder for MIT App Inventor
 
 ### Welcome to the CodeCrafter AIX!
-This repository offers an interactive IDE for creating Java extensions for MIT App Inventor using a drag-and-drop interface powered by Blockly ((Website)[https://iagolirapasssos.github.io/CodeCrafterAIX/]). It provides tools to generate Java code from visual blocks, making it suitable for both beginners and advanced developers.
+This repository offers an interactive IDE for creating Java extensions for MIT App Inventor using a drag-and-drop interface powered by Blockly ([Website](https://iagolirapasssos.github.io/CodeCrafterAIX/)). It provides tools to generate Java code from visual blocks, making it suitable for both beginners and advanced developers.
 
 ---
 
