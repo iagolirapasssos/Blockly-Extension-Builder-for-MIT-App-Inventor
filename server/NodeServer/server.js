@@ -2,7 +2,7 @@ const express = require("express");
 const fs = require("fs");
 const path = require("path");
 const https = require("https");
-const cors = require("cors");
+const axios = require("axios");
 const { execSync } = require("child_process");
 
 const app = express();
@@ -34,14 +34,13 @@ const getOrCreateTempDir = () => {
 
 // Middleware
 app.use(express.json());
-app.use(
-  cors({
-    origin: "*",
-    methods: ["GET", "POST", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    exposedHeaders: ["Content-Disposition"],
-  })
-);
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.setHeader("Access-Control-Expose-Headers", "Content-Disposition");
+  next();
+});
 
 // Function to set up the directory structure for Fast CLI
 const createFastStructure = (baseDir, packageName, className, code, androidManifest, fastYml) => {
@@ -97,26 +96,78 @@ R8: false
   return baseDir;
 };
 
+// Function to download dependencies
+const handleDependencies = async (depsDir, dependencies) => {
+  if (!Array.isArray(dependencies)) {
+    throw new Error("Invalid dependencies format. Must be an array of URLs.");
+  }
+
+  for (const url of dependencies) {
+    if (!url || typeof url !== "string") {
+      throw new Error(`Invalid dependency URL: ${url}`);
+    }
+
+    const name = path.basename(new URL(url).pathname); // Extrai o nome do arquivo da URL
+    const filePath = path.join(depsDir, name);
+
+    if (!fs.existsSync(filePath)) {
+      console.log(`Downloading dependency: ${name}`);
+      try {
+        const response = await axios.get(url, { responseType: "stream" });
+        const writer = fs.createWriteStream(filePath);
+        response.data.pipe(writer);
+
+        await new Promise((resolve, reject) => {
+          writer.on("finish", resolve);
+          writer.on("error", reject);
+        });
+
+        console.log(`✔ Downloaded dependency: ${name}`);
+      } catch (error) {
+        console.error(`Failed to download dependency: ${name} from ${url}`);
+        throw new Error(`Failed to download dependency: ${name} from ${url}`);
+      }
+    } else {
+      console.log(`Dependency already exists: ${name}`);
+    }
+  }
+};
+
+
 // Endpoint to compile an extension
 app.post("/compile", async (req, res) => {
   try {
-    const { code, className = "TestExtension", packageName = "com.example.testextension", androidManifest, fastYml } =
-      req.body;
+    const {
+      code,
+      className = "TestExtension",
+      packageName = "com.example.testextension",
+      androidManifest,
+      fastYml,
+      dependencies = [], // Assume lista de URLs simples
+    } = req.body;
 
-    if (!code) return res.status(400).json({ error: "No code provided" });
+    if (!code) {
+      return res.status(400).json({ error: "No code provided" });
+    }
 
     const tempDir = getOrCreateTempDir();
     const projectDir = path.join(tempDir, `${className}_project`);
 
-    // Clean up existing directory
+    // Remove diretório existente
     if (fs.existsSync(projectDir)) {
       fs.rmSync(projectDir, { recursive: true });
     }
 
-    // Create project structure
+    // Cria estrutura do projeto
     createFastStructure(projectDir, packageName, className, code, androidManifest, fastYml);
 
-    // Run Fast CLI
+    // Processa dependências
+    const depsDir = path.join(projectDir, "deps");
+    if (dependencies.length > 0) {
+      await handleDependencies(depsDir, dependencies);
+    }
+
+    // Executa o Fast CLI
     const command = `java -jar "${FAST_JAR_PATH}" build`;
     try {
       execSync(command, { cwd: projectDir, stdio: "inherit" });
@@ -124,6 +175,7 @@ app.post("/compile", async (req, res) => {
       return res.status(500).json({ error: "Compilation failed", details: error.message });
     }
 
+    // Verifica se o arquivo .aix foi gerado
     const aixFileName = `${packageName}.aix`;
     const aixFilePath = path.join(projectDir, "out", aixFileName);
 
@@ -131,6 +183,7 @@ app.post("/compile", async (req, res) => {
       return res.status(500).json({ error: "AIX file not found" });
     }
 
+    // Envia o arquivo gerado
     res.download(aixFilePath, `${className}.aix`);
   } catch (error) {
     console.error("Error during compilation:", error);

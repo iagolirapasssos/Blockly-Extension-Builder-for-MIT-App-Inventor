@@ -1,0 +1,50 @@
+/* Estilo do Blockly e das abas */
+#blocklyDiv {
+    flex: 1;
+    overflow: hidden; /* Sem scrolls */
+}
+
+.tab-container {
+    width: 100%;
+    display: flex;
+    border-bottom: 1px solid #ccc;
+    flex-shrink: 0;
+}
+
+.tab-button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #f1f1f1;
+    cursor: pointer;
+    outline: none;
+}
+
+.tab-button.active {
+    background-color: #ddd;
+    border-bottom: 2px solid #007bff;
+}
+
+.tab-content {
+    flex: 1;
+    display: none;
+    padding: 10px;
+    overflow: hidden;
+}
+
+.tab-content.active {
+    display: flex;
+    flex-direction: column;
+}
+
+.tab-content textarea, .tab-content pre {
+    flex: 1;
+    resize: none;
+    overflow: auto;
+    font-family: 'Fira Code', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+}

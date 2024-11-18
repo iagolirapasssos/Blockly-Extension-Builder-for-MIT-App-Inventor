@@ -4,6 +4,7 @@ import os
 import subprocess
 import shutil
 import platform
+import requests
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True)  # Enable Cross-Origin Resource Sharing
@@ -159,6 +160,7 @@ def compile_extension():
         package_name = data.get("packageName", "com.example.testextension")
         android_manifest = data.get("androidManifest", "")
         fast_yml = data.get("fastYml", "")
+        dependencies = data.get("dependencies", [])  # New field for dependencies
 
         if not code:
             return jsonify({"error": "No code provided"}), 400
@@ -169,13 +171,26 @@ def compile_extension():
             shutil.rmtree(project_dir)
         os.makedirs(project_dir, exist_ok=True)
 
-        # Save the files
+        # Save project files
         create_fast_structure(project_dir, package_name, class_name, code)
         with open(os.path.join(project_dir, "src", "AndroidManifest.xml"), "w") as f:
             f.write(android_manifest)
         with open(os.path.join(project_dir, "fast.yml"), "w") as f:
             f.write(fast_yml)
 
+        # Download dependencies
+        deps_dir = os.path.join(project_dir, "deps")
+        for url in dependencies:
+            file_name = os.path.basename(url)
+            file_path = os.path.join(deps_dir, file_name)
+            response = requests.get(url, stream=True)
+            if response.status_code == 200:
+                with open(file_path, "wb") as f:
+                    f.write(response.content)
+            else:
+                return jsonify({"error": f"Failed to download dependency: {url}"}), 500
+
+        # Compile the extension
         command = ["java", "-jar", FAST_JAR_PATH, "build"]
         result = subprocess.run(
             command,
@@ -189,14 +204,12 @@ def compile_extension():
 
         aix_file_name = f"{package_name}.aix"
         aix_file_path = os.path.join(project_dir, "out", aix_file_name)
-        print(f'aix_file_name: {aix_file_name} and aix_file_path: {aix_file_path}')
         if not os.path.exists(aix_file_path):
             return jsonify({"error": "AIX file not found"}), 500
 
         return send_file(aix_file_path, as_attachment=True, download_name=f"{class_name}.aix")
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
 
 @app.route("/cleanup/<class_name>", methods=["DELETE"])
 def cleanup_project_directory(class_name):

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>MIT App Inventor Extension Builder</title>
+    <title>CodeCrafter AIX</title>
     
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA/4QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAERERERERERERAAAAAAAAERAQAAAAAAEBEAEAAAAAEAEQABAAAAEAARAAAQAAAQABEAAAEAAAEAEQAAAQAAEAARAAABAAEAABAAAAEAAAAAAQAAAQAAAAAAEAAAEAAAAAAAQAAAQAAAAAAEAAAAAAAAAAAAAARERERERERERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" />
@@ -17,11 +17,17 @@
     <!-- Prism.js para syntax highlighting -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-clike.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
-    
-    <!-- CSS próprio -->
-    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-xml.min.js"></script>
+
+    <!-- CSS próprio dividido -->
+	<link rel="stylesheet" href="css/global.css">
+	<link rel="stylesheet" href="css/header.css">
+	<link rel="stylesheet" href="css/blockly.css">
+	<link rel="stylesheet" href="css/themes.css">
+	<link rel="stylesheet" href="css/modals-notifications.css">
+
 </head>
 <body>
     <div class="header">
@@ -59,10 +65,12 @@
 
     <!-- Tab Navigation -->
     <div class="tab-container">
-        <button class="tab-button active" onclick="showTab('ideTab')">IDE</button>
-        <button class="tab-button" onclick="showTab('manifestTab')">AndroidManifest.xml</button>
-        <button class="tab-button" onclick="showTab('fastTab')">fast.yml</button>
-    </div>
+	    <button class="tab-button active" onclick="showTab('ideTab')">Blocks</button>
+	    <button class="tab-button" onclick="showTab('manifestTab')">AndroidManifest.xml</button>
+	    <button class="tab-button" onclick="showTab('fastTab')">fast.yml</button>
+	    <button class="tab-button" onclick="showTab('outputTab')">Java File</button>
+	    <button class="tab-button" onclick="showTab('dependenciesTab')">Dependencies</button>
+	</div>
 
     <!-- Tab Content -->
     <div id="ideTab" class="tab-content active">
@@ -70,7 +78,7 @@
     </div>
 
     <div id="manifestTab" class="tab-content">
-        <textarea id="androidManifest" class="code-editor" placeholder="Edit AndroidManifest.xml here">
+        <textarea id="androidManifest" class="language-xml" placeholder="Edit AndroidManifest.xml here">
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   package="com.mypackage.testextension.testextension">
@@ -89,7 +97,7 @@
     </div>
 
     <div id="fastTab" class="tab-content">
-        <textarea id="fastYml" class="code-editor" placeholder="Edit fast.yml here">
+        <textarea id="fastYml" class="language-yaml" placeholder="Edit fast.yml here">
 # The name of the extension developer
 author: BosonsHiggs
 
@@ -137,11 +145,19 @@ R8: false
 #- my-awesome-asset.anything
         </textarea>
     </div>
-	<div class="output-panel">
-		<div class="resize-handle"></div>
-		<pre><code id="outputCode" class="language-java"></code></pre>
-	</div>
 
+    <div id="outputTab" class="tab-content">
+        <pre><code id="outputCode" class="language-java theme-light">/* Output Java code will appear here */</code></pre>
+    </div>
+
+    <!-- Dependencies Tab -->
+	<div id="dependenciesTab" class="tab-content">
+	    <h3>Add Dependencies (JAR/AAR)</h3>
+	    <input type="url" id="dependencyUrl" placeholder="Enter URL of .jar or .aar file" />
+	    <button onclick="addDependency()">Add Dependency</button>
+	    <ul id="dependenciesList"></ul>
+	</div>
+    
 	<xml id="toolbox" style="display: none">
 	    <category id="cat_config" name="Configuration" colour="#5C6BC0">
 	        <block type="extension_class"></block>

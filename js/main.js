@@ -7,6 +7,7 @@
 // Variáveis globais
 let workspace = Blockly.getMainWorkspace();
 let currentLanguage = 'pt-br';
+let dependencies = []; // Array to store dependency URLs
 
 // Sistema de notificações
 function showNotification(message, type) {
@@ -25,6 +26,8 @@ function showNotification(message, type) {
         notification.remove();
     }, 3000);
 }
+
+
 
 // Funções para sallet e carregar blocos
 window.saveBlocks = function() {
@@ -88,8 +91,20 @@ window.loadBlocks = function() {
 
 
 document.addEventListener('DOMContentLoaded', function() {
-	const themeSelect = document.getElementById('themeSelect');
+	const themeSelect = document.getElementById("themeSelect");
 	const outputCode = document.getElementById('outputCode');
+    const blocklyDiv = document.getElementById('blocklyDiv');
+    const resizeBlocklyDiv = () => {
+        const tabContainer = document.querySelector('.tab-container');
+        const header = document.querySelector('.header');
+        const availableHeight = window.innerHeight - tabContainer.offsetHeight - header.offsetHeight;
+        blocklyDiv.style.height = `${availableHeight}px`;
+    };
+
+    // Redimensiona o editor de blocos ao carregar e ao redimensionar a janela
+    resizeBlocklyDiv();
+    window.addEventListener('resize', resizeBlocklyDiv);
+
 
     // Configuração do Blockly
     workspace = Blockly.inject('blocklyDiv', {
@@ -109,35 +124,6 @@ document.addEventListener('DOMContentLoaded', function() {
             scaleSpeed: 1.2
         },
         trashcan: true
-    });
-
-    // Configuração do redimensionamento do painel
-    const outputPanel = document.querySelector('.output-panel');
-    const resizeHandle = document.querySelector('.resize-handle');
-    let isResizing = false;
-    let startY;
-    let startHeight;
-
-    resizeHandle.addEventListener('mousedown', (e) => {
-        isResizing = true;
-        startY = e.clientY;
-        startHeight = parseInt(document.defaultView.getComputedStyle(outputPanel).height, 10);
-    });
-
-    document.addEventListener('mousemove', (e) => {
-        if (!isResizing) return;
-
-        const diffY = startY - e.clientY;
-        outputPanel.style.height = (startHeight + diffY) + 'px';
-        
-        // Ajusta a altura do Blockly
-        const blocklyDiv = document.getElementById('blocklyDiv');
-        blocklyDiv.style.height = `calc(100vh - ${outputPanel.offsetHeight}px - 60px)`;
-        Blockly.svgResize(workspace);
-    });
-
-    document.addEventListener('mouseup', () => {
-        isResizing = false;
     });
 
     // Configuração da mudança de idioma
@@ -174,57 +160,78 @@ document.addEventListener('DOMContentLoaded', function() {
         Blockly.setLocale(lang);
     }
     
-    //Themes
-    themeSelect.addEventListener('change', function() {
-		changeTheme(this.value);
-	});
+    // Função para aplicar o tema
+    function applyTheme(theme) {
+        const body = document.body;
 
-	function changeTheme(theme) {
-		// Remove todas as classes de tema anteriores
-		outputPanel.classList.remove('theme-light', 'theme-dark', 'theme-github', 'theme-monokai');
-		
-		// Adiciona a nova classe de tema
-		outputPanel.classList.add(`theme-${theme}`);
-		
-		// Regenera o código para aplicar o novo tema
-		if (workspace) {
-		    generateJavaCode();
-		}
-	}
+        // Remove todas as classes de tema previamente aplicadas
+        body.classList.remove("theme-light", "theme-dark", "theme-github", "theme-monokai");
+
+        // Adiciona a nova classe de tema
+        body.classList.add(`theme-${theme}`);
+
+        // Estilos adicionais para blockly e categorias do toolbox
+        const blocklyDiv = document.getElementById("blocklyDiv");
+        if (blocklyDiv) {
+            blocklyDiv.classList.remove("theme-light", "theme-dark", "theme-github", "theme-monokai");
+            blocklyDiv.classList.add(`theme-${theme}`);
+        }
+
+        // Atualiza as cores das categorias do toolbox
+        const toolboxCategories = document.querySelectorAll("#toolbox category");
+        toolboxCategories.forEach(category => {
+            category.style.color = getComputedStyle(document.body).getPropertyValue("--category-text-color");
+        });
+
+        // Atualiza as cores do workspace
+        Blockly.getMainWorkspace().updateToolbox(document.getElementById("toolbox"));
+    }
+
+    // Adicionar evento ao seletor
+    themeSelect.addEventListener("change", (event) => {
+        applyTheme(event.target.value);
+    });
+
+    // Aplicar o tema padrão ao carregar
+    applyTheme(themeSelect.value);
 
     // Funções de geração e download de código
-    window.generateJavaCode = function() {
-		try {
-		    let code = Blockly.JavaScript.workspaceToCode(workspace);
-		    const outputElement = document.getElementById('outputCode');
-		    
-		    // Primeiro, define o texto bruto
-		    outputElement.textContent = code;
+    window.generateJavaCode = function () {
+        try {
+            const outputElement = document.getElementById('outputCode');
+            
+            // Obtém os blocos principais em ordem
+            const topBlocks = workspace.getTopBlocks(true);
+            
+            // Inicializa o código gerado
+            let code = '';
+            
+            // Itera sobre os blocos principais em ordem
+            for (const block of topBlocks) {
+                // Gera código para cada bloco e seus filhos
+                code += Blockly.JavaScript.blockToCode(block);
+            }
 
-		    // Se o Prism está disponível e carregado corretamente
-		    if (typeof Prism !== 'undefined' && Prism.languages.java) {
-		        requestAnimationFrame(() => {
-		            try {
-		                const highlightedCode = Prism.highlight(
-		                    code,
-		                    Prism.languages.java,
-		                    'java'
-		                );
-		                outputElement.innerHTML = highlightedCode;
-		                
-		                // Mantém o tema atual
-		                const currentTheme = themeSelect.value;
-		                changeTheme(currentTheme);
-		            } catch (highlightError) {
-		                console.warn('Erro ao aplicar syntax highlighting:', highlightError);
-		            }
-		        });
-		    }
-		} catch (error) {
-		    console.error('Erro ao gerar código:', error);
-		    outputElement.textContent = 'Erro ao gerar código. Por favor, verifique seus blocos.';
-		}
-	};
+            // Remove os espaços à esquerda da primeira linha
+            const lines = code.split('\n');
+            if (lines.length > 0) {
+                lines[0] = lines[0].trimStart();
+            }
+            code = lines.join('\n');
+
+            // Define o código no elemento de saída
+            outputElement.textContent = code;
+
+            // Usa Prism.js para realçar o código
+            if (typeof Prism !== 'undefined' && Prism.languages.java) {
+                Prism.highlightElement(outputElement);
+            }
+        } catch (error) {
+            console.error('Error generating code:', error);
+            const outputElement = document.getElementById('outputCode');
+            outputElement.textContent = 'Error generating code. Check your blocks.';
+        }
+    };
 
     window.downloadCode = function () {
         const outputElement = document.getElementById('outputCode');
@@ -287,6 +294,18 @@ document.addEventListener('DOMContentLoaded', function() {
       reader.readAsText(file);
     }
 
+    workspace.addChangeListener(event => {
+        if (
+            event.type === Blockly.Events.BLOCK_CREATE ||  // Bloco criado
+            event.type === Blockly.Events.BLOCK_CHANGE ||  // Bloco modificado
+            event.type === Blockly.Events.BLOCK_DELETE ||  // Bloco deletado
+            event.type === Blockly.Events.BLOCK_MOVE       // Bloco movido
+        ) {
+            generateJavaCode();
+        }
+    });
+
+
     Blockly.getMainWorkspace().addChangeListener(event => {
         if (event.type === Blockly.Events.VAR_RENAME || 
             event.type === Blockly.Events.VAR_CREATE || 
@@ -304,7 +323,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Define o idioma inicial
     changeLanguage('en');
-    changeTheme('light');
 });
 
 
@@ -315,29 +333,62 @@ function showTab(tabId) {
     tabs.forEach(tab => tab.classList.remove('active'));
     buttons.forEach(button => button.classList.remove('active'));
 
-    document.getElementById(tabId).classList.add('active');
+    const activeTab = document.getElementById(tabId);
+    activeTab.classList.add('active');
     document.querySelector(`.tab-button[onclick="showTab('${tabId}')"]`).classList.add('active');
+
+    // Highlight syntax if tab content uses Prism.js
+    if (tabId === 'manifestTab' || tabId === 'fastTab' || tabId === 'outputTab') {
+        Prism.highlightAllUnder(activeTab);
+    }
+}
+
+
+// Function to add a dependency
+function addDependency() {
+    const dependencyUrl = document.getElementById("dependencyUrl").value;
+    if (!dependencyUrl) {
+        showNotification("Please enter a valid URL.", "error");
+        return;
+    }
+    dependencies.push(dependencyUrl);
+
+    const list = document.getElementById("dependenciesList");
+    const listItem = document.createElement("li");
+    listItem.textContent = dependencyUrl;
+
+    // Add a remove button
+    const removeButton = document.createElement("button");
+    removeButton.textContent = "Remove";
+    removeButton.onclick = () => {
+        dependencies = dependencies.filter(url => url !== dependencyUrl);
+        list.removeChild(listItem);
+    };
+    listItem.appendChild(removeButton);
+
+    list.appendChild(listItem);
+    document.getElementById("dependencyUrl").value = ""; // Clear the input field
 }
 
 // Função para compilar extensão
+// Extend compileExtension to send dependencies to the server
 async function compileExtension() {
     const progressModal = showProgressModal();
 
     try {
-        // Captura os valores do código, AndroidManifest.xml e fast.yml
-        const outputElement = document.getElementById('outputCode');
+        // Get data from the other tabs
+        const outputElement = document.getElementById("outputCode");
         const code = outputElement.textContent || outputElement.innerText;
-        const manifestContent = document.getElementById('androidManifest').value;
-        const fastYmlContent = document.getElementById('fastYml').value;
+        const manifestContent = document.getElementById("androidManifest").value;
+        const fastYmlContent = document.getElementById("fastYml").value;
 
-        // Valida se o código foi gerado
         if (!code) {
             showNotification("No code generated. Please generate code first.", "error");
             progressModal.close();
             return;
         }
 
-        // Extrai packageName e className do código
+        // Extract packageName and className
         const packageMatch = code.match(/package\s+([\w\.]+);/);
         const classMatch = code.match(/public\s+class\s+(\w+)/);
 
@@ -348,16 +399,13 @@ async function compileExtension() {
         const className = classMatch[1];
         const packageName = packageMatch ? packageMatch[1] : "com.example";
 
-        // Atualiza o packageName no AndroidManifest.xml se necessário
+        // Update AndroidManifest.xml packageName
         const updatedManifestContent = manifestContent.replace(
             /package="[^"]*"/,
             `package="${packageName}"`
         );
 
-        console.log("Class Name:", className);
-        console.log("Package Name:", packageName);
-
-        // Envia os dados para o servidor
+        // Send data to the server, including dependencies
         const response = await fetch("https://localhost:8080/compile", {
             method: "POST",
             headers: {
@@ -369,10 +417,10 @@ async function compileExtension() {
                 packageName,
                 androidManifest: updatedManifestContent,
                 fastYml: fastYmlContent,
+                dependencies: dependencies, // Send dependencies as part of the request
             }),
         });
 
-        // Lida com a resposta do servidor
         if (!response.ok) {
             const errorDetails = await response.json().catch(() => null);
             const errorMessage = errorDetails?.error || "Unknown error occurred.";
@@ -381,19 +429,18 @@ async function compileExtension() {
 
         const blob = await response.blob();
         const downloadUrl = URL.createObjectURL(blob);
-
-        // Atualiza o modal com o link para download
         progressModal.updateWithDownload(downloadUrl, `${className}.aix`);
 
-        // Solicita limpeza do diretório temporário
         await cleanupProjectDirectory(className);
     } catch (error) {
         console.error("Error during compilation:", error);
-        showNotification("Failed to compile the extension. Check the console for details.", "error");
+        showNotification(
+            "Compilation failed. Check the console for more details.",
+            "error"
+        );
         progressModal.close();
     }
 }
-
 
 function showProgressModal() {
     const modal = document.createElement('div');
@@ -410,6 +457,13 @@ function showProgressModal() {
 
     document.body.appendChild(modal);
 
+    const closeModalButton = modal.querySelector('.close-modal');
+    if (closeModalButton) {
+        closeModalButton.addEventListener('click', () => {
+            document.body.removeChild(modal);
+        });
+    }
+
     // Method to update the modal with a download link
     modal.updateWithDownload = (downloadUrl, fileName) => {
         modal.innerHTML = `
@@ -421,9 +475,12 @@ function showProgressModal() {
             </div>
         `;
 
-        modal.querySelector('.close-modal').addEventListener('click', () => {
-            document.body.removeChild(modal);
-        });
+        const updatedCloseModalButton = modal.querySelector('.close-modal');
+        if (updatedCloseModalButton) {
+            updatedCloseModalButton.addEventListener('click', () => {
+                document.body.removeChild(modal);
+            });
+        }
     };
 
     // Method to close the modal
@@ -433,6 +490,7 @@ function showProgressModal() {
 
     return modal;
 }
+
 
 async function cleanupProjectDirectory(className) {
     try {

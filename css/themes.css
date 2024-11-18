@@ -1,0 +1,154 @@
+/* Syntax highlighting */
+.language-xml {
+    height: 100vh;
+    width: 100%;
+    color: #d33682;
+}
+
+.language-yaml {
+    height: 100vh;
+    width: 100%;
+    color: #285b75;
+}
+
+.language-java {
+    height: 100vh;
+    width: 100%;
+    color: #2d2d2d;
+}
+
+.button {
+    background: #3498db;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.button:hover {
+    background: #2980b9;
+}
+
+/* Syntax highlighting */
+/* Seletor de tema */
+.theme-select {
+    background: white;
+    border: none;
+    padding: 6px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+/* Tema Light (Padrão) */
+.theme-light {
+    --background-color: #ffffff;
+    --text-color: #24292e;
+    --category-text-color: #000000; /* Cor do texto das categorias */
+    --toolbox-background: #f1f1f1;
+    --blockly-background: #f9f9f9;
+}
+
+.theme-light .token.comment { color: #6a737d; }
+.theme-light .token.keyword { color: #d73a49; }
+.theme-light .token.string { color: #032f62; }
+.theme-light .token.class-name { color: #6f42c1; }
+.theme-light .token.function { color: #005cc5; }
+.theme-light .token.number { color: #005cc5; }
+.theme-light .token.operator { color: #d73a49; }
+.theme-light .token.punctuation { color: #24292e; }
+.theme-light .token.annotation { color: #d73a49; }
+
+/* Tema Dark */
+.theme-dark {
+    --background-color: #1e1e1e;
+    --text-color: #d4d4d4;
+    --category-text-color: #ffffff; /* Cor do texto das categorias */
+    --toolbox-background: #333333;
+    --blockly-background: #2e2e2e;
+}
+
+.theme-dark .token.comment { color: #6A9955; }
+.theme-dark .token.keyword { color: #569cd6; }
+.theme-dark .token.string { color: #ce9178; }
+.theme-dark .token.class-name { color: #4ec9b0; }
+.theme-dark .token.function { color: #dcdcaa; }
+.theme-dark .token.number { color: #b5cea8; }
+.theme-dark .token.operator { color: #d4d4d4; }
+.theme-dark .token.punctuation { color: #d4d4d4; }
+.theme-dark .token.annotation { color: #4fc1ff; }
+
+/* Tema GitHub */
+.theme-github {
+    --background-color: #ffffff;
+    --text-color: #24292e;
+    --category-text-color: #6a737d; /* Cor do texto das categorias */
+    --toolbox-background: #e1e4e8;
+    --blockly-background: #fafbfc;
+}
+
+.theme-github .token.comment { color: #6a737d; }
+.theme-github .token.keyword { color: #d73a49; }
+.theme-github .token.string { color: #032f62; }
+.theme-github .token.class-name { color: #6f42c1; }
+.theme-github .token.function { color: #005cc5; }
+.theme-github .token.number { color: #005cc5; }
+.theme-github .token.operator { color: #d73a49; }
+.theme-github .token.punctuation { color: #24292e; }
+.theme-github .token.annotation { color: #d73a49; }
+
+/* Tema Monokai */
+.theme-monokai {
+    --background-color: #272822;
+    --text-color: #f8f8f2;
+    --category-text-color: #a6e22e; /* Cor do texto das categorias */
+    --toolbox-background: #3e3d32;
+    --blockly-background: #49483e;
+}
+
+.theme-monokai .token.comment { color: #75715e; }
+.theme-monokai .token.keyword { color: #f92672; }
+.theme-monokai .token.string { color: #e6db74; }
+.theme-monokai .token.class-name { color: #a6e22e; }
+.theme-monokai .token.function { color: #66d9ef; }
+.theme-monokai .token.number { color: #ae81ff; }
+.theme-monokai .token.operator { color: #f8f8f2; }
+.theme-monokai .token.punctuation { color: #f8f8f2; }
+.theme-monokai .token.annotation { color: #f92672; }
+
+/* Estilos para o toolbox */
+#toolbox {
+    background-color: var(--toolbox-background);
+    color: var(--category-text-color);
+}
+
+/* Cores aplicadas aos componentes do Blockly */
+.blocklyToolboxDiv {
+    background-color: var(--toolbox-background) !important;
+}
+
+.blocklyTreeLabel {
+    color: var(--category-text-color) !important;
+}
+
+/*Circular progress*/
+.progress-circle {
+    margin: 20px auto;
+    width: 50px;
+    height: 50px;
+    border: 6px solid rgba(0, 0, 0, 0.2);
+    border-top: 6px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

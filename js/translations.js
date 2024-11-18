@@ -1,7 +1,7 @@
 const TRANSLATIONS = {
     'en': {
         // Interface
-        'title': 'MIT App Inventor Extension Builder',
+        'title': 'CodeCrafter AIX',
         'btn_generate': 'Generate Java Code',
         'btn_download': 'Download .java',
         'theme_light': 'Light Theme',
@@ -175,7 +175,7 @@ const TRANSLATIONS = {
     },
     'pt-br': {
         // Interface
-        'title': 'Construtor de Extensões MIT App Inventor',
+        'title': 'CodeCrafter AIX',
         'btn_generate': 'Gerar Código Java',
         'btn_download': 'Baixar .java',
         'theme_light': 'Tema Claro',

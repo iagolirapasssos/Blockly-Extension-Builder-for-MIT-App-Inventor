@@ -1,7 +1,7 @@
-## Blockly Extension Builder for MIT App Inventor
+## CodeCrafter AIX - Blockly Extension Builder for MIT App Inventor
 
-### Welcome to the Blockly Extension Builder!
-This repository offers an interactive IDE for creating Java extensions for MIT App Inventor using a drag-and-drop interface powered by Blockly. It provides tools to generate Java code from visual blocks, making it suitable for both beginners and advanced developers.
+### Welcome to the CodeCrafter AIX!
+This repository offers an interactive IDE for creating Java extensions for MIT App Inventor using a drag-and-drop interface powered by Blockly ((Website)[https://iagolirapasssos.github.io/CodeCrafterAIX/]). It provides tools to generate Java code from visual blocks, making it suitable for both beginners and advanced developers.
 
 ---
 
@@ -37,7 +37,7 @@ This repository offers an interactive IDE for creating Java extensions for MIT A
 ## Setup Instructions
 
 ### 1. Clone the Repository
-git clone https://github.com/iagolirapassos/Blockly-Extension-Builder-for-MIT-App-Inventor.git
+git clone https://github.com/iagolirapasssos/CodeCrafterAIX.git
 cd Blockly-Extension-Builder-for-MIT-App-Inventor
 
 ---
@@ -48,7 +48,7 @@ cd Blockly-Extension-Builder-for-MIT-App-Inventor
    - Clone the repository:
      
 bash
-     git clone https://github.com/iagolirapasssos/Blockly-Extension-Builder-for-MIT-App-Inventor.git
+     git clone https://github.com/iagolirapasssos/CodeCrafterAIX.git
 
    - Open index.html in your browser to start using the IDE.
 
@@ -147,53 +147,9 @@ This project is ideal for beginners who want to learn Java by experimenting with
 Join us in enhancing this project to empower developers worldwide. Whether you're a beginner or an experienced programmer, your contributions will make a difference!
 
 - [Submit Issues](https://github.com/iagolirapasssos/Blockly-Extension-Builder-for-MIT-App-Inventor/issues) for bugs or feature requests.
-- [Join Discussions](https://github.com/iagolirapasssos/Blockly-Extension-Builder-for-MIT-App-Inventor/discussions) for brainstorming and sharing ideas.
+- [Telegram Group](https://t.me/+BnKWdasvIuE5N2Y5) for brainstorming and sharing ideas.
 
 ---
-
-Feel free to ask questions or submit your feedback. Happy coding! 🎉### Título do Projeto
-**Blockly Extension Builder for MIT App Inventor**
-
-### README
-
-# Blockly Extension Builder for MIT App Inventor
-
-A visual and dynamic interface that uses Blockly to create MIT App Inventor extensions. This project aims to make extension building intuitive by providing an interface to configure, design, and export extension code without extensive programming experience.
-
-## Features
-
-- **Blockly Integration**: Drag-and-drop functionality to create extension components.
-- **Text, Math, and Control Blocks**: Implemented multiple customizable blocks for common extension features.
-- **Custom Block Creation**: Easily create, manage, and organize blocks like properties, methods, and imports.
-- **Exportable Code**: Generate Java code directly from the blocks for use in MIT App Inventor.
-- **Themed UI**: Choose from different themes for a personalized workspace.
-- **Multilingual Support**: Use English as the default, with more translations planned.
-
-## Getting Started
-
-### Prerequisites
-- Basic knowledge of Java.
-- An understanding of MIT App Inventor components.
-
-### Installation
-
-1. Clone this repository:
-   
-bash
-   git clone https://github.com/iagolirapasssos/Blockly-Extension-Builder-for-MIT-App-Inventor.git
-
-2. Open index.html in a web browser to start using the tool.
-
-## Usage
-
-1. **Toolbox Configuration**: Use the categories on the left sidebar to choose components like configuration, imports, properties, and methods.
-2. **Customization**: Right-click on blocks to access block properties or use mutator options to add additional fields.
-3. **Code Export**: Click the "Export" button to download the Java code for the extension.
-
-## Development and Contributions
-
-1. Add custom block definitions in blocks.js and update generators in generators.js.
-2. To contribute, fork the repository, make updates, and submit a pull request.
 
 ## License
 This project is licensed under the MIT License. See the LICENSE file for more details.
