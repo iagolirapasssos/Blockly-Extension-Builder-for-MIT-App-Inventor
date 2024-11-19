@@ -28,7 +28,6 @@ function showNotification(message, type) {
 }
 
 
-
 // Funções para sallet e carregar blocos
 window.saveBlocks = function() {
     try {
@@ -94,16 +93,33 @@ document.addEventListener('DOMContentLoaded', function() {
 	const themeSelect = document.getElementById("themeSelect");
 	const outputCode = document.getElementById('outputCode');
     const blocklyDiv = document.getElementById('blocklyDiv');
+    
     const resizeBlocklyDiv = () => {
+        const blocklyDiv = document.getElementById('blocklyDiv');
         const tabContainer = document.querySelector('.tab-container');
         const header = document.querySelector('.header');
-        const availableHeight = window.innerHeight - tabContainer.offsetHeight - header.offsetHeight;
-        blocklyDiv.style.height = `${availableHeight}px`;
+        
+        if (blocklyDiv) {
+            const availableHeight = window.innerHeight - tabContainer.offsetHeight - header.offsetHeight;
+            blocklyDiv.style.height = `${availableHeight}px`;
+            
+            // Força o Blockly a recalcular seu tamanho
+            if (workspace) {
+                Blockly.svgResize(workspace);
+            }
+        }
     };
 
     // Redimensiona o editor de blocos ao carregar e ao redimensionar a janela
-    resizeBlocklyDiv();
-    window.addEventListener('resize', resizeBlocklyDiv);
+    window.addEventListener('load', () => {
+        resizeBlocklyDiv();
+        // Força uma atualização adicional após um breve delay
+        setTimeout(resizeBlocklyDiv, 100);
+    });
+
+    window.addEventListener('resize', () => {
+        resizeBlocklyDiv();
+    });
 
 
     // Configuração do Blockly
@@ -123,8 +139,23 @@ document.addEventListener('DOMContentLoaded', function() {
             minScale: 0.3,
             scaleSpeed: 1.2
         },
-        trashcan: true
+        trashcan: true,
+        move: {
+            scrollbars: true,
+            drag: true,
+            wheel: true
+        }
     });
+
+    // Força o resize inicial
+    resizeBlocklyDiv();
+
+    // Adiciona um pequeno delay para garantir que tudo está renderizado
+    setTimeout(() => {
+        resizeBlocklyDiv();
+        Blockly.svgResize(workspace);
+    }, 100);
+
 
     // Configuração da mudança de idioma
     const languageSelect = document.getElementById('languageSelect');
@@ -330,18 +361,27 @@ function showTab(tabId) {
     const tabs = document.querySelectorAll('.tab-content');
     const buttons = document.querySelectorAll('.tab-button');
 
+    // Remove a classe 'active' de todas as abas e botões
     tabs.forEach(tab => tab.classList.remove('active'));
     buttons.forEach(button => button.classList.remove('active'));
 
+    // Ativa a aba correspondente
     const activeTab = document.getElementById(tabId);
-    activeTab.classList.add('active');
-    document.querySelector(`.tab-button[onclick="showTab('${tabId}')"]`).classList.add('active');
+    if (activeTab) {
+        activeTab.classList.add('active');
+    } else {
+        console.error(`Tab with ID ${tabId} not found.`);
+    }
 
-    // Highlight syntax if tab content uses Prism.js
-    if (tabId === 'manifestTab' || tabId === 'fastTab' || tabId === 'outputTab') {
-        Prism.highlightAllUnder(activeTab);
+    // Ativa o botão correspondente
+    const activeButton = Array.from(buttons).find(button => button.getAttribute("onclick") === `showTab('${tabId}')`);
+    if (activeButton) {
+        activeButton.classList.add('active');
+    } else {
+        console.error(`Button for tab with ID ${tabId} not found.`);
     }
 }
+
 
 
 // Function to add a dependency

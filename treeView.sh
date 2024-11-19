@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Nome do arquivo de saída
-OUTPUT_FILE="output.txt"
+OUTPUT_FILE="CodeCrafterAIX.txt"
 
 # Nome do próprio script
 SCRIPT_NAME=$(basename "$0")

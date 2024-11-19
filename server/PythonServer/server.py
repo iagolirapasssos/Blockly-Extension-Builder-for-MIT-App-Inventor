@@ -161,6 +161,7 @@ def compile_extension():
         android_manifest = data.get("androidManifest", "")
         fast_yml = data.get("fastYml", "")
         dependencies = data.get("dependencies", [])  # New field for dependencies
+        helpers = data.get("helpers", {})  # Recebe os helpers como um dicionário
 
         if not code:
             return jsonify({"error": "No code provided"}), 400
@@ -177,6 +178,14 @@ def compile_extension():
             f.write(android_manifest)
         with open(os.path.join(project_dir, "fast.yml"), "w") as f:
             f.write(fast_yml)
+
+        # Salvar helpers
+        helpers_dir = os.path.join(project_dir, "src", "helpers")
+        os.makedirs(helpers_dir, exist_ok=True)
+        for helper_name, helper_code in helpers.items():
+            helper_path = os.path.join(helpers_dir, f"{helper_name}.java")
+            with open(helper_path, "w") as f:
+                f.write(helper_code)
 
         # Download dependencies
         deps_dir = os.path.join(project_dir, "deps")

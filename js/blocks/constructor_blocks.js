@@ -204,7 +204,6 @@ Blockly.JavaScript['extension_class'] = function(block) {
     category = ComponentCategory.${category},
     nonVisible = ${nonVisible},
     iconName = "${iconName}")
-@SimpleObject(external = true)
 ${annotations}public class ${className} extends AndroidNonvisibleComponent${interfaces ? ' implements ' + interfaces : ''} {
 ${members}}`;
 

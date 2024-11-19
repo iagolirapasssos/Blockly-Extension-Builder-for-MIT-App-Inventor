@@ -1,9 +1,43 @@
-/* Estilo do Blockly e das abas */
-#blocklyDiv {
-    flex: 1;
-    overflow: hidden; /* Sem scrolls */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
 }
 
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+[id^="blocklyDivHelper"] {
+    height: calc(100vh - 120px) !important;
+    width: 100% !important;
+    position: relative !important;
+}
+
+#blocklyDiv {
+    height: calc(100vh - 120px) !important; /* Ajuste o valor baseado na altura do header e tab-container */
+    width: 100% !important;
+    position: absolute;
+}
+
+
+.tab-content.active {
+    display: flex;
+    flex-direction: column;
+}
+
+#ideTab {
+    padding: 0;
+}
+
+.helper-file-name-input {
+    margin: 10px;
+    padding: 5px;
+}
+
+/* Mantendo seus estilos existentes */
 .tab-container {
     width: 100%;
     display: flex;
@@ -32,11 +66,12 @@
 }
 
 .tab-content.active {
-    display: flex;
+    display: block;
     flex-direction: column;
 }
 
-.tab-content textarea, .tab-content pre {
+.tab-content textarea, 
+.tab-content pre {
     flex: 1;
     resize: none;
     overflow: auto;
@@ -48,3 +83,47 @@
     border: 1px solid #ccc;
     background-color: #f9f9f9;
 }
+
+/* Adicione/atualize estas regras no seu blockly.css */
+
+[id^="blocklyDivHelper"], #blocklyDiv {
+    height: calc(100vh - 120px) !important;
+    min-height: 300px !important;
+    width: 100% !important;
+    position: relative !important;
+    transition: height 0.3s ease-in-out;
+}
+
+.tab-content {
+    position: relative;
+    height: calc(100vh - 120px);
+    min-height: 300px;
+    overflow: hidden;
+    display: none;
+    transition: height 0.3s ease-in-out;
+}
+
+.blocklyWorkspace {
+    position: relative !important;
+}
+
+.blocklyToolboxDiv {
+    position: absolute !important;
+}
+
+/* Previne problemas de redimensionamento em tela cheia */
+:-webkit-full-screen [id^="blocklyDivHelper"],
+:-webkit-full-screen #blocklyDiv {
+    height: calc(100vh - 120px) !important;
+}
+
+:-moz-full-screen [id^="blocklyDivHelper"],
+:-moz-full-screen #blocklyDiv {
+    height: calc(100vh - 120px) !important;
+}
+
+:fullscreen [id^="blocklyDivHelper"],
+:fullscreen #blocklyDiv {
+    height: calc(100vh - 120px) !important;
+}
+
