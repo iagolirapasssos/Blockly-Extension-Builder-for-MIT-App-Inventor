@@ -28,6 +28,7 @@
 	<link rel="stylesheet" href="css/themes.css">
 	<link rel="stylesheet" href="css/modals.css">
 	<link rel="stylesheet" href="css/helpers.css">
+	<link rel="stylesheet" href="css/preview.css">
 	<link rel="stylesheet" href="css/modals-notifications.css">
 
 </head>
@@ -36,11 +37,11 @@
         <h2 id="title">MIT App Inventor Extension Builder</h2>
             <div class="header-controls">
                 <select id="themeSelect" class="theme-select">
-                    <option value="light">Light Theme</option>
-                    <option value="dark">Dark Theme</option>
-                    <option value="github">GitHub</option>
-                    <option value="monokai">Monokai</option>
-                </select>
+				    <option value="light" selected>Light Theme</option>
+				    <option value="dark">Dark Theme</option>
+				    <option value="github">GitHub</option>
+				    <option value="monokai">Monokai</option>
+				</select>
                 <select id="languageSelect" class="language-select">
                     <option value="en">English</option>
                     <option value="pt-br">Português</option>
@@ -57,9 +58,7 @@
                     <span class="text-compile">Compile Extension</span>
                 </button>
 
-                <button class="button" onclick="generateJavaCode()">
-                    <span class="text-generate">Build Java File</span>
-                </button>
+              
                 <button class="button" onclick="downloadCode()">
                     <span class="text-download">Download .java</span>
                 </button>
@@ -71,7 +70,6 @@
 	    <button class="tab-button active" onclick="showTab('ideTab')">Blocks</button>
 	    <button class="tab-button" onclick="showTab('manifestTab')">AndroidManifest.xml</button>
 	    <button class="tab-button" onclick="showTab('fastTab')">fast.yml</button>
-	    <button class="tab-button" onclick="showTab('outputTab')">Java File</button>
 	    <button class="tab-button" onclick="showTab('dependenciesTab')">Dependencies</button>
 	</div>
 
@@ -147,10 +145,6 @@ R8: false
 #assets:
 #- my-awesome-asset.anything
         </textarea>
-    </div>
-
-    <div id="outputTab" class="tab-content">
-        <pre><code id="outputCode" class="language-java theme-light">/* Output Java code will appear here */</code></pre>
     </div>
 
     <!-- Dependencies Tab -->
@@ -447,21 +441,130 @@ R8: false
 		</category>
 
 	    <category id="cat_logic" name="Logic" colour="#FDD835">
-	        <block type="logic_compare"></block>
-	        <block type="logic_operation"></block>
-	        <block type="logic_negate"></block>
-	        <block type="logic_boolean"></block>
-	        <block type="logic_null"></block>
-	    </category>
+		    <!-- Basic Logic -->
+		    <label text="Basic Comparisons"></label>
+		    <block type="logic_compare">
+		        <value name="A">
+		            <shadow type="text">
+		                <field name="TEXT">value1</field>
+		            </shadow>
+		        </value>
+		        <value name="B">
+		            <shadow type="text">
+		                <field name="TEXT">value2</field>
+		            </shadow>
+		        </value>
+		    </block>
+		    <block type="logic_operation"></block>
+		    <block type="logic_negate"></block>
+		    <block type="logic_boolean"></block>
+		    <block type="logic_null"></block>
+
+		    <!-- Advanced Comparisons -->
+		    <label text="Advanced Comparisons"></label>
+		    <block type="logic_string_empty">
+		        <value name="STRING">
+		            <shadow type="text">
+		                <field name="TEXT">text</field>
+		            </shadow>
+		        </value>
+		    </block>
+		    <block type="logic_collection_empty"></block>
+		    <block type="logic_between">
+		        <value name="VALUE">
+		            <shadow type="math_number">
+		                <field name="NUM">50</field>
+		            </shadow>
+		        </value>
+		        <value name="MIN">
+		            <shadow type="math_number">
+		                <field name="NUM">0</field>
+		            </shadow>
+		        </value>
+		        <value name="MAX">
+		            <shadow type="math_number">
+		                <field name="NUM">100</field>
+		            </shadow>
+		        </value>
+		    </block>
+
+		    <!-- Type Checking -->
+		    <label text="Type Checking"></label>
+		    <block type="logic_typeof">
+		        <value name="OBJECT">
+		            <shadow type="text">
+		                <field name="TEXT">value</field>
+		            </shadow>
+		        </value>
+		    </block>
+
+		    <!-- Conditional Logic -->
+		    <label text="Conditional Logic"></label>
+		    <block type="logic_ternary">
+		        <value name="CONDITION">
+		            <shadow type="logic_boolean">
+		                <field name="BOOL">TRUE</field>
+		            </shadow>
+		        </value>
+		        <value name="THEN">
+		            <shadow type="text">
+		                <field name="TEXT">value if true</field>
+		            </shadow>
+		        </value>
+		        <value name="ELSE">
+		            <shadow type="text">
+		                <field name="TEXT">value if false</field>
+		            </shadow>
+		        </value>
+		    </block>
+		    <block type="logic_switch">
+		        <value name="VALUE">
+		            <shadow type="text">
+		                <field name="TEXT">value</field>
+		            </shadow>
+		        </value>
+		        <value name="CASE1">
+		            <shadow type="text">
+		                <field name="TEXT">case1</field>
+		            </shadow>
+		        </value>
+		        <value name="RETURN1">
+		            <shadow type="text">
+		                <field name="TEXT">return1</field>
+		            </shadow>
+		        </value>
+		        <value name="CASE2">
+		            <shadow type="text">
+		                <field name="TEXT">case2</field>
+		            </shadow>
+		        </value>
+		        <value name="RETURN2">
+		            <shadow type="text">
+		                <field name="TEXT">return2</field>
+		            </shadow>
+		        </value>
+		        <value name="DEFAULT">
+		            <shadow type="text">
+		                <field name="TEXT">default</field>
+		            </shadow>
+		        </value>
+		    </block>
+		</category>
 
 	    <category id="cat_math" name="Math" colour="#8E24AA">
-	        <block type="math_operation"></block>
-	        <block type="math_compare"></block>
-	        <block type="math_function"></block>
-	        <block type="math_random"></block>
-	        <block type="math_number"></block>
-	        <block type="math_constant"></block>
-	    </category>
+		    <block type="math_operation"></block>
+		    <block type="math_compare"></block>
+		    <block type="math_function"></block>
+		    <block type="math_random"></block>
+		    <block type="math_number"></block>
+		    <block type="math_constant"></block>
+		    <block type="math_max_min"></block>
+		    <block type="math_average"></block>
+		    <block type="math_sum"></block>
+		    <block type="math_factorial"></block>
+		    <block type="math_modulo"></block>
+		</category>
+
 
 	    <category id="cat_text" name="Text" colour="#3949AB">
 		    <block type="text_string"></block>
@@ -481,21 +584,21 @@ R8: false
 	    </category>
 
 	    <category id="cat_lists" name="Lists" colour="#00ACC1">
-	        <block type="lists_create"></block>
-	        <block type="lists_operation"></block>
-	        <block type="lists_get_index"></block>
-	        <block type="lists_set_index"></block>
-	        <block type="lists_forEach"></block>
-	    </category>
+		    <block type="lists_create_with">
+		      <mutation items="0"></mutation>
+		    </block>
+		    <block type="lists_add_items"></block>
+		    <block type="lists_is_empty"></block>
+		    <block type="lists_length"></block>
+		    <block type="lists_get_index"></block>
+		 </category>
 
 	    <category id="cat_dictionaries" name="Dictionaries" colour="#43A047">
-		    <block type="dict_create"></block>
-		    <block type="dict_get"></block>
-		    <block type="dict_set"></block>
-		    <block type="dict_remove"></block>
-		    <block type="dict_containsKey"></block>
-		    <block type="dict_keys"></block>
-		    <block type="dict_values"></block>
+		  <block type="dictionaries_create_with"></block>
+		  <block type="pair"></block>
+		  <block type="dictionaries_lookup"></block>
+		  <block type="dictionaries_set_pair"></block>
+		  <block type="dictionaries_delete_pair"></block>
 		</category>
 
 
@@ -526,11 +629,19 @@ R8: false
 
 
 	    <category id="cat_variables_custom" name="Variables" colour="#546E7A">
+		    <!-- Basic Variable Operations -->
+		    <label text="Basic Operations"></label>
 		    <block type="create_variable"></block>
-		    <block type="set_variable"></block>
+		    <block type="set_variable">
+		        <value name="VALUE">
+		            <shadow type="text">
+		                <field name="TEXT">value</field>
+		            </shadow>
+		        </value>
+		    </block>
 		    <block type="get_variable"></block>
-		</category>
 
+		</category>
 
 	    <category id="cat_functions" name="Functions" colour="#827717">
 		    <block type="procedures_defnoreturn"></block>
@@ -548,8 +659,8 @@ R8: false
 	<script src="js/translations.js"></script>
 
 	<script src="js/blocks/constructor_blocks.js"></script>
-	<script src="js/blocks/functions.js"></script>
-	<script src="js/blocks/methods.js"></script>
+	<script src="js/blocks/functions_blocks.js"></script>
+	<script src="js/blocks/methods_blocks.js"></script>
 	<script src="js/blocks/control_blocks.js"></script>
 	<script src="js/blocks/math_blocks.js"></script>
 	<script src="js/blocks/text_blocks.js"></script>
@@ -563,7 +674,7 @@ R8: false
 	<script src="js/blocks/imported_class_blocks.js"></script>
 	<script src="js/blocks/blocks.js"></script>
 	<script src="js/blocks/method_inserts.js"></script>
-	<script src="js/blocks/variables.js"></script>
+	<script src="js/blocks/variables_blocks.js"></script>
 	<script src="js/blocks/comments_blocks.js"></script>
 	<script src="js/blocks/enums_blocks.js"></script>
 	<script src="js/helpers.js"></script>

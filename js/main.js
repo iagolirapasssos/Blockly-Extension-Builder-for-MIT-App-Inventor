@@ -8,6 +8,7 @@
 let workspace = Blockly.getMainWorkspace();
 let currentLanguage = 'pt-br';
 let dependencies = []; // Array to store dependency URLs
+let helpersData = {};
 
 // Sistema de notificações
 function showNotification(message, type) {
@@ -27,64 +28,175 @@ function showNotification(message, type) {
     }, 3000);
 }
 
+function initializeIdePreview() {
+    const ideTab = document.getElementById('ideTab');
+    if (!ideTab) return;
+
+    const container = document.createElement('div');
+    container.className = 'helper-container';
+
+    const workspace = document.createElement('div');
+    workspace.className = 'helper-workspace';
+    workspace.appendChild(document.getElementById('blocklyDiv'));
+
+    const preview = createIdeCodePreview();
+    
+    container.appendChild(workspace);
+    container.appendChild(preview);
+    ideTab.appendChild(container);
+
+    const blocklyWorkspace = Blockly.getMainWorkspace();
+    if (blocklyWorkspace) {
+        blocklyWorkspace.addChangeListener(() => {
+            updateIdeCodePreview();
+        });
+    }
+}
+
+function createIdeCodePreview() {
+    const preview = document.createElement('div');
+    preview.className = 'helper-code-preview';
+    
+    const header = document.createElement('div');
+    header.className = 'helper-code-header';
+    
+    const title = document.createElement('h4');
+    title.className = 'helper-code-title';
+    title.textContent = 'Java Code Preview';
+    
+    const toggleButton = document.createElement('button');
+    toggleButton.className = 'helper-code-toggle';
+    toggleButton.innerHTML = '⟩';
+    toggleButton.onclick = () => toggleCodePreview(preview);
+    
+    header.appendChild(title);
+    header.appendChild(toggleButton);
+    
+    const content = document.createElement('pre');
+    content.className = 'helper-code-content';
+    const code = document.createElement('code');
+    code.id = 'outputCode';
+    code.className = 'language-java';
+    content.appendChild(code);
+    
+    preview.appendChild(header);
+    preview.appendChild(content);
+    
+    return preview;
+}
+
+function updateIdeCodePreview() {
+    const workspace = Blockly.getMainWorkspace();
+    if (!workspace) return;
+    
+    const code = generateJavaCodeForWorkspace(workspace);
+    const codeElement = document.getElementById('outputCode');
+    
+    if (codeElement) {
+        codeElement.textContent = code;
+        Prism.highlightElement(codeElement);
+    }
+}
 
 // Funções para sallet e carregar blocos
-window.saveBlocks = function() {
+// Salvar blocos de forma assíncrona
+window.saveBlocks = async function() {
     try {
-        let xmlDom = Blockly.Xml.workspaceToDom(workspace);
-        let xmlText = Blockly.Xml.domToPrettyText(xmlDom);
-        
-        let saveData = {
+        const mainXmlDom = Blockly.Xml.workspaceToDom(workspace);
+        let mainXmlText = Blockly.Xml.domToPrettyText(mainXmlDom);
+        mainXmlText = mainXmlText.split('\n').map(line => '    ' + line).join('\n');
+
+        for (const [helperId, helperInfo] of Object.entries(blocklyHelpers)) {
+            const helperXmlDom = Blockly.Xml.workspaceToDom(helperInfo.workspace);
+            let helperXmlText = Blockly.Xml.domToPrettyText(helperXmlDom);
+            helperXmlText = helperXmlText.split('\n').map(line => '        ' + line).join('\n');
+            const helperFileName = document.getElementById(helperInfo.fileNameInputId)?.value || `helper_${helperId}`;
+            helpersData[helperId] = { blocks: helperXmlText, fileName: helperFileName };
+        }
+
+        console.log(helpersData);
+
+        const saveData = {
             version: "1.0",
             timestamp: new Date().toISOString(),
-            blocks: xmlText
+            mainBlocks: mainXmlText,
+            helperCount,
+            helpers: helpersData
         };
-        
-        let saveString = JSON.stringify(saveData, null, 2);
-        let blob = new Blob([saveString], {type: 'application/json'});
-        let a = document.createElement('a');
+
+        const saveString = JSON.stringify(saveData, null, 4);
+        const blob = new Blob([saveString], { type: 'application/json' });
+        const a = document.createElement('a');
         a.download = 'extension_blocks.json';
         a.href = URL.createObjectURL(blob);
         a.click();
-        
+
         showNotification(TRANSLATIONS[currentLanguage]['file_success'], 'success');
-    } catch (e) {
-        console.error('Erro ao sallet blocos:', e);
+    } catch (error) {
+        console.error('Erro ao salvar blocos:', error);
         showNotification(TRANSLATIONS[currentLanguage]['file_error'], 'error');
     }
 };
 
-window.loadBlocks = function() {
-    let input = document.createElement('input');
+// Carregar blocos de forma assíncrona
+window.loadBlocks = async function() {
+    const input = document.createElement('input');
     input.type = 'file';
     input.accept = '.json';
-    
-    input.onchange = function(e) {
-        let file = e.target.files[0];
-        let reader = new FileReader();
-        
-        reader.onload = function(e) {
-            try {
-                let saveData = JSON.parse(e.target.result);
-                
-                if (!saveData.version) {
-                    throw new Error('Formato de arquivo inválido');
-                }
-                
-                let xmlDom = Blockly.utils.xml.textToDom(saveData.blocks);
+    helperCount = 0;
+
+    input.onchange = async (e) => {
+        try {
+            const file = e.target.files[0];
+            const content = await file.text();
+            const saveData = JSON.parse(content);
+
+            if (!saveData.version) throw new Error('Formato de arquivo inválido');
+
+            if (saveData.mainBlocks) {
+                const mainXmlDom = Blockly.utils.xml.textToDom(saveData.mainBlocks);
                 workspace.clear();
-                Blockly.Xml.domToWorkspace(xmlDom, workspace);
-                
-                showNotification(TRANSLATIONS[currentLanguage]['file_success'], 'success');
-            } catch (err) {
-                console.error('Erro ao carregar blocos:', err);
-                showNotification(TRANSLATIONS[currentLanguage]['file_error'], 'error');
+                Blockly.Xml.domToWorkspace(mainXmlDom, workspace);
             }
-        };
-        
-        reader.readAsText(file);
+
+            Object.keys(blocklyHelpers).forEach(helperId => deleteHelper(helperId));
+            helperCount = saveData.helperCount || 0;
+
+            if (saveData.helpers) {
+                const sortedHelpers = Object.entries(saveData.helpers).sort(([idA], [idB]) => {
+                    const numA = parseInt(idA.replace('helperTab', ''));
+                    const numB = parseInt(idB.replace('helperTab', ''));
+                    return numA - numB;
+                });
+
+                for (const [helperId, helperData] of sortedHelpers) {
+                    await addHelperTab();
+                    const currentHelperId = `helperTab${helperCount}`;
+                    const helperInfo = blocklyHelpers[currentHelperId];
+
+                    if (helperData.blocks && helperInfo && helperInfo.workspace) {
+                        const helperXmlDom = Blockly.utils.xml.textToDom(helperData.blocks);
+                        helperInfo.workspace.clear();
+                        Blockly.Xml.domToWorkspace(helperXmlDom, helperInfo.workspace);
+
+                        if (helperData.fileName) {
+                            const fileNameInput = document.getElementById(helperInfo.fileNameInputId);
+                            if (fileNameInput) fileNameInput.value = helperData.fileName;
+                        }
+
+                        await new Promise(resolve => setTimeout(resolve, 100));
+                        updateHelperCodePreview(currentHelperId);
+                    }
+                }
+            }
+
+            showNotification(TRANSLATIONS[currentLanguage]['file_success'], 'success');
+        } catch (error) {
+            console.error('Erro ao carregar blocos:', error);
+            showNotification(TRANSLATIONS[currentLanguage]['file_error'], 'error');
+        }
     };
-    
+
     input.click();
 };
 
@@ -184,7 +296,6 @@ document.addEventListener('DOMContentLoaded', function() {
         // Atualiza os botões da IDE
         document.querySelector('.text-save').parentElement.title = TRANSLATIONS[lang]['save_blocks'];
         document.querySelector('.text-load').parentElement.title = TRANSLATIONS[lang]['load_blocks'];
-        document.querySelector('.text-generate').textContent = TRANSLATIONS[lang]['generate_code'];
         document.querySelector('.text-download').textContent = TRANSLATIONS[lang]['download_file'];
 
         // Atualiza o Blockly
@@ -223,44 +334,20 @@ document.addEventListener('DOMContentLoaded', function() {
         applyTheme(event.target.value);
     });
 
-    // Aplicar o tema padrão ao carregar
-    applyTheme(themeSelect.value);
 
-    // Funções de geração e download de código
-    window.generateJavaCode = function () {
+
+    // Update code generation to use new preview system
+    generateJavaCode = function() {
         try {
+            const code = generateJavaCodeForWorkspace(Blockly.getMainWorkspace());
             const outputElement = document.getElementById('outputCode');
-            
-            // Obtém os blocos principais em ordem
-            const topBlocks = workspace.getTopBlocks(true);
-            
-            // Inicializa o código gerado
-            let code = '';
-            
-            // Itera sobre os blocos principais em ordem
-            for (const block of topBlocks) {
-                // Gera código para cada bloco e seus filhos
-                code += Blockly.JavaScript.blockToCode(block);
-            }
-
-            // Remove os espaços à esquerda da primeira linha
-            const lines = code.split('\n');
-            if (lines.length > 0) {
-                lines[0] = lines[0].trimStart();
-            }
-            code = lines.join('\n');
-
-            // Define o código no elemento de saída
-            outputElement.textContent = code;
-
-            // Usa Prism.js para realçar o código
-            if (typeof Prism !== 'undefined' && Prism.languages.java) {
+            if (outputElement) {
+                outputElement.textContent = code;
                 Prism.highlightElement(outputElement);
             }
         } catch (error) {
-            console.error('Error generating code:', error);
-            const outputElement = document.getElementById('outputCode');
-            outputElement.textContent = 'Error generating code. Check your blocks.';
+            console.error('Error generating Java code:', error);
+            showNotification('Failed to generate code', 'error');
         }
     };
 
@@ -310,19 +397,81 @@ document.addEventListener('DOMContentLoaded', function() {
       e.preventDefault();
     }
 
-    function handleFileDrop(e) {
-      e.preventDefault();
-      let file = e.dataTransfer.files[0];
-      let reader = new FileReader();
+    async function handleFileDrop(e) {
+        e.preventDefault();
 
-      reader.onload = function(event) {
-        let saveData = JSON.parse(event.target.result);
-        let xmlDom = Blockly.utils.xml.textToDom(saveData.blocks);
-        workspace.clear();
-        Blockly.Xml.domToWorkspace(xmlDom, workspace);
-      };
+        const file = e.dataTransfer.files[0];
+        if (!file || file.type !== 'application/json') {
+            showNotification("Please drop a valid JSON file.", "error");
+            return;
+        }
 
-      reader.readAsText(file);
+        const reader = new FileReader();
+        reader.onload = async function(event) {
+            try {
+                const saveData = JSON.parse(event.target.result);
+
+                // Verifica versão do arquivo
+                if (!saveData.version) {
+                    throw new Error('Invalid file format or missing version.');
+                }
+
+                // Carregar blocos principais
+                if (saveData.mainBlocks) {
+                    const mainXmlDom = Blockly.utils.xml.textToDom(saveData.mainBlocks);
+                    workspace.clear();
+                    Blockly.Xml.domToWorkspace(mainXmlDom, workspace);
+                }
+
+                // Remove todas as abas helpers existentes
+                Object.keys(blocklyHelpers).forEach(helperId => {
+                    deleteHelper(helperId);
+                });
+
+                // Restaura o contador de helpers
+                helperCount = saveData.helperCount || 0;
+
+                // Carrega os helpers na ordem correta
+                if (saveData.helpers) {
+                    const sortedHelpers = Object.entries(saveData.helpers)
+                        .sort(([idA], [idB]) => {
+                            const numA = parseInt(idA.replace('helperTab', ''));
+                            const numB = parseInt(idB.replace('helperTab', ''));
+                            return numA - numB;
+                        });
+
+                    for (const [helperId, helperData] of sortedHelpers) {
+                        await addHelperTab();
+
+                        const currentHelperId = `helperTab${helperCount}`;
+                        const helperInfo = blocklyHelpers[currentHelperId];
+
+                        if (helperData.blocks && helperInfo && helperInfo.workspace) {
+                            const helperXmlDom = Blockly.utils.xml.textToDom(helperData.blocks);
+                            helperInfo.workspace.clear();
+                            Blockly.Xml.domToWorkspace(helperXmlDom, helperInfo.workspace);
+
+                            // Define o nome do arquivo se existir
+                            if (helperData.fileName) {
+                                const fileNameInput = document.getElementById(helperInfo.fileNameInputId);
+                                if (fileNameInput) {
+                                    fileNameInput.value = helperData.fileName;
+                                }
+                            }
+
+                            updateHelperCodePreview(currentHelperId);
+                        }
+                    }
+                }
+
+                showNotification("Blocks loaded successfully.", "success");
+            } catch (error) {
+                console.error("Error loading blocks:", error);
+                showNotification("Failed to load blocks. Check console for details.", "error");
+            }
+        };
+
+        reader.readAsText(file);
     }
 
     workspace.addChangeListener(event => {
@@ -332,7 +481,7 @@ document.addEventListener('DOMContentLoaded', function() {
             event.type === Blockly.Events.BLOCK_DELETE ||  // Bloco deletado
             event.type === Blockly.Events.BLOCK_MOVE       // Bloco movido
         ) {
-            generateJavaCode();
+            //initializeIdePreview();
         }
     });
 
@@ -354,6 +503,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Define o idioma inicial
     changeLanguage('en');
+    initializeIdePreview();
+    applyTheme('light');
 });
 
 
@@ -413,10 +564,10 @@ function addDependency() {
 // Função para compilar extensão
 // Extend compileExtension to send dependencies to the server
 async function compileExtension() {
+    generateJavaCode(); // Gera o código principal primeiro
     const progressModal = showProgressModal();
-
+    
     try {
-        // Get data from the other tabs
         const outputElement = document.getElementById("outputCode");
         const code = outputElement.textContent || outputElement.innerText;
         const manifestContent = document.getElementById("androidManifest").value;
@@ -428,24 +579,47 @@ async function compileExtension() {
             return;
         }
 
-        // Extract packageName and className
+        // Primeiro tenta encontrar uma declaração de classe
         const packageMatch = code.match(/package\s+([\w\.]+);/);
-        const classMatch = code.match(/public\s+class\s+(\w+)/);
+        let className, packageName;
 
-        if (!classMatch) {
-            throw new Error("Invalid Java code. Could not extract class name.");
+        // Tenta encontrar uma declaração de classe ou enum
+        const typeMatch = code.match(/public\s+(class|enum)\s+(\w+)/);
+        
+        if (!typeMatch) {
+            // Se não encontrar nem classe nem enum, tenta extrair do XML
+            const xmlDoc = new DOMParser().parseFromString(code, 'text/xml');
+            const classNameField = xmlDoc.querySelector('field[name="classNameEdit"]');
+            if (classNameField) {
+                className = classNameField.textContent;
+            } else {
+                throw new Error("Could not extract type name from code or blocks.");
+            }
+        } else {
+            className = typeMatch[2]; // O nome está no segundo grupo de captura
         }
 
-        const className = classMatch[1];
-        const packageName = packageMatch ? packageMatch[1] : "com.example";
+        packageName = packageMatch ? packageMatch[1] : "com.example";
 
-        // Update AndroidManifest.xml packageName
         const updatedManifestContent = manifestContent.replace(
             /package="[^"]*"/,
             `package="${packageName}"`
         );
 
-        // Send data to the server, including dependencies
+        // Processa os helpers
+        const helpers = {};
+        if (helpersData) {
+            Object.entries(helpersData).forEach(([id, helper]) => {
+                if (helper.fileName && helper.blocks) {
+                    // Converte os blocos XML em código Java antes de enviar
+                    const helperCode = generateCodeFromXml(helper.blocks);
+                    if (helperCode) {
+                        helpers[helper.fileName] = helperCode;
+                    }
+                }
+            });
+        }
+
         const response = await fetch("https://localhost:8080/compile", {
             method: "POST",
             headers: {
@@ -457,7 +631,8 @@ async function compileExtension() {
                 packageName,
                 androidManifest: updatedManifestContent,
                 fastYml: fastYmlContent,
-                dependencies: dependencies, // Send dependencies as part of the request
+                dependencies,
+                helpers
             }),
         });
 
@@ -474,11 +649,24 @@ async function compileExtension() {
         await cleanupProjectDirectory(className);
     } catch (error) {
         console.error("Error during compilation:", error);
-        showNotification(
-            "Compilation failed. Check the console for more details.",
-            "error"
-        );
+        showNotification("Compilation failed. Check the console for more details.", "error");
         progressModal.close();
+    }
+}
+
+// Função auxiliar para gerar código Java a partir do XML dos helpers
+function generateCodeFromXml(xmlString) {
+    try {
+        const xmlDoc = new DOMParser().parseFromString(xmlString, 'text/xml');
+        // Converte os blocos em código Java usando o Blockly
+        const workspace = new Blockly.Workspace();
+        Blockly.Xml.domToWorkspace(xmlDoc.documentElement, workspace);
+        const code = generateJavaCodeForWorkspace(workspace);
+        workspace.dispose();
+        return code;
+    } catch (error) {
+        console.error('Error converting helper blocks to code:', error);
+        return null;
     }
 }
 
@@ -547,7 +735,3 @@ async function cleanupProjectDirectory(className) {
         console.error("Error during project directory cleanup:", error);
     }
 }
-
-
-// Evento de clique no botão
-//document.querySelector('.button').addEventListener('click', compileExtension);

@@ -9,6 +9,7 @@ import requests
 app = Flask(__name__)
 CORS(app, supports_credentials=True)  # Enable Cross-Origin Resource Sharing
 
+
 # Determine the operating system and set the path for `fast.jar`
 SYSTEM = platform.system().lower()
 if SYSTEM == "windows":
@@ -59,6 +60,9 @@ def create_fast_structure(base_dir, package_name, class_name, code):
     os.makedirs(assets_dir, exist_ok=True)
     os.makedirs(deps_dir, exist_ok=True)
     os.makedirs(package_dir, exist_ok=True)
+
+    helpers_dir = os.path.join(package_dir, "helpers")
+    os.makedirs(helpers_dir, exist_ok=True)
 
     # Create `fast.yml` configuration file
     with open(os.path.join(base_dir, "fast.yml"), "w") as f:
@@ -155,16 +159,16 @@ def add_cors_headers(response):
 def compile_extension():
     try:
         data = request.json
-        code = data.get("code", "")
-        class_name = data.get("className", "TestExtension")
-        package_name = data.get("packageName", "com.example.testextension")
+        main_code = data.get("mainBlocks", "")
+        class_name = data.get("className", "MainExtension")
+        package_name = data.get("packageName", "com.example.extension")
         android_manifest = data.get("androidManifest", "")
         fast_yml = data.get("fastYml", "")
-        dependencies = data.get("dependencies", [])  # New field for dependencies
-        helpers = data.get("helpers", {})  # Recebe os helpers como um dicionário
+        dependencies = data.get("dependencies", [])
+        helpers = data.get("helpers", {})
 
-        if not code:
-            return jsonify({"error": "No code provided"}), 400
+        if not main_code:
+            return jsonify({"error": "No main code provided"}), 400
 
         temp_dir = get_or_create_temp_dir()
         project_dir = os.path.join(temp_dir, f"{class_name}_project")
@@ -172,23 +176,20 @@ def compile_extension():
             shutil.rmtree(project_dir)
         os.makedirs(project_dir, exist_ok=True)
 
-        # Save project files
-        create_fast_structure(project_dir, package_name, class_name, code)
+        # Set up project structure
+        create_fast_structure(project_dir, package_name, class_name, main_code, helpers)
+
+        # Save the AndroidManifest.xml
         with open(os.path.join(project_dir, "src", "AndroidManifest.xml"), "w") as f:
             f.write(android_manifest)
+
+        # Save the fast.yml configuration
         with open(os.path.join(project_dir, "fast.yml"), "w") as f:
             f.write(fast_yml)
 
-        # Salvar helpers
-        helpers_dir = os.path.join(project_dir, "src", "helpers")
-        os.makedirs(helpers_dir, exist_ok=True)
-        for helper_name, helper_code in helpers.items():
-            helper_path = os.path.join(helpers_dir, f"{helper_name}.java")
-            with open(helper_path, "w") as f:
-                f.write(helper_code)
-
         # Download dependencies
         deps_dir = os.path.join(project_dir, "deps")
+        os.makedirs(deps_dir, exist_ok=True)
         for url in dependencies:
             file_name = os.path.basename(url)
             file_path = os.path.join(deps_dir, file_name)
@@ -199,24 +200,20 @@ def compile_extension():
             else:
                 return jsonify({"error": f"Failed to download dependency: {url}"}), 500
 
-        # Compile the extension
-        command = ["java", "-jar", FAST_JAR_PATH, "build"]
-        result = subprocess.run(
-            command,
-            cwd=project_dir,
-            capture_output=True,
-            text=True,
-        )
+        # Run the Fast CLI to compile the extension
+        command = ["java", "-jar", FAST_JAR_PATH, "build", "-d"]
+        result = subprocess.run(command, cwd=project_dir, capture_output=True, text=True)
 
         if result.returncode != 0:
             return jsonify({"error": "Compilation failed", "details": result.stderr}), 500
 
-        aix_file_name = f"{package_name}.aix"
+        aix_file_name = f"{class_name}.aix"
         aix_file_path = os.path.join(project_dir, "out", aix_file_name)
         if not os.path.exists(aix_file_path):
             return jsonify({"error": "AIX file not found"}), 500
 
-        return send_file(aix_file_path, as_attachment=True, download_name=f"{class_name}.aix")
+        return send_file(aix_file_path, as_attachment=True, download_name=aix_file_name)
+
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 

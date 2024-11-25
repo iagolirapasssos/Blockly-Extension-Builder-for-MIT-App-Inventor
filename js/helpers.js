@@ -267,7 +267,8 @@ function toggleCodePreview(previewElement) {
 /**
  * Adiciona uma nova aba com um editor Blockly e carrega blocos iniciais.
  */
-window.addHelperTab = function() {
+// Adicionar nova aba de helper (assíncrona)
+window.addHelperTab = async function() {
     helperCount++;
     const tabId = `helperTab${helperCount}`;
     const tabContentId = `helperContent${helperCount}`;
@@ -275,9 +276,56 @@ window.addHelperTab = function() {
     const fileNameInputId = `helperFileName${helperCount}`;
     const modalId = `modal_${tabId}`;
 
-    // ... (código existente para criar a aba e botões) ...
+    // Adiciona botão para a nova aba
+    const tabContainer = document.querySelector('.tab-container');
+    const tabWrapper = document.createElement('div');
+    tabWrapper.className = 'helper-tab-wrapper';
+    tabWrapper.setAttribute('data-helper-id', tabId);
+    
+    // Cria o botão da aba
+    const newTab = document.createElement('button');
+    newTab.className = 'tab-button';
+    newTab.innerText = `Helper ${helperCount}`;
+    newTab.setAttribute('onclick', `showTab('${tabContentId}')`);
 
-    // Cria o container principal
+    // Cria os botões de controle
+    const controlButtons = document.createElement('div');
+    controlButtons.className = 'helper-control-buttons';
+
+    // Botão de configurações
+    const settingsButton = document.createElement('button');
+    settingsButton.className = 'helper-settings-button';
+    settingsButton.innerHTML = `
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z"/>
+            <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319z"/>
+        </svg>
+    `;
+    settingsButton.setAttribute('onclick', `openHelperModal('${modalId}')`);
+    settingsButton.setAttribute('title', 'Helper Settings');
+
+    // Botão de fechar
+    const closeButton = document.createElement('button');
+    closeButton.className = 'helper-close-button';
+    closeButton.innerHTML = `
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+        </svg>
+    `;
+    closeButton.setAttribute('onclick', `deleteHelper('${tabId}')`);
+    closeButton.setAttribute('title', 'Delete Helper');
+
+    // Monta a estrutura da aba
+    controlButtons.appendChild(settingsButton);
+    controlButtons.appendChild(closeButton);
+    tabWrapper.appendChild(newTab);
+    tabWrapper.appendChild(controlButtons);
+    tabContainer.appendChild(tabWrapper);
+
+    // Cria o modal de configurações
+    createSettingsModal(tabId, fileNameInputId);
+
+    // Cria o conteúdo da aba
     const tabContentContainer = document.createElement('div');
     tabContentContainer.id = tabContentId;
     tabContentContainer.className = 'tab-content';
@@ -301,7 +349,7 @@ window.addHelperTab = function() {
     const codePreview = createCodePreview(tabId);
     codePreview.setAttribute('data-helper-id', tabId);
 
-    // Monta a estrutura
+    // Monta a estrutura completa
     helperContainer.appendChild(workspaceContainer);
     helperContainer.appendChild(codePreview);
     tabContentContainer.appendChild(helperContainer);
@@ -346,9 +394,6 @@ window.addHelperTab = function() {
         codePreviewElement: codePreview
     };
 
-    // Carrega blocos iniciais
-    //loadInitialBlocks(workspace, helperCount);
-
     // Exibe a nova aba
     showTab(tabContentId);
     
@@ -357,7 +402,10 @@ window.addHelperTab = function() {
         resizeHelperWorkspace(blockEditorId, workspace);
         updateHelperCodePreview(tabId);
     }, 100);
-}
+
+    return workspace;
+};
+
 // Nova função para redimensionar workspaces de helpers
 function resizeHelperWorkspace(blockEditorId, workspace) {
     if (!workspace) return;
@@ -412,12 +460,28 @@ function resizeBlocklyDiv(blockEditorId, workspace) {
  */
 function saveBlocksForHelper(helperId) {
     try {
+        console.log(helperId);
         const { workspace, fileNameInputId } = blocklyHelpers[helperId];
-        const xmlDom = Blockly.Xml.workspaceToDom(workspace);
-        const xmlText = Blockly.Xml.domToPrettyText(xmlDom);
+        const mainXmlDom = Blockly.Xml.workspaceToDom(workspace);
+        let mainXmlText = Blockly.Xml.domToPrettyText(mainXmlDom);
+        mainXmlText = mainXmlText.split('\n').map(line => '    ' + line).join('\n')
         const fileName = document.getElementById(fileNameInputId).value || `helper_${helperId}.json`;
 
-        localStorage.setItem(`helperBlocks_${helperId}`, xmlText);
+
+        ;
+
+        for (const [helperId, helperInfo] of Object.entries(blocklyHelpers)) {
+            const helperXmlDom = Blockly.Xml.workspaceToDom(helperInfo.workspace);
+            let helperXmlText = Blockly.Xml.domToPrettyText(helperXmlDom);
+            helperXmlText = helperXmlText.split('\n').map(line => '        ' + line).join('\n');
+            const helperFileName = document.getElementById(helperInfo.fileNameInputId)?.value || `helper_${helperId}`;
+            helpersData[helperId] = { blocks: helperXmlText, fileName: helperFileName };
+        }
+
+        console.log(helpersData);
+
+        
+        localStorage.setItem(`helperBlocks_${helperId}`, mainXmlText);
         localStorage.setItem(`helperFileName_${helperId}`, fileName);
 
         showNotification(`Blocks saved for ${fileName}`, 'success');

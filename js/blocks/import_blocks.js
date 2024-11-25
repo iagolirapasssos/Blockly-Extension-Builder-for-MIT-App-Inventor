@@ -1,4 +1,27 @@
 // Importação Manual
+// Lista global de importações
+const imports = {
+    'ANNOTATIONS': 'com.google.appinventor.components.annotations.*',
+    'RUNTIME': 'com.google.appinventor.components.runtime.*',
+    'COMMON': 'com.google.appinventor.components.common.*',
+    'COMPONENT_CATEGORY': 'com.google.appinventor.components.common.ComponentCategory',
+    'COMPONENT_CONTAINER': 'com.google.appinventor.components.runtime.ComponentContainer',
+    'UTIL': 'com.google.appinventor.components.runtime.util.*',
+    'YAIL_LIST': 'com.google.appinventor.components.runtime.util.YailList',
+    'YAIL_DICTIONARY': 'com.google.appinventor.components.runtime.util.YailDictionary',
+    'PROPERTY_TYPE_CONSTANTS': 'com.google.appinventor.components.common.PropertyTypeConstants',
+    'SIMPLE_EVENT': 'com.google.appinventor.components.annotations.SimpleEvent',
+    'NUMBER_FORMAT': 'java.text.NumberFormat',
+    'LOCALE': 'java.util.Locale',
+    'LIST': 'java.util.List',
+    'ARRAY_LIST': 'java.util.ArrayList',
+    'COLLECTIONS': 'java.util.Collections',
+    'OPTION_LIST': 'com.google.appinventor.components.common.OptionList',
+    'HASH_MAP': 'java.util.HashMap',
+    'MAP': 'java.util.Map',
+    'CONTEXT': 'android.content.Context'
+};
+
 Blockly.Blocks['import_manual'] = {
     init: function() {
         this.appendDummyInput()
@@ -13,6 +36,22 @@ Blockly.Blocks['import_manual'] = {
         this.setNextStatement(true, null);
         this.setColour("#00897B");
         this.setTooltip('Importação manual de classe ou pacote');
+    }
+};
+
+Blockly.Blocks['import_basic'] = {
+    init: function() {
+        // Cria o dropdown dinamicamente com base no objeto `imports`
+        const dropdownOptions = Object.entries(imports).map(([key, value]) => [value, key]);
+
+        this.appendDummyInput()
+            .appendField("Import")
+            .appendField(new Blockly.FieldDropdown(dropdownOptions), "IMPORT");
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour("#00897B");
+        this.setTooltip("Imports necessary libraries");
+        this.setHelpUrl("");
     }
 };
 
@@ -97,4 +136,10 @@ Blockly.JavaScript['import_static'] = function(block) {
     let className = block.getFieldValue('CLASS');
     let method = block.getFieldValue('METHOD');
     return `import static ${className}.${method};\n`;
+};
+
+Blockly.JavaScript['import_basic'] = function(block) {
+    const importType = block.getFieldValue('IMPORT');
+    const importCode = imports[importType] || '';
+    return `import ${importCode};\n`;
 };

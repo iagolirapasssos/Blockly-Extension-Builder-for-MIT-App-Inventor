@@ -1,0 +1,98 @@
+/* css/preview.css */
+
+.helper-container {
+    display: flex;
+    width: 100%;
+    height: calc(100vh - 120px);
+    position: relative;
+}
+
+.helper-workspace {
+    flex: 1;
+    min-width: 0;
+    position: relative;
+}
+
+.helper-code-preview {
+    width: 400px;
+    border-left: 1px solid #ccc;
+    display: flex;
+    flex-direction: column;
+    background: #2d2d2d;
+}
+
+.helper-code-header {
+    padding: 8px;
+    background: #1e1e1e;
+    border-bottom: 1px solid #3d3d3d;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.helper-code-title {
+    color: #fff;
+    font-size: 0.9em;
+    margin: 0;
+}
+
+.helper-code-toggle {
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    padding: 4px 8px;
+    font-size: 1.2em;
+    display: flex;
+    align-items: center;
+}
+
+.helper-code-toggle:hover {
+    color: #007bff;
+}
+
+.helper-code-content {
+    flex: 1;
+    overflow: auto;
+    padding: 0;
+    margin: 0;
+}
+
+.helper-code-content code {
+    font-family: 'Fira Code', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* Smooth transition when resizing */
+.helper-workspace,
+.helper-code-preview {
+    transition: width 0.3s ease;
+}
+
+/* Collapsed state of preview */
+.helper-code-preview.collapsed {
+    width: 30px;
+}
+
+.helper-code-preview.collapsed .helper-code-content,
+.helper-code-preview.collapsed .helper-code-title {
+    display: none;
+}
+
+.helper-code-preview.collapsed .helper-code-toggle {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    padding: 10px 0;
+    width: 30px;
+    justify-content: center;
+}
+
+#ideTab {
+    padding: 0 !important;
+}
+
+#ideTab #blocklyDiv {
+    height: 100% !important;
+    width: 100% !important;
+}

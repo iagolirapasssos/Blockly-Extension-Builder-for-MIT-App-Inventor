@@ -167,7 +167,210 @@ Blockly.Blocks['logic_operation_item'] = {
     }
 };
 
+// Bloco de verificação de String vazia
+Blockly.Blocks['logic_string_empty'] = {
+    init: function() {
+        this.appendValueInput('STRING')
+            .setCheck('String')
+            .appendField(new Blockly.FieldDropdown([
+                ['is empty', 'EMPTY'],
+                ['is not empty', 'NOT_EMPTY']
+            ]), 'CHECK');
+        this.setOutput(true, 'Boolean');
+        this.setColour("#FDD835");
+        this.setTooltip('Verifica se uma String está vazia');
+    }
+};
+
+// Bloco de verificação de coleção vazia
+Blockly.Blocks['logic_collection_empty'] = {
+    init: function() {
+        this.appendValueInput('COLLECTION')
+            .setCheck(null)
+            .appendField(new Blockly.FieldDropdown([
+                ['is empty', 'EMPTY'],
+                ['is not empty', 'NOT_EMPTY']
+            ]), 'CHECK');
+        this.setOutput(true, 'Boolean');
+        this.setColour("#FDD835");
+        this.setTooltip('Verifica se uma coleção está vazia');
+    }
+};
+
+// Bloco de verificação de intervalo (between)
+Blockly.Blocks['logic_between'] = {
+    init: function() {
+        this.appendValueInput('VALUE')
+            .setCheck('Number')
+            .appendField('value');
+        this.appendValueInput('MIN')
+            .setCheck('Number')
+            .appendField('is between');
+        this.appendValueInput('MAX')
+            .setCheck('Number')
+            .appendField('and');
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldCheckbox('TRUE'), 'INCLUSIVE')
+            .appendField('inclusive');
+        this.setOutput(true, 'Boolean');
+        this.setColour("#FDD835");
+        this.setTooltip('Verifica se um valor está em um intervalo');
+    }
+};
+
+// Bloco de verificação de tipo (instanceof)
+Blockly.Blocks['logic_typeof'] = {
+    init: function() {
+        this.appendValueInput('OBJECT')
+            .setCheck(null)
+            .appendField('check if');
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldDropdown([
+                ['is String', 'STRING'],
+                ['is Number', 'NUMBER'],
+                ['is Boolean', 'BOOLEAN'],
+                ['is Array', 'ARRAY'],
+                ['is Object', 'OBJECT'],
+                ['is Null', 'NULL']
+            ]), 'TYPE');
+        this.setOutput(true, 'Boolean');
+        this.setColour("#FDD835");
+        this.setTooltip('Verifica o tipo de um valor');
+    }
+};
+
+// Bloco de verificação condicional (ternário)
+Blockly.Blocks['logic_ternary'] = {
+    init: function() {
+        this.appendValueInput('CONDITION')
+            .setCheck('Boolean')
+            .appendField('if');
+        this.appendValueInput('THEN')
+            .setCheck(null)
+            .appendField('then');
+        this.appendValueInput('ELSE')
+            .setCheck(null)
+            .appendField('else');
+        this.setOutput(true, null);
+        this.setColour("#FDD835");
+        this.setTooltip('Operador ternário - retorna um valor baseado em uma condição');
+    }
+};
+
+// Bloco de verificação múltipla (switch-like)
+Blockly.Blocks['logic_switch'] = {
+    init: function() {
+        this.appendValueInput('VALUE')
+            .setCheck(null)
+            .appendField('match value');
+        this.appendValueInput('CASE1')
+            .setCheck(null)
+            .appendField('when equals');
+        this.appendValueInput('RETURN1')
+            .setCheck(null)
+            .appendField('return');
+        this.appendValueInput('CASE2')
+            .setCheck(null)
+            .appendField('when equals');
+        this.appendValueInput('RETURN2')
+            .setCheck(null)
+            .appendField('return');
+        this.appendValueInput('DEFAULT')
+            .setCheck(null)
+            .appendField('otherwise return');
+        this.setOutput(true, null);
+        this.setColour("#FDD835");
+        this.setTooltip('Retorna diferentes valores baseado em comparações');
+    }
+};
+
+
 // Geradores de código
+Blockly.JavaScript['logic_string_empty'] = function(block) {
+    const string = Blockly.JavaScript.valueToCode(block, 'STRING', Blockly.JavaScript.ORDER_ATOMIC) || '""';
+    const check = block.getFieldValue('CHECK');
+    
+    if (check === 'EMPTY') {
+        return [`${string}.isEmpty()`, Blockly.JavaScript.ORDER_ATOMIC];
+    }
+    return [`!${string}.isEmpty()`, Blockly.JavaScript.ORDER_ATOMIC];
+};
+
+Blockly.JavaScript['logic_collection_empty'] = function(block) {
+    const collection = Blockly.JavaScript.valueToCode(block, 'COLLECTION', Blockly.JavaScript.ORDER_ATOMIC) || '[]';
+    const check = block.getFieldValue('CHECK');
+    
+    if (check === 'EMPTY') {
+        return [`${collection}.isEmpty()`, Blockly.JavaScript.ORDER_ATOMIC];
+    }
+    return [`!${collection}.isEmpty()`, Blockly.JavaScript.ORDER_ATOMIC];
+};
+
+Blockly.JavaScript['logic_between'] = function(block) {
+    const value = Blockly.JavaScript.valueToCode(block, 'VALUE', Blockly.JavaScript.ORDER_ATOMIC) || '0';
+    const min = Blockly.JavaScript.valueToCode(block, 'MIN', Blockly.JavaScript.ORDER_ATOMIC) || '0';
+    const max = Blockly.JavaScript.valueToCode(block, 'MAX', Blockly.JavaScript.ORDER_ATOMIC) || '0';
+    const inclusive = block.getFieldValue('INCLUSIVE') === 'TRUE';
+    
+    if (inclusive) {
+        return [`${value} >= ${min} && ${value} <= ${max}`, Blockly.JavaScript.ORDER_ATOMIC];
+    }
+    return [`${value} > ${min} && ${value} < ${max}`, Blockly.JavaScript.ORDER_ATOMIC];
+};
+
+Blockly.JavaScript['logic_typeof'] = function(block) {
+    const object = Blockly.JavaScript.valueToCode(block, 'OBJECT', Blockly.JavaScript.ORDER_ATOMIC) || 'null';
+    const type = block.getFieldValue('TYPE');
+    
+    let check;
+    switch (type) {
+        case 'STRING':
+            check = `${object} instanceof String`;
+            break;
+        case 'NUMBER':
+            check = `${object} instanceof Integer || ${object} instanceof Double`;
+            break;
+        case 'BOOLEAN':
+            check = `${object} instanceof Boolean`;
+            break;
+        case 'ARRAY':
+            check = `${object} instanceof List`;
+            break;
+        case 'OBJECT':
+            check = `${object} instanceof Object`;
+            break;
+        case 'NULL':
+            check = `${object} == null`;
+            break;
+        default:
+            check = 'false';
+    }
+    return [check, Blockly.JavaScript.ORDER_ATOMIC];
+};
+
+Blockly.JavaScript['logic_ternary'] = function(block) {
+    const condition = Blockly.JavaScript.valueToCode(block, 'CONDITION', Blockly.JavaScript.ORDER_ATOMIC) || 'false';
+    const thenValue = Blockly.JavaScript.valueToCode(block, 'THEN', Blockly.JavaScript.ORDER_ATOMIC) || 'null';
+    const elseValue = Blockly.JavaScript.valueToCode(block, 'ELSE', Blockly.JavaScript.ORDER_ATOMIC) || 'null';
+    
+    return [`(${condition} ? ${thenValue} : ${elseValue})`, Blockly.JavaScript.ORDER_ATOMIC];
+};
+
+Blockly.JavaScript['logic_switch'] = function(block) {
+    const value = Blockly.JavaScript.valueToCode(block, 'VALUE', Blockly.JavaScript.ORDER_ATOMIC) || 'null';
+    const case1 = Blockly.JavaScript.valueToCode(block, 'CASE1', Blockly.JavaScript.ORDER_ATOMIC) || 'null';
+    const return1 = Blockly.JavaScript.valueToCode(block, 'RETURN1', Blockly.JavaScript.ORDER_ATOMIC) || 'null';
+    const case2 = Blockly.JavaScript.valueToCode(block, 'CASE2', Blockly.JavaScript.ORDER_ATOMIC) || 'null';
+    const return2 = Blockly.JavaScript.valueToCode(block, 'RETURN2', Blockly.JavaScript.ORDER_ATOMIC) || 'null';
+    const defaultReturn = Blockly.JavaScript.valueToCode(block, 'DEFAULT', Blockly.JavaScript.ORDER_ATOMIC) || 'null';
+    
+    return [
+        `(${value}.equals(${case1}) ? ${return1} : ` +
+        `${value}.equals(${case2}) ? ${return2} : ${defaultReturn})`,
+        Blockly.JavaScript.ORDER_ATOMIC
+    ];
+};
+
 Blockly.JavaScript['logic_compare'] = function(block) {
     let a = Blockly.JavaScript.valueToCode(block, 'A', Blockly.JavaScript.ORDER_ATOMIC) || '0';
     let b = Blockly.JavaScript.valueToCode(block, 'B', Blockly.JavaScript.ORDER_ATOMIC) || '0';

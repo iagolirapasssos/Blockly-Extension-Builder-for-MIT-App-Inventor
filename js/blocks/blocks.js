@@ -1,25 +1,5 @@
 // Define custom blocks
 
-
-
-Blockly.Blocks['import_basic'] = {
-    init: function() {
-        this.appendDummyInput()
-            .appendField("Import")
-            .appendField(new Blockly.FieldDropdown([
-                ["com.google.appinventor.components.annotations.*", "ANNOTATIONS"],
-                ["com.google.appinventor.components.common.*", "COMMON"],
-                ["com.google.appinventor.components.runtime.*", "RUNTIME"],
-                ["android.content.Context", "CONTEXT"]
-            ]), "IMPORT");
-        this.setPreviousStatement(true, null);
-        this.setNextStatement(true, null);
-        this.setColour(210);
-        this.setTooltip("Imports necessary libraries");
-        this.setHelpUrl("");
-    }
-};
-
 // Import Static Method
 
 Blockly.Blocks['designer_property'] = {
@@ -162,17 +142,5 @@ Blockly.JavaScript['designer_property'] = function(block) {
         ${getterContent}
     }\n`;
 };
-
-Blockly.JavaScript['import_basic'] = function(block) {
-    let importType = block.getFieldValue('IMPORT');
-    let imports = {
-        'ANNOTATIONS': 'com.google.appinventor.components.annotations.*',
-        'COMMON': 'com.google.appinventor.components.common.*',
-        'RUNTIME': 'com.google.appinventor.components.runtime.*',
-        'CONTEXT': 'android.content.Context'
-    };
-    return `import ${imports[importType]};\n`;
-};
-
 
 
