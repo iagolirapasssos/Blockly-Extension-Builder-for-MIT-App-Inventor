@@ -67,9 +67,6 @@
           <span class="text-compile">Compile Extension</span>
         </button>
 
-        <button class="button" onclick="generateJavaCode()">
-          <span class="text-generate">Build Java File</span>
-        </button>
         <button class="button" onclick="downloadCode()">
           <span class="text-download">Download .java</span>
         </button>
@@ -85,9 +82,6 @@
         AndroidManifest.xml
       </button>
       <button class="tab-button" onclick="showTab('fastTab')">fast.yml</button>
-      <button class="tab-button" onclick="showTab('outputTab')">
-        Java File
-      </button>
       <button class="tab-button" onclick="showTab('dependenciesTab')">
         Dependencies
       </button>
@@ -99,15 +93,26 @@
     </div>
 
     <div id="manifestTab" class="tab-content">
-		<div id="androidManifest" style="height:500px;"></div>
+        <textarea id="androidManifest" class="language-xml" placeholder="Edit AndroidManifest.xml here">
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  package="com.mypackage.testextension.testextension">
+
+  <application>
+    <!-- You can use any manifest tag that goes inside the <application> tag -->
+    <!-- <service android:name="com.example.MyService"> ... </service> -->
+  </application>
+
+  <!-- Other than <application> level tags, you can use <uses-permission> & <queries> tags -->
+  <!-- <uses-permission android:name="android.permission.INTERNET"/> -->
+  <!-- <queries> ... </queries> -->
+
+</manifest>
+        </textarea>
     </div>
 
     <div id="fastTab" class="tab-content">
-      <textarea
-        id="fastYml"
-        class="language-yaml"
-        placeholder="Edit fast.yml here"
-      >
+        <textarea id="fastYml" class="language-yaml" placeholder="Edit fast.yml here">
 # The name of the extension developer
 author: BosonsHiggs
 
@@ -153,27 +158,18 @@ R8: false
 # Extension assets. [Should be present into assets directory]
 #assets:
 #- my-awesome-asset.anything
-        </textarea
-      >
-    </div>
-
-    <div id="outputTab" class="tab-content">
-      <pre><code id="outputCode" class="language-java theme-light">/* Output Java code will appear here */</code></pre>
+        </textarea>
     </div>
 
     <!-- Dependencies Tab -->
-    <div id="dependenciesTab" class="tab-content">
+  <div id="dependenciesTab" class="tab-content">
       <h3>Add Dependencies (JAR/AAR)</h3>
-      <input
-        type="url"
-        id="dependencyUrl"
-        placeholder="Enter URL of .jar or .aar file"
-      />
+      <input type="url" id="dependencyUrl" placeholder="Enter URL of .jar or .aar file" />
       <button onclick="addDependency()">Add Dependency</button>
       <ul id="dependenciesList"></ul>
-    </div>
-
-    <xml id="toolbox" style="display: none">
+  </div>
+    
+  <xml id="toolbox" style="display: none">
       <category id="cat_config" name="Configuration" colour="#5C6BC0">
           <block type="extension_class"></block>
           <block type="custom_annotation"></block>
@@ -672,8 +668,8 @@ R8: false
 
   </xml>
 
-    <!-- Scripts próprios -->
-    !-- Scripts próprios -->
+
+  <!-- Scripts próprios -->
   <script src="js/translations.js"></script>
 
   <script src="js/blocks/constructor_blocks.js"></script>
@@ -697,5 +693,5 @@ R8: false
   <script src="js/blocks/enums_blocks.js"></script>
   <script src="js/helpers.js"></script>
   <script src="js/main.js"></script>
-  </body>
+</body>
 </html>

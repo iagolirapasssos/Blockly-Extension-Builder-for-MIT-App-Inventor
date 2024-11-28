@@ -352,18 +352,29 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     window.downloadCode = function () {
-        const outputElement = document.getElementById('outputCode');
-        const code = outputElement.textContent || outputElement.innerText;
-
-        if (!code) {
-            showNotification("No code generated. Please generate code first.", "error");
-            return;
-        }
-
         try {
-            // Extração do package e nome da classe
-            const packageMatch = code.match(/package\s+([\w\.]+);/);
-            const classMatch = code.match(/public\s+class\s+(\w+)/);
+            const workspace = Blockly.getMainWorkspace();
+            const mainCode = generateJavaCodeForWorkspace(workspace);
+
+            // Verificar se há código no workspace principal
+            if (!mainCode.trim()) {
+                showNotification("No code generated in Blocks. Please create some blocks first.", "error");
+                return;
+            }
+
+            let combinedCode = mainCode;
+
+            // Adicionar o código de todos os helpers
+            for (const [helperId, helperInfo] of Object.entries(blocklyHelpers)) {
+                const helperCode = generateJavaCodeForWorkspace(helperInfo.workspace);
+                if (helperCode.trim()) {
+                    combinedCode += `\n\n// Helper: ${helperId}\n${helperCode}`;
+                }
+            }
+
+            // Validar a presença do pacote e da classe principal
+            const packageMatch = combinedCode.match(/package\s+([\w\.]+);/);
+            const classMatch = combinedCode.match(/public\s+class\s+(\w+)/);
 
             if (!packageMatch || !classMatch) {
                 throw new Error("Invalid Java code. Could not extract package or class name.");
@@ -371,12 +382,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
             const packageName = packageMatch[1];
             const className = classMatch[1];
-
-            // Criar o nome do arquivo
             const fileName = `${className}.java`;
 
-            // Criação do arquivo Java para download
-            const blob = new Blob([code], { type: "text/java;charset=utf-8" });
+            // Criar o arquivo para download
+            const blob = new Blob([combinedCode], { type: "text/java;charset=utf-8" });
             const a = document.createElement("a");
             a.download = fileName;
             a.href = URL.createObjectURL(blob);
