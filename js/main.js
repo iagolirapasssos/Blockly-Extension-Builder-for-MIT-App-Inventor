@@ -9,6 +9,8 @@ let workspace = Blockly.getMainWorkspace();
 let currentLanguage = 'pt-br';
 let dependencies = []; // Array to store dependency URLs
 let helpersData = {};
+let manifestEditor;
+let ymlEditor;
 
 // Sistema de notificações
 function showNotification(message, type) {
@@ -579,8 +581,8 @@ async function compileExtension() {
     try {
         const outputElement = document.getElementById("outputCode");
         const code = outputElement.textContent || outputElement.innerText;
-        const manifestContent = document.getElementById("androidManifest").value;
-        const fastYmlContent = document.getElementById("fastYml").value;
+        const manifestContent = manifestEditor.getValue();
+        const fastYmlContent = ymlEditor.getValue();;
 
         if (!code) {
             showNotification("No code generated. Please generate code first.", "error");
@@ -744,3 +746,91 @@ async function cleanupProjectDirectory(className) {
         console.error("Error during project directory cleanup:", error);
     }
 }
+    // Manifest XML Editor
+    const defaultCode = `
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  package="com.mypackage.testextension.testextension">
+
+  <application>
+    <!-- You can use any manifest tag that goes inside the <application> tag -->
+    <!-- <service android:name="com.example.MyService"> ... </service> -->
+  </application>
+
+  <!-- Other than <application> level tags, you can use <uses-permission> & <queries> tags -->
+  <!-- <uses-permission android:name="android.permission.INTERNET"/> -->
+  <!-- <queries> ... </queries> -->
+
+</manifest>
+    `;
+
+    // Load Monaco Editor
+    require.config({ paths: { vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.39.0/min/vs' } });
+    require(['vs/editor/editor.main'], function () {
+        manifestEditor = monaco.editor.create(document.getElementById('editor'), {
+        value: defaultCode.trim(),
+        language: 'xml',
+        theme: 'vs', // Use 'vs', 'vs-dark', or 'hc-black' for themes
+        automaticLayout: true, // Auto resize editor
+      });
+    });
+
+    // Default YML Code
+    const defaultYamlCode = `
+# The name of the extension developer
+author: BosonsHiggs
+
+# If enabled, the version number of every component will be increased automatically.
+auto_version: true
+
+# The minimum Android SDK level your extension supports. Minimum SDK defined in
+# AndroidManifest.xml or @DesignerComponent are ignored, you should always define it here.
+min_sdk: 7
+
+# If enabled, Kotlin Standard Libraries (V1.9.24) will be included with the extension.
+# If you want to add specific Kotlin Standard Libraries so disable it.
+kotlin: false
+
+# If enabled, you will be able to use Java 8 language features in your extension source code.
+# When you use .kt classes, by default Fast will desugar sources.
+desugar_sources: false
+
+# Enable it, if any of your dependencies use Java 8 language features.
+# If kotlin is enabled, by default Fast will desugar dependencies.
+desugar_deps: false
+
+# If enabled, the D8 tool will generate desugared (classes.jar) classes.dex
+desugar_dex: true
+
+# If enabled, @annotations will be not present in built extension.
+deannonate: true
+
+# If enabled, matching classes provided by MIT will not be included in the built extension.
+filter_mit_classes: false
+
+# If enabled, it will optimizes the extension with ProGuard.
+proguard: true
+
+# If enabled, R8 will be used instead of ProGuard and D8 dexer.
+# NOTE: It's an experimental feature.
+R8: false
+
+# Extension dependencies (JAR) [Should be present into deps directory]
+# dependencies:
+# - mylibrary.jar
+
+# Extension assets. [Should be present into assets directory]
+# assets:
+# - my-awesome-asset.anything
+    `;
+
+    // Load Monaco Editor for YML
+    require.config({ paths: { vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.39.0/min/vs' } });
+    require(['vs/editor/editor.main'], function () {
+      ymlEditor = monaco.editor.create(document.getElementById('editor-yml'), {
+        value: defaultYamlCode.trim(),
+        language: 'yaml', // Specify YML language
+        theme: 'vs',
+        automaticLayout: true,
+      });
+    });
