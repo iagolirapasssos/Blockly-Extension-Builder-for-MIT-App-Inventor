@@ -240,9 +240,9 @@ document.addEventListener('DOMContentLoaded', function() {
     workspace = Blockly.inject('blocklyDiv', {
         toolbox: document.getElementById('toolbox'),
         grid: {
-            spacing: 20,
+            spacing: 30,
             length: 3,
-            colour: '#ccc',
+            colour: '#ffc107',
             snap: true
         },
         zoom: {
@@ -314,7 +314,8 @@ document.addEventListener('DOMContentLoaded', function() {
         // Adiciona a nova classe de tema
         body.classList.add(`theme-${theme}`);
 
-        // Estilos adicionais para blockly e categorias do toolbox
+        // Estilos adicionais para blockly e categorias do 
+        // Additional styles for Blockly and toolbox categories
         const blocklyDiv = document.getElementById("blocklyDiv");
         if (blocklyDiv) {
             blocklyDiv.classList.remove("theme-light", "theme-dark", "theme-github", "theme-monokai");
@@ -322,13 +323,26 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         // Atualiza as cores das categorias do toolbox
+        // Updates the colors of the categories in the toolbox
         const toolboxCategories = document.querySelectorAll("#toolbox category");
         toolboxCategories.forEach(category => {
             category.style.color = getComputedStyle(document.body).getPropertyValue("--category-text-color");
         });
 
         // Atualiza as cores do workspace
-        Blockly.getMainWorkspace().updateToolbox(document.getElementById("toolbox"));
+        // Updates the workspace colors
+      //  Blockly.getMainWorkspace().updateToolbox(document.getElementById("toolbox"));
+       // Update the workspace colors
+    const workspaceBackgroundColor = getComputedStyle(document.body).getPropertyValue("--workspace-bg-color");
+    const workspace = Blockly.getMainWorkspace();
+    if (workspace) {
+        workspace.getCanvas().style.backgroundColor = workspaceBackgroundColor;
+        workspace.getParentSvg().style.backgroundColor = workspaceBackgroundColor;
+
+        // Reapply the toolbox to ensure the styles are updated
+        workspace.updateToolbox(document.getElementById("toolbox"));
+    }
+
     }
 
     // Adicionar evento ao seletor

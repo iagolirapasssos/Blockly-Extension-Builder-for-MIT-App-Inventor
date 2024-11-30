@@ -18,7 +18,7 @@
     border-left: 1px solid #ccc;
     display: flex;
     flex-direction: column;
-    background: #2d2d2d;
+    
 }
 
 .helper-code-header {
@@ -31,7 +31,7 @@
 }
 
 .helper-code-title {
-    color: #fff;
+    color: #BA55D3;
     font-size: 0.9em;
     margin: 0;
 }
@@ -39,7 +39,7 @@
 .helper-code-toggle {
     background: none;
     border: none;
-    color: #fff;
+    color: #BA55D3;
     cursor: pointer;
     padding: 4px 8px;
     font-size: 1.2em;

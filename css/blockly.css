@@ -94,8 +94,9 @@ body {
 
 .tab-container::-webkit-scrollbar-thumb {
     background: #bbb;
-    border-radius: 2px;
+    border-radius: 1px;
 }
+
 .tab-content {
     flex: 1;
     display: none;
@@ -119,7 +120,6 @@ body {
     padding: 10px;
     box-sizing: border-box;
     border: 1px solid #ccc;
-    /* background-color: #f9f9f9; */
 }
 
 /* Adicione/atualize estas regras no seu blockly.css */
@@ -151,17 +151,60 @@ body {
 }
 
 /* Previne problemas de redimensionamento em tela cheia */
-:-webkit-full-screen [id^="blocklyDivHelper"],
-:-webkit-full-screen #blocklyDiv {
-    height: calc(100vh - 120px) !important;
-}
 
-:-moz-full-screen [id^="blocklyDivHelper"],
-:-moz-full-screen #blocklyDiv {
-    height: calc(100vh - 120px) !important;
-}
-
-:fullscreen [id^="blocklyDivHelper"],
-:fullscreen #blocklyDiv {
-    height: calc(100vh - 120px) !important;
-}
+    /* Prevent resizing issues in fullscreen */
+    :-webkit-full-screen [id^="blocklyDivHelper"],
+    :-webkit-full-screen #blocklyDiv,
+    :-moz-full-screen [id^="blocklyDivHelper"],
+    :-moz-full-screen #blocklyDiv,
+    :fullscreen [id^="blocklyDivHelper"],
+    :fullscreen #blocklyDiv {
+        height: calc(100vh - 120px) !important;
+    }
+    
+    /* Mobile Responsiveness */
+    @media (max-width: 768px) {
+        #blocklyDiv, [id^="blocklyDivHelper"] {
+            height: calc(100vh - 80px) !important; /* Reduced for mobile */
+            min-height: 200px !important;
+        }
+    
+        .tab-button {
+            padding: 8px 15px; /* Smaller button padding */
+            font-size: 14px;
+        }
+    
+        .tab-content textarea, 
+        .tab-content pre {
+            font-size: 12px; /* Smaller font size for mobile */
+        }
+    }
+    
+    /* Extra small devices */
+    @media (max-width: 480px) {
+        #blocklyDiv, [id^="blocklyDivHelper"] {
+            height: calc(100vh - 60px) !important; /* Further reduced height */
+            min-height: 150px !important;
+        }
+    
+        .tab-button {
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+    
+        .tab-content {
+            padding: 5px; /* Reduced padding */
+        }
+    
+        .tab-content textarea, 
+        .tab-content pre {
+            font-size: 10px; /* Even smaller font size */
+        }
+    }
+    
+    /* Orientation-specific adjustments */
+    @media (orientation: landscape) {
+        #blocklyDiv, [id^="blocklyDivHelper"] {
+            height: calc(100vh - 60px) !important;
+        }
+    }

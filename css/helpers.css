@@ -17,7 +17,7 @@
     border-left: 1px solid #ccc;
     display: flex;
     flex-direction: column;
-    background: #2d2d2d;
+    background: #f333;
 }
 
 .helper-code-header {
@@ -85,5 +85,6 @@
     padding: 10px 0;
     width: 30px;
     justify-content: center;
+    transition: width 0.3s ease;
 }
 

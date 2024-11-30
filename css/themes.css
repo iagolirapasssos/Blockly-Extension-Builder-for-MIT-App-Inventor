@@ -69,37 +69,8 @@
     background-color: var(--background-color);
 }
 
-/* Tab Container Styling for light Theme */
-.theme-light .tab-container {
-    width: 100%;
-    display: flex;
-    border-bottom: 1px solid #555;    /* Subtle border color for light theme */
-    flex-shrink: 0;
-    overflow-x: auto;                 /* Enable horizontal scrolling */
-    scrollbar-width: thin;            /* Improve scroll visibility */
-    -webkit-overflow-scrolling: touch; /* Smooth scrolling on mobile */
-    background-color: var(--background-color); /* Use dark background */
-}
-
-/* Tab Button Styling for light Theme */
-.theme-light .tab-button {
-    padding: 10px 20px;
-    border-color: #3226db;
-    background-color: #333;          /* Dark background for buttons */
-    color: var(--text-color);        /* Text color for buttons */
-    cursor: pointer;
-    outline: none;
-    white-space: nowrap;  
-    background-color: var(--background-color);           /* Prevent button text from wrapping */
-    transition: background-color 0.3s, color 0.3s; /* Smooth hover effect */
-}
-
-.theme-light .tab-button:active {
-    background-color: #555;          /* Even lighter background for active state */
-    color: var(--category-text-color); /* Match category text color */
-}
-
 /* Styling for textarea and pre elements under the light theme */
+
 .theme-light .tab-content textarea, 
 .theme-light .tab-content pre {
     flex: 1;
@@ -111,15 +82,10 @@
     padding: 10px;
     box-sizing: border-box;
     border: 1px solid #555; /* Adjusted for a darker theme */
+    background-color: var(--background-color); /* Use dark theme background */
+    color: var(--text-color); /* Use dark theme text color */
     background-color: var(--background-color); /* Use light theme background */
     color: var(--text-color); /* Use light theme text color */
-}
-
-/* Optional: Add hover or focus states for better accessibility */
-.theme-light .tab-content textarea:focus, 
-.theme-light .tab-content pre:focus {
-    border-color: #888; /* Slightly lighter border for focus */
-    outline: none;
 }
 
 .theme-light .token.comment { color: #6a737d; }
@@ -140,16 +106,6 @@
     --toolbox-background: #333333;
     --blockly-background: #49483e;
     --workspace-bg-color: #1e1e1e;
-}
-
-.theme-dark .helper-code-header {
-    padding: 8px;
-    /* background: #1e1e1e; */
-    border-bottom: 1px solid #3d3d3d;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: var(--background-color);
 }
 
 /* Tab Container Styling for Dark Theme */
@@ -177,9 +133,18 @@
     transition: background-color 0.3s, color 0.3s; /* Smooth hover effect */
 }
 
-.theme-dark.tab-button:active {
+.theme-dark .tab-button:active {
     background-color: #555;          /* Even lighter background for active state */
     color: var(--category-text-color); /* Match category text color */
+}
+
+.theme-dark .helper-code-header {
+    padding: 8px;
+    border-bottom: 1px solid #3d3d3d;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--background-color);
 }
 
 /* Styling for textarea and pre elements under the dark theme */
@@ -198,13 +163,6 @@
     color: var(--text-color); /* Use dark theme text color */
 }
 
-/* Optional: Add hover or focus states for better accessibility */
-.theme-dark .tab-content textarea:focus, 
-.theme-dark .tab-content pre:focus {
-    border-color: #888; /* Slightly lighter border for focus */
-    outline: none;
-}
-
 .theme-dark .token.comment { color: #6A9955; }
 .theme-dark .token.keyword { color: #569cd6; }
 .theme-dark .token.string { color: #ce9178; }
@@ -215,24 +173,16 @@
 .theme-dark .token.punctuation { color: #d4d4d4; }
 .theme-dark .token.annotation { color: #4fc1ff; }
 
+
 /* Tema GitHub */
 .theme-github {
-    --background-color: #e1e4e8;
+    --background-color: #f5f5f5;
     --text-color: #24292e;
     --category-text-color: #6a737d; /* Cor do texto das categorias */
     --toolbox-background: #e1e4e8;
     --blockly-background: #fafbfc;
-    --workspace-bg-color: #e1e4e8;
-}
-
-.theme-github .helper-code-header {
-    padding: 8px;
-    /* background: #1e1e1e; */
-    border-bottom: 1px solid #3d3d3d;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: var(--background-color);
+    --workspace-bg-color: #f5f5f5;
+    
 }
 
 /* Tab Container Styling for github Theme */
@@ -264,6 +214,15 @@
     background-color: #555;          /* Even lighter background for active state */
     color: var(--category-text-color); /* Match category text color */
 }
+
+.theme-github .helper-code-header {
+    padding: 8px;
+    border-bottom: 1px solid #3d3d3d;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--background-color);
+}
     
 /* Styling for textarea and pre elements under the dark github */
 .theme-github .tab-content textarea, 
@@ -279,13 +238,7 @@
     border: 1px solid #555; /* Adjusted for a darker theme */
     background-color: var(--background-color); /* Use dark theme background */
     color: var(--text-color); /* Use dark theme text color */
-}
 
-/* Optional: Add hover or focus states for better accessibility */
-.theme-github .tab-content textarea:focus, 
-.theme-github .tab-content pre:focus {
-    border-color: #888; /* Slightly lighter border for focus */
-    outline: none;
 }
 
 .theme-github .token.comment { color: #6a737d; }
@@ -303,20 +256,9 @@
     --background-color: #3e3d32;
     --text-color: #f8f8f2;
     --category-text-color: #a6e22e; /* Cor do texto das categorias */
-    --toolbox-background: #3e3d32;
+    --toolbox-background: #272822;
     --blockly-background: #49483e;
-    --workspace-bg-color: #3e3d32;
-    --category-font-size: 5px;
-}
-
-.theme-monokai .helper-code-header {
-    padding: 8px;
-    /* background: #1e1e1e; */
-    border-bottom: 1px solid #3d3d3d;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: var(--background-color);
+    --workspace-bg-color: #272822;
 }
 
 /* Tab Container Styling for Monokai Theme */
@@ -344,9 +286,13 @@
     transition: background-color 0.3s, color 0.3s; /* Smooth hover effect */
 }
 
-.theme-monokai .tab-button:active {
-    background-color: #555;          /* Even lighter background for active state */
-    color: var(--category-text-color); /* Match category text color */
+.theme-monokai .helper-code-header {
+    padding: 8px;
+    border-bottom: 1px solid #3d3d3d;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--background-color);
 }
 
 /* Styling for textarea and pre elements under the dark monokai */
@@ -363,13 +309,6 @@
     border: 1px solid #555; /* Adjusted for a darker theme */
     background-color: var(--background-color); /* Use dark theme background */
     color: var(--text-color); /* Use dark theme text color */
-}
-
-/* Optional: Add hover or focus states for better accessibility */
-.theme-monokai .tab-content textarea:focus, 
-.theme-monokai .tab-content pre:focus {
-    border-color: #888; /* Slightly lighter border for focus */
-    outline: none;
 }
 
 .theme-monokai .token.comment { color: #75715e; }
