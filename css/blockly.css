@@ -43,19 +43,59 @@ body {
     display: flex;
     border-bottom: 1px solid #ccc;
     flex-shrink: 0;
+    overflow-x: auto; /* Enable horizontal scrolling */
+    scrollbar-width: thin; /* Improve scroll visibility on supported browsers */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on mobile */
 }
 
+/* Ensure .tab-button remains properly styled for responsiveness */
 .tab-button {
     padding: 10px 20px;
     border: none;
     background-color: #f1f1f1;
     cursor: pointer;
     outline: none;
+    white-space: nowrap; /* Prevent button text from wrapping */
 }
 
 .tab-button.active {
     background-color: #ddd;
     border-bottom: 2px solid #007bff;
+}
+
+/* Mobile-specific adjustments */
+@media (max-width: 768px) {
+    .tab-container {
+        gap: 5px; /* Optional: reduce spacing between tabs for smaller screens */
+    }
+
+    .tab-button {
+        padding: 8px 15px; /* Adjust padding for better fit */
+        font-size: 14px; /* Smaller font size */
+    }
+}
+
+/* Extra small devices */
+@media (max-width: 480px) {
+    .tab-container {
+        padding: 0 5px; /* Add horizontal padding to container for small screens */
+    }
+
+    .tab-button {
+        padding: 6px 10px; /* Further reduce padding */
+        font-size: 12px; /* Adjust font size */
+    }
+}
+
+/* Optional: Style the scrollbar for better visibility */
+.tab-container::-webkit-scrollbar {
+    height: 4px; /* Horizontal scrollbar height */
+    background: #ddd;
+}
+
+.tab-container::-webkit-scrollbar-thumb {
+    background: #bbb;
+    border-radius: 1px;
 }
 
 .tab-content {
@@ -81,7 +121,8 @@ body {
     padding: 10px;
     box-sizing: border-box;
     border: 1px solid #ccc;
-    background-color: #f9f9f9;
+    
+    
 }
 
 /* Adicione/atualize estas regras no seu blockly.css */
@@ -108,22 +149,66 @@ body {
 }
 
 .blocklyToolboxDiv {
+    width: 150px;
     position: absolute !important;
 }
 
 /* Previne problemas de redimensionamento em tela cheia */
-:-webkit-full-screen [id^="blocklyDivHelper"],
-:-webkit-full-screen #blocklyDiv {
-    height: calc(100vh - 120px) !important;
-}
-
-:-moz-full-screen [id^="blocklyDivHelper"],
-:-moz-full-screen #blocklyDiv {
-    height: calc(100vh - 120px) !important;
-}
-
-:fullscreen [id^="blocklyDivHelper"],
-:fullscreen #blocklyDiv {
-    height: calc(100vh - 120px) !important;
-}
+    /* Prevent resizing issues in fullscreen */
+    :-webkit-full-screen [id^="blocklyDivHelper"],
+    :-webkit-full-screen #blocklyDiv,
+    :-moz-full-screen [id^="blocklyDivHelper"],
+    :-moz-full-screen #blocklyDiv,
+    :fullscreen [id^="blocklyDivHelper"],
+    :fullscreen #blocklyDiv {
+        height: calc(100vh - 120px) !important;
+    }
+    
+    /* Mobile Responsiveness */
+    @media (max-width: 768px) {
+        #blocklyDiv, [id^="blocklyDivHelper"] {
+            height: calc(100vh - 80px) !important; /* Reduced for mobile */
+            min-height: 200px !important;
+        }
+    
+        .tab-button {
+            padding: 8px 15px; /* Smaller button padding */
+            font-size: 14px;
+        }
+    
+        .tab-content textarea, 
+        .tab-content pre {
+            font-size: 12px; /* Smaller font size for mobile */
+        }
+    }
+    
+    /* Extra small devices */
+    @media (max-width: 480px) {
+        #blocklyDiv, [id^="blocklyDivHelper"] {
+            height: calc(100vh - 60px) !important; /* Further reduced height */
+            min-height: 150px !important;
+        }
+    
+        .tab-button {
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+    
+        .tab-content {
+            padding: 5px; /* Reduced padding */
+        }
+    
+        .tab-content textarea, 
+        .tab-content pre {
+            font-size: 10px; /* Even smaller font size */
+        }
+    }
+    
+    /* Orientation-specific adjustments */
+    @media (orientation: landscape) {
+        #blocklyDiv, [id^="blocklyDivHelper"] {
+            height: calc(100vh - 60px) !important;
+        }
+    }
+    
 

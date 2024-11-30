@@ -1,3 +1,4 @@
+
 /* Estilo do header */
 .header {
     background: #2c3e50;
@@ -7,18 +8,68 @@
     justify-content: space-between;
     align-items: center;
     flex-shrink: 0;
+    overflow-x: auto; /* Enables horizontal scrolling */
+    scrollbar-width: thin; /* For better scroll visibility on supported browsers */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on mobile */
 }
 
 .header-controls {
     display: flex;
     gap: 10px;
     align-items: center;
+    overflow-x: auto; /* Enables horizontal scrolling */
+    scrollbar-width: thin; /* For supported browsers */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on mobile */
 }
 
+/* Ensure select elements are responsive */
 .language-select, .theme-select {
     background: white;
     border: none;
     padding: 6px;
     border-radius: 4px;
     cursor: pointer;
+}
+
+/* Mobile-specific adjustments */
+@media (max-width: 768px) {
+    .header {
+        flex-wrap: nowrap; /* Prevent wrapping of elements */
+    }
+
+    .header-controls {
+        flex-wrap: nowrap; /* Prevent wrapping of controls */
+    }
+
+    .language-select, .theme-select {
+        padding: 4px; /* Reduce padding for smaller screens */
+        font-size: 14px; /* Smaller font size */
+    }
+}
+
+/* Extra small devices */
+@media (max-width: 480px) {
+    .header {
+        padding: 1px 10px; /* Adjust header padding for smaller devices */
+    }
+
+    .header-controls {
+        gap: 2px; /* Reduce gap between controls */
+    }
+
+    .language-select, .theme-select {
+        padding: 3px;
+        font-size: 12px; /* Further reduce font size */
+    }
+}
+
+/* Optional scrollbar styling for better visibility */
+.header::-webkit-scrollbar, .header-controls::-webkit-scrollbar {
+    height: 0px; /* Horizontal scrollbar height */
+    background: #ddd;
+}
+
+.header::-webkit-scrollbar-thumb, .header-controls::-webkit-scrollbar-thumb {
+    background: #bbb;
+    border-radius: 2px;
 }

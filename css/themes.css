@@ -51,6 +51,32 @@
     --blockly-background: #f9f9f9;
 }
 
+.theme-light .helper-code-header {
+    padding: 8px;
+    /* background: #1e1e1e; */
+    border-bottom: 1px solid #3d3d3d;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--background-color);
+}
+
+/* Styling for textarea and pre elements under the dark theme */
+.theme-light .tab-content textarea, 
+.theme-light .tab-content pre {
+    flex: 1;
+    resize: none;
+    overflow: auto;
+    font-family: 'Fira Code', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #555; /* Adjusted for a darker theme */
+    background-color: var(--background-color); /* Use dark theme background */
+    color: var(--text-color); /* Use dark theme text color */
+}
+
 .theme-light .token.comment { color: #6a737d; }
 .theme-light .token.keyword { color: #d73a49; }
 .theme-light .token.string { color: #032f62; }
@@ -67,7 +93,64 @@
     --text-color: #d4d4d4;
     --category-text-color: #ffffff; /* Cor do texto das categorias */
     --toolbox-background: #333333;
-    --blockly-background: #2e2e2e;
+    --workspace-bg-color: #1e1e1e;
+    
+}
+
+/* Tab Container Styling for Dark Theme */
+.theme-dark .tab-container {
+    width: 100%;
+    display: flex;
+    border-bottom: 1px solid #555;    /* Subtle border color for dark theme */
+    flex-shrink: 0;
+    overflow-x: auto;                 /* Enable horizontal scrolling */
+    scrollbar-width: thin;            /* Improve scroll visibility */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on mobile */
+    background-color: var(--background-color); /* Use dark background */
+}
+
+/* Tab Button Styling for Dark Theme */
+.theme-dark .tab-button {
+    padding: 10px 20px;
+    border-color: #3226db;
+    background-color: #333;          /* Dark background for buttons */
+    color: var(--text-color);        /* Text color for buttons */
+    cursor: pointer;
+    outline: none;
+    white-space: nowrap;  
+    background-color: var(--background-color);           /* Prevent button text from wrapping */
+    transition: background-color 0.3s, color 0.3s; /* Smooth hover effect */
+}
+
+.theme-dark .tab-button:active {
+    background-color: #555;          /* Even lighter background for active state */
+    color: var(--category-text-color); /* Match category text color */
+}
+
+.theme-dark .helper-code-header {
+    padding: 8px;
+    /* background: #1e1e1e; */
+    border-bottom: 1px solid #3d3d3d;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--background-color);
+}
+
+/* Styling for textarea and pre elements under the dark theme */
+.theme-dark .tab-content textarea, 
+.theme-dark .tab-content pre {
+    flex: 1;
+    resize: none;
+    overflow: auto;
+    font-family: 'Fira Code', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #555; /* Adjusted for a darker theme */
+    background-color: var(--background-color); /* Use dark theme background */
+    color: var(--text-color); /* Use dark theme text color */
 }
 
 .theme-dark .token.comment { color: #6A9955; }
@@ -80,13 +163,72 @@
 .theme-dark .token.punctuation { color: #d4d4d4; }
 .theme-dark .token.annotation { color: #4fc1ff; }
 
+
 /* Tema GitHub */
 .theme-github {
-    --background-color: #ffffff;
+    --background-color: #f5f5f5;
     --text-color: #24292e;
     --category-text-color: #6a737d; /* Cor do texto das categorias */
     --toolbox-background: #e1e4e8;
     --blockly-background: #fafbfc;
+    --workspace-bg-color: #f5f5f5;
+    
+}
+
+/* Tab Container Styling for Dark Theme */
+.theme-github .tab-container {
+    width: 100%;
+    display: flex;
+    border-bottom: 1px solid #555;    /* Subtle border color for dark theme */
+    flex-shrink: 0;
+    overflow-x: auto;                 /* Enable horizontal scrolling */
+    scrollbar-width: thin;            /* Improve scroll visibility */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on mobile */
+    background-color: var(--background-color); /* Use dark background */
+}
+
+/* Tab Button Styling for Dark Theme */
+.theme-github .tab-button {
+    padding: 10px 20px;
+    border-color: #3226db;
+    background-color: #333;          /* Dark background for buttons */
+    color: var(--text-color);        /* Text color for buttons */
+    cursor: pointer;
+    outline: none;
+    white-space: nowrap;  
+    background-color: var(--background-color);           /* Prevent button text from wrapping */
+    transition: background-color 0.3s, color 0.3s; /* Smooth hover effect */
+}
+
+.theme-github .tab-button:active {
+    background-color: #555;          /* Even lighter background for active state */
+    color: var(--category-text-color); /* Match category text color */
+}
+
+.theme-github .helper-code-header {
+    padding: 8px;
+    /* background: #1e1e1e; */
+    border-bottom: 1px solid #3d3d3d;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--background-color);
+}
+
+/* Styling for textarea and pre elements under the dark theme */
+.theme-github .tab-content textarea, 
+.theme-github .tab-content pre {
+    flex: 1;
+    resize: none;
+    overflow: auto;
+    font-family: 'Fira Code', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #555; /* Adjusted for a darker theme */
+    background-color: var(--background-color); /* Use dark theme background */
+    color: var(--text-color); /* Use dark theme text color */
 }
 
 .theme-github .token.comment { color: #6a737d; }
@@ -104,8 +246,60 @@
     --background-color: #272822;
     --text-color: #f8f8f2;
     --category-text-color: #a6e22e; /* Cor do texto das categorias */
-    --toolbox-background: #3e3d32;
+    --toolbox-background: #272822;
     --blockly-background: #49483e;
+    --workspace-bg-color: #272822;
+}
+
+/* Tab Container Styling for Dark Theme */
+.theme-monokai .tab-container {
+    width: 100%;
+    display: flex;
+    border-bottom: 1px solid #555;    /* Subtle border color for dark theme */
+    flex-shrink: 0;
+    overflow-x: auto;                 /* Enable horizontal scrolling */
+    scrollbar-width: thin;            /* Improve scroll visibility */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on mobile */
+    background-color: var(--background-color); /* Use dark background */
+}
+
+/* Tab Button Styling for Dark Theme */
+.theme-monokai .tab-button {
+    padding: 10px 20px;
+    border-color: #3226db;
+    background-color: #333;          /* Dark background for buttons */
+    color: var(--text-color);        /* Text color for buttons */
+    cursor: pointer;
+    outline: none;
+    white-space: nowrap;  
+    background-color: var(--background-color);           /* Prevent button text from wrapping */
+    transition: background-color 0.3s, color 0.3s; /* Smooth hover effect */
+}
+
+.theme-monokai .helper-code-header {
+    padding: 8px;
+    /* background: #1e1e1e; */
+    border-bottom: 1px solid #3d3d3d;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--background-color);
+}
+
+/* Styling for textarea and pre elements under the dark theme */
+.theme-monokai .tab-content textarea, 
+.theme-monokai .tab-content pre {
+    flex: 1;
+    resize: none;
+    overflow: auto;
+    font-family: 'Fira Code', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #555; /* Adjusted for a darker theme */
+    background-color: var(--background-color); /* Use dark theme background */
+    color: var(--text-color); /* Use dark theme text color */
 }
 
 .theme-monokai .token.comment { color: #75715e; }
