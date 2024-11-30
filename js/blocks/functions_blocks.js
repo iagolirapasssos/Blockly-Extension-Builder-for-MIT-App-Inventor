@@ -228,6 +228,7 @@ Blockly.Blocks['function_parameter'] = {
     }
 };
 
+
 Blockly.JavaScript['function_with_parameters'] = function(block) {
     const functionName = block.getFieldValue('FUNCTION_NAME');
     const returnType = block.getFieldValue('RETURN_TYPE');
@@ -244,8 +245,6 @@ Blockly.JavaScript['function_parameter'] = function(block) {
     const isFinal = block.getFieldValue('FINAL') === "TRUE";
     return `${isFinal ? 'final ' : ''}${paramType} ${paramName}`;
 };
-
-
 
 // JavaScript Generators
 Blockly.JavaScript['procedures_defnoreturn'] = function(block) {
