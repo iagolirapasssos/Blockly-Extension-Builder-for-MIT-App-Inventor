@@ -30,6 +30,13 @@
 .button:hover {
     background: #2980b9;
 }
+.cat_config {
+  font-size: 8px;
+}
+}
+.blocklyToolboxDiv:hover {
+    color: #fff;
+}
 
 /* Syntax highlighting */
 /* Seletor de tema */
@@ -45,7 +52,8 @@
 /* Tema Light (Padrão) */
 .theme-light {
     --background-color: #ffffff;
-    --text-color: #24292e;
+    --text-color: #333;
+    --hover-category-text-color: #ffffff; /* Define hover text color */
     --category-text-color: #000000; /* Cor do texto das categorias */
     --toolbox-background: #f1f1f1;
     --blockly-background: #f9f9f9;
@@ -61,7 +69,8 @@
     background-color: var(--background-color);
 }
 
-/* Styling for textarea and pre elements under the dark theme */
+/* Styling for textarea and pre elements under the light theme */
+
 .theme-light .tab-content textarea, 
 .theme-light .tab-content pre {
     flex: 1;
@@ -75,6 +84,8 @@
     border: 1px solid #555; /* Adjusted for a darker theme */
     background-color: var(--background-color); /* Use dark theme background */
     color: var(--text-color); /* Use dark theme text color */
+    background-color: var(--background-color); /* Use light theme background */
+    color: var(--text-color); /* Use light theme text color */
 }
 
 .theme-light .token.comment { color: #6a737d; }
@@ -93,8 +104,8 @@
     --text-color: #d4d4d4;
     --category-text-color: #ffffff; /* Cor do texto das categorias */
     --toolbox-background: #333333;
+    --blockly-background: #49483e;
     --workspace-bg-color: #1e1e1e;
-    
 }
 
 /* Tab Container Styling for Dark Theme */
@@ -129,7 +140,6 @@
 
 .theme-dark .helper-code-header {
     padding: 8px;
-    /* background: #1e1e1e; */
     border-bottom: 1px solid #3d3d3d;
     display: flex;
     justify-content: space-between;
@@ -175,11 +185,11 @@
     
 }
 
-/* Tab Container Styling for Dark Theme */
+/* Tab Container Styling for github Theme */
 .theme-github .tab-container {
     width: 100%;
     display: flex;
-    border-bottom: 1px solid #555;    /* Subtle border color for dark theme */
+    border-bottom: 1px solid #555;    /* Subtle border color for github theme */
     flex-shrink: 0;
     overflow-x: auto;                 /* Enable horizontal scrolling */
     scrollbar-width: thin;            /* Improve scroll visibility */
@@ -187,7 +197,7 @@
     background-color: var(--background-color); /* Use dark background */
 }
 
-/* Tab Button Styling for Dark Theme */
+/* Tab Button Styling for github Theme */
 .theme-github .tab-button {
     padding: 10px 20px;
     border-color: #3226db;
@@ -207,15 +217,14 @@
 
 .theme-github .helper-code-header {
     padding: 8px;
-    /* background: #1e1e1e; */
     border-bottom: 1px solid #3d3d3d;
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: var(--background-color);
 }
-
-/* Styling for textarea and pre elements under the dark theme */
+    
+/* Styling for textarea and pre elements under the dark github */
 .theme-github .tab-content textarea, 
 .theme-github .tab-content pre {
     flex: 1;
@@ -229,6 +238,7 @@
     border: 1px solid #555; /* Adjusted for a darker theme */
     background-color: var(--background-color); /* Use dark theme background */
     color: var(--text-color); /* Use dark theme text color */
+
 }
 
 .theme-github .token.comment { color: #6a737d; }
@@ -243,7 +253,7 @@
 
 /* Tema Monokai */
 .theme-monokai {
-    --background-color: #272822;
+    --background-color: #3e3d32;
     --text-color: #f8f8f2;
     --category-text-color: #a6e22e; /* Cor do texto das categorias */
     --toolbox-background: #272822;
@@ -251,11 +261,11 @@
     --workspace-bg-color: #272822;
 }
 
-/* Tab Container Styling for Dark Theme */
+/* Tab Container Styling for Monokai Theme */
 .theme-monokai .tab-container {
     width: 100%;
     display: flex;
-    border-bottom: 1px solid #555;    /* Subtle border color for dark theme */
+    border-bottom: 1px solid #555;    /* Subtle border color for Monokai theme */
     flex-shrink: 0;
     overflow-x: auto;                 /* Enable horizontal scrolling */
     scrollbar-width: thin;            /* Improve scroll visibility */
@@ -263,7 +273,7 @@
     background-color: var(--background-color); /* Use dark background */
 }
 
-/* Tab Button Styling for Dark Theme */
+/* Tab Button Styling for Monokai Theme */
 .theme-monokai .tab-button {
     padding: 10px 20px;
     border-color: #3226db;
@@ -278,7 +288,6 @@
 
 .theme-monokai .helper-code-header {
     padding: 8px;
-    /* background: #1e1e1e; */
     border-bottom: 1px solid #3d3d3d;
     display: flex;
     justify-content: space-between;
@@ -286,7 +295,7 @@
     background-color: var(--background-color);
 }
 
-/* Styling for textarea and pre elements under the dark theme */
+/* Styling for textarea and pre elements under the dark monokai */
 .theme-monokai .tab-content textarea, 
 .theme-monokai .tab-content pre {
     flex: 1;

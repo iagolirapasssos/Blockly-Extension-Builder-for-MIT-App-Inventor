@@ -17,7 +17,7 @@ body {
 }
 
 #blocklyDiv {
-    height: calc(100vh - 120px) !important; /* Ajuste o valor baseado na altura do header e tab-container */
+    height: calc(100vh - 120px) !important; /* Adjust the value based on the height of the header and tab-container */
     width: 100% !important;
     position: absolute;
 }
@@ -37,7 +37,6 @@ body {
     padding: 5px;
 }
 
-/* Mantendo seus estilos existentes */
 .tab-container {
     width: 100%;
     display: flex;
@@ -89,7 +88,7 @@ body {
 
 /* Optional: Style the scrollbar for better visibility */
 .tab-container::-webkit-scrollbar {
-    height: 4px; /* Horizontal scrollbar height */
+    height: 2px; /* Horizontal scrollbar height */
     background: #ddd;
 }
 
@@ -121,8 +120,6 @@ body {
     padding: 10px;
     box-sizing: border-box;
     border: 1px solid #ccc;
-    
-    
 }
 
 /* Adicione/atualize estas regras no seu blockly.css */
@@ -154,6 +151,7 @@ body {
 }
 
 /* Previne problemas de redimensionamento em tela cheia */
+
     /* Prevent resizing issues in fullscreen */
     :-webkit-full-screen [id^="blocklyDivHelper"],
     :-webkit-full-screen #blocklyDiv,
@@ -210,5 +208,3 @@ body {
             height: calc(100vh - 60px) !important;
         }
     }
-    
-
