@@ -327,7 +327,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const toolboxCategories = document.querySelectorAll("#toolbox category");
         toolboxCategories.forEach(category => {
             category.style.color = getComputedStyle(document.body).getPropertyValue("--category-text-color");
-            category.style.color = getComputedStyle(document.body).getPropertyValue("--category-text-color");
         });
 
         // Atualiza as cores do workspace
