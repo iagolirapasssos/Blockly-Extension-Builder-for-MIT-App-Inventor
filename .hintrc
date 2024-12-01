@@ -8,6 +8,16 @@
       {
         "select-name": "off"
       }
+    ],
+    "compat-api/css": [
+      "default",
+      {
+        "ignore": [
+          "scrollbar-width",
+          "scrollbar-width: thin",
+          "-webkit-overflow-scrolling"
+        ]
+      }
     ]
   }
 }

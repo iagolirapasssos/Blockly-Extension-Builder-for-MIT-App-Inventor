@@ -329,13 +329,43 @@ document.addEventListener('DOMContentLoaded', function() {
             category.style.color = getComputedStyle(document.body).getPropertyValue("--category-text-color");
         });
 
+        // Set the Monaco Editor theme
+    let monacoTheme = 'vs'; // Default Monaco theme
+    if (theme === 'dark') {
+        monacoTheme = 'vs-dark';
+    } else if (theme === 'github') {
+        monacoTheme = 'vs-github'; 
+    } else if (theme === 'monokai') {
+        monacoTheme = 'vs-monokai';
+    }
+
+    // Update Monaco Editor themes
+    if (window.manifestEditor) {
+        monaco.editor.setTheme(monacoTheme);
+    }
+    if (window.ymlEditor) {
+        monaco.editor.setTheme(monacoTheme);
+    }
+
+    // Apply background colors for the editors
+    const editor = document.getElementById('editor');
+    const editorYml = document.getElementById('editor-yml');
+    const backgroundColor = getComputedStyle(body).getPropertyValue('--editor-background-color');
+
+    if (editor) {
+        editor.style.backgroundColor = backgroundColor;
+    }
+    if (editorYml) {
+        editorYml.style.backgroundColor = backgroundColor;
+    }
+
         // Atualiza as cores do workspace
         // Updates the workspace colors
       //  Blockly.getMainWorkspace().updateToolbox(document.getElementById("toolbox"));
        // Update the workspace colors
-    const workspaceBackgroundColor = getComputedStyle(document.body).getPropertyValue("--workspace-bg-color");
-    const workspace = Blockly.getMainWorkspace();
-    if (workspace) {
+        const workspaceBackgroundColor = getComputedStyle(document.body).getPropertyValue("--workspace-bg-color");
+        const workspace = Blockly.getMainWorkspace();
+        if (workspace) {
         workspace.getCanvas().style.backgroundColor = workspaceBackgroundColor;
         workspace.getParentSvg().style.backgroundColor = workspaceBackgroundColor;
 
@@ -778,16 +808,16 @@ async function cleanupProjectDirectory(className) {
 </manifest>
     `;
 
-    // Load Monaco Editor
-    require.config({ paths: { vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.39.0/min/vs' } });
-    require(['vs/editor/editor.main'], function () {
-        manifestEditor = monaco.editor.create(document.getElementById('editor'), {
+    // Load Monaco Editor for Manifest XML
+require.config({ paths: { vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.39.0/min/vs' } });
+require(['vs/editor/editor.main'], function () {
+    window.manifestEditor = monaco.editor.create(document.getElementById('editor'), {
         value: defaultCode.trim(),
         language: 'xml',
-        theme: 'vs', // Use 'vs', 'vs-dark', or 'hc-black' for themes
-        automaticLayout: true, // Auto resize editor
-      });
+        theme: 'vs', // This will be updated dynamically
+        automaticLayout: true,
     });
+});
 
     // Default YML Code
     const defaultYamlCode = `
@@ -839,12 +869,12 @@ R8: false
     `;
 
     // Load Monaco Editor for YML
-    require.config({ paths: { vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.39.0/min/vs' } });
-    require(['vs/editor/editor.main'], function () {
-      ymlEditor = monaco.editor.create(document.getElementById('editor-yml'), {
+require.config({ paths: { vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.39.0/min/vs' } });
+require(['vs/editor/editor.main'], function () {
+    window.ymlEditor = monaco.editor.create(document.getElementById('editor-yml'), {
         value: defaultYamlCode.trim(),
-        language: 'yaml', // Specify YML language
-        theme: 'vs',
+        language: 'yaml',
+        theme: 'vs', // This will be updated dynamically
         automaticLayout: true,
-      });
     });
+});

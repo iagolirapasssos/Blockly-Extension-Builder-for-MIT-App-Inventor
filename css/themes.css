@@ -30,13 +30,7 @@
 .button:hover {
     background: #2980b9;
 }
-.cat_config {
-  font-size: 8px;
-}
-}
-.blocklyToolboxDiv:hover {
-    color: #fff;
-}
+
 
 /* Syntax highlighting */
 /* Seletor de tema */
@@ -58,6 +52,7 @@
     --toolbox-background: #f1f1f1;
     --blockly-background: #f9f9f9;
     --dependenciesTab-background: #ffffff;
+    --editor-background-color: #ffffff;
 }
 
 .theme-light .helper-code-header {
@@ -141,6 +136,7 @@
     --toolbox-background: #333333;
     --workspace-bg-color: #1e1e1e;
     --dependenciesTab-background: #1e1e1e;
+    --editor-background-color: #1e1e1e;
 }
 
 .theme-dark .helper-code-header {
@@ -225,6 +221,8 @@
     --workspace-bg-color: #e1e4e8;
     --blockly-background: #fafbfc;
     --dependenciesTab-background: #e1e4e8;
+    --editor-background-color: #e1e4e8;
+    --manifestTab-background: #3e3d32;
 }
 
 .theme-github .helper-code-header {
@@ -308,6 +306,8 @@
     --toolbox-background: #3e3d32;
     --workspace-bg-color: #3e3d32;
     --dependenciesTab-background: #3e3d32;
+    --editor-background-color: #3e3d32;
+    --manifestTab-background: #3e3d32;
 }
 
 .theme-monokai .helper-code-header {
@@ -392,6 +392,11 @@
   background-color: var(--dependenciesTab-background);
     color: var(--category-text-color);
 }
+
+#manifestTab{
+    background-color: var(--manifestTab-background);
+      color: var(--category-text-color);
+  }
 
 /* Style the input field */
 .theme-light #dependencyUrl {
