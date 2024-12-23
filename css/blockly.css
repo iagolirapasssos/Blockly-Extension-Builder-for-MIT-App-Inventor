@@ -100,13 +100,19 @@ body {
 .tab-content {
     flex: 1;
     display: none;
-    padding: 10px;
+    padding: 0px;
     overflow: hidden;
+    background-color: var(--tab-background-color);
+    color: var(--text-color, #000); /* Default to black text */
+    border-radius: 8px;
+    margin: 1px 0;
 }
 
 .tab-content.active {
     display: block;
     flex-direction: column;
+    background-color: var(--tab-active-background-color);
+    border: 1px solid #007bff; /* Highlight active tab */
 }
 
 .tab-content textarea, 

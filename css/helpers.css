@@ -30,7 +30,7 @@
 }
 
 .helper-code-title {
-    color: #fff;
+    color: #BA55F3;
     font-size: 0.9em;
     margin: 0;
 }
@@ -38,7 +38,7 @@
 .helper-code-toggle {
     background: none;
     border: none;
-    color: #fff;
+    color: #BA55F3;
     cursor: pointer;
     padding: 4px 8px;
     font-size: 1.2em;
